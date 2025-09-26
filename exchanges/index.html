@@ -1,0 +1,2742 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Freqtrade 是一个用 Python 编写的免费开源加密货币交易机器人，支持所有主要交易所，并可通过 Telegram 或内置的 Web 界面进行控制。">
+      
+      
+      
+        <link rel="canonical" href="https://freqtrade-zh.zdoc.app/zh/exchanges/">
+      
+      
+        <link rel="prev" href="../plotting/">
+      
+      
+        <link rel="next" href="../data-analysis/">
+      
+      
+      <link rel="icon" href="../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>交易所专属说明 - Freqtrade 中文文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/ft.extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-PRBP5T5F5Y"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-PRBP5T5F5Y",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-PRBP5T5F5Y",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="tear">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Freqtrade 中文文档" class="md-header__button md-logo" aria-label="Freqtrade 中文文档" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Freqtrade 中文文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              交易所专属说明
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="tear"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="tear"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zdocapp/freqtrade-zh" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+
+  <!-- Main navigation -->
+  
+  
+  <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+    <div class="md-sidebar__scrollwrap">
+      <div class="md-sidebar__inner">
+        
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Freqtrade 中文文档" class="md-nav__button md-logo" aria-label="Freqtrade 中文文档" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    Freqtrade 中文文档
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zdocapp/freqtrade-zh" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker 快速开始
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    安装
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            安装
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux/MacOS/Raspberry
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../windows_installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Windows
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bot-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Freqtrade 基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-101/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略快速入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略定制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-callbacks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略回调
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stoploss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    止损
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    插件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bot-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    启动机器人
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    控制机器人
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            控制机器人
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../telegram-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Telegram
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freq-ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    freqUI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rest-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REST API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webhook-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web Hook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-download/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数据下载
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    回测
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hyperopt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    超参数优化（Hyperopt）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    FreqAI
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            FreqAI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-parameter-table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    参数表
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-feature-engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    特征工程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-running/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    运行 FreqAI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    强化学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-developers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    开发者指南
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../leverage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    做空 / 杠杆
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    工具子命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    绘图
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    交易所专属说明
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    交易所专属说明
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      交易所配置
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="交易所配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      交易所配置示例
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      设置速率限制
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#binance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Binance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#binance_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binance 黑名单建议
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      币安站点
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      币安 RSA 密钥
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      币安期货
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="币安期货">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      币安逐仓期货设置
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bnfcr" class="md-nav__link">
+    <span class="md-ellipsis">
+      币安 BNFCR 期货
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bingx" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bingx
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kraken" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kraken
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kraken">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kraken_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kraken 历史数据
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kucoin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kucoin
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kucoin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kucoin_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kucoin 黑名单
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#htx" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTX
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#okx" class="md-nav__link">
+    <span class="md-ellipsis">
+      OKX
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gateio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gate.io
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bybit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bybit
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitmart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bitmart
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitget" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bitget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hyperliquid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperliquid
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hyperliquid">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hyperliquid_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperliquid 金库 / 子账户
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyperliquid_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperliquid 历史数据
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitvavo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bitvavo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      所有交易所
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他交易所的随机备注
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="其他交易所的随机备注">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#k" class="md-nav__link">
+    <span class="md-ellipsis">
+      获取最新价格 / 不完整的 K 线
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#freqtrade" class="md-nav__link">
+    <span class="md-ellipsis">
+      高级 Freqtrade 交易所配置
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据分析
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            数据分析
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Jupyter Notebooks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy_analysis_example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    回测分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_22" >
+        
+          
+          <label class="md-nav__link" for="__nav_22" id="__nav_22_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    高级主题
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_22">
+            <span class="md-nav__icon md-icon"></span>
+            高级主题
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级安装后任务
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trade-object/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    交易对象
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lookahead-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    前视分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recursive-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    递归分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级策略
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-hyperopt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级超参数优化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-orderflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    订单流
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producer-consumer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    生产者/消费者模式
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sql_cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SQL 速查表
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    常见问题（FAQ）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy_migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略迁移
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../updating/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    更新 Freqtrade
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deprecated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    废弃功能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    贡献者指南
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Table of contents -->
+  
+  
+  <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+    <div class="md-sidebar__scrollwrap">
+      <div class="md-sidebar__inner">
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      交易所配置
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="交易所配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      交易所配置示例
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      设置速率限制
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#binance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Binance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#binance_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binance 黑名单建议
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      币安站点
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      币安 RSA 密钥
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      币安期货
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="币安期货">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      币安逐仓期货设置
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bnfcr" class="md-nav__link">
+    <span class="md-ellipsis">
+      币安 BNFCR 期货
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bingx" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bingx
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kraken" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kraken
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kraken">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kraken_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kraken 历史数据
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kucoin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kucoin
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kucoin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kucoin_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kucoin 黑名单
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#htx" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTX
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#okx" class="md-nav__link">
+    <span class="md-ellipsis">
+      OKX
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gateio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gate.io
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bybit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bybit
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitmart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bitmart
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitget" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bitget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hyperliquid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperliquid
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hyperliquid">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hyperliquid_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperliquid 金库 / 子账户
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyperliquid_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperliquid 历史数据
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitvavo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bitvavo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      所有交易所
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他交易所的随机备注
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="其他交易所的随机备注">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#k" class="md-nav__link">
+    <span class="md-ellipsis">
+      获取最新价格 / 不完整的 K 线
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#freqtrade" class="md-nav__link">
+    <span class="md-ellipsis">
+      高级 Freqtrade 交易所配置
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      </div>
+    </div>
+  </div>
+  
+
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/zdocapp/freqtrade-zh/edit/develop/docs/exchanges.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="_1">交易所特定说明<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>本页面汇总了特定于交易所的常见注意事项和信息，这些内容很可能不适用于其他交易所。</p>
+<h2 id="_2">交易所配置<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Freqtrade 基于 <a href="https://github.com/ccxt/ccxt">CCXT 库</a> 构建，该库支持超过 100 个加密货币交易所市场和交易 API。完整的最新列表可在 <a href="https://github.com/ccxt/ccxt/tree/master/python">CCXT 代码库主页</a> 找到。但开发团队仅对少数交易所进行了测试，当前列表可在本文档的"首页"部分查看。</p>
+<p>欢迎测试其他交易所并提交反馈或 PR 来改进机器人，或确认运行完美的交易所。</p>
+<p>部分交易所需要特殊配置，具体如下所示。</p>
+<h3 id="_3">交易所配置示例<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>"binance"交易所的配置示例如下：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;binance&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_key&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_secret&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;ccxt_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nt">&quot;ccxt_async_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="c1">// ... </span>
+</code></pre></div>
+<h3 id="_4">设置速率限制<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>通常 CCXT 设置的速率限制是可靠且有效的。若遇到与速率限制相关的问题（通常是日志中的 DDOS 异常），可轻松将 rateLimit 设置更改为其他值。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;kraken&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_key&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_secret&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;ccxt_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;enableRateLimit&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;ccxt_async_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;enableRateLimit&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;rateLimit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3100</span>
+<span class="w">    </span><span class="p">},</span>
+</code></pre></div>
+<p>以下配置启用 kraken 交易所，并通过速率限制避免被交易所封禁。<code>"rateLimit": 3100</code> 定义了每次调用间隔 3.1 秒的等待事件。通过将 <code>"enableRateLimit"</code> 设置为 false 也可完全禁用此功能。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>限流的最佳设置取决于交易所和白名单的大小，因此理想的参数会因许多其他设置而异。
+我们尽可能为每个交易所提供合理的默认值，如果您遇到封禁，请确保已启用 <code>"enableRateLimit"</code> 并逐步增加 <code>"rateLimit"</code> 参数。</p>
+</div>
+<h2 id="binance">Binance<a class="headerlink" href="#binance" title="Permanent link">&para;</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">服务器位置与地理IP限制</p>
+<p>请注意，Binance 会根据服务器所在国家限制 API 访问。当前被封锁的国家（非详尽列表）包括加拿大、马来西亚、荷兰和美国。请访问 <a href="https://www.binance.com/en/terms">Binance 条款 &gt; b. 资格</a> 查看最新列表。</p>
+</div>
+<p>Binance 支持 <a href="../configuration/#understand-order_time_in_force">time_in_force</a>。</p>
+<div class="admonition tip">
+<p class="admonition-title">交易所止损</p>
+<p>Binance 支持 <code>stoploss_on_exchange</code> 并使用 <code>stop-loss-limit</code> 订单。这提供了巨大优势，因此我们建议通过启用交易所止损来利用此功能。
+在期货交易中，Binance 同时支持 <code>stop-limit</code> 和 <code>stop-market</code> 订单。您可以在 <code>order_types.stoploss</code> 配置设置中使用 <code>"limit"</code> 或 <code>"market"</code> 来决定使用哪种类型。</p>
+</div>
+<h3 id="binance_1">Binance 黑名单建议<a class="headerlink" href="#binance_1" title="Permanent link">&para;</a></h3>
+<p>对于币安（Binance），建议将 <code>"BNB/&lt;STAKE&gt;"</code> 添加到您的黑名单中以避免问题，除非您愿意在账户中维持足够的额外 <code>BNB</code>，或者您愿意禁用使用 <code>BNB</code> 支付费用。
+币安账户可以使用 <code>BNB</code> 支付费用，如果交易恰好涉及 <code>BNB</code>，后续交易可能会消耗该持仓，导致初始的 BNB 交易因预期数量不足而无法卖出。</p>
+<p>如果没有足够的 <code>BNB</code> 来支付交易费用，那么费用将不会由 <code>BNB</code> 承担，也不会发生费用减免。Freqtrade 永远不会购买 BNB 来支付费用。为此，需要手动购买并监控 BNB。</p>
+<h3 id="_5">币安站点<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>币安已拆分为两个部分，用户必须为其交易所使用正确的 ccxt 交易所 ID，否则 API 密钥将无法被识别。</p>
+<ul>
+<li><a href="https://www.binance.com/">binance.com</a> - 国际用户。使用交易所 ID：<code>binance</code>。</li>
+<li><a href="https://www.binance.us/">binance.us</a> - 美国用户。使用交易所 ID：<code>binanceus</code>。</li>
+</ul>
+<h3 id="rsa">币安 RSA 密钥<a class="headerlink" href="#rsa" title="Permanent link">&para;</a></h3>
+<p>Freqtrade 支持币安 RSA API 密钥。</p>
+<p>我们建议将它们作为环境变量使用。</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">FREQTRADE__EXCHANGE__SECRET</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>./rsa_binance.private<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+<p>然而，它们也可以通过配置文件进行配置。由于 json 不支持多行字符串，您必须将所有换行符替换为 <code>\n</code> 以生成有效的 json 文件。</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// ...</span>
+<span class="w"> </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;someapikey&gt;&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-----BEGIN PRIVATE KEY-----\nMIIEvQIBABACAFQA&lt;...&gt;s8KX8=\n-----END PRIVATE KEY-----&quot;</span>
+<span class="c1">// ...</span>
+</code></pre></div>
+<h3 id="_6">币安期货<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>币安有特定的（不幸的是复杂的）<a href="https://www.binance.com/en/support/faq/4f462ebe6ff445d4a170be7d9e897272">期货交易量化规则</a>需要遵守，其中包括禁止过多订单的单笔金额过低。
+违反这些规则将导致交易限制。</p>
+<p>在币安期货市场交易时，必须使用订单簿，因为期货没有价格行情数据。</p>
+<div class="highlight"><pre><span></span><code>  &quot;entry_pricing&quot;: {
+      &quot;use_order_book&quot;: true,
+      &quot;order_book_top&quot;: 1,
+      &quot;check_depth_of_market&quot;: {
+          &quot;enabled&quot;: false,
+          &quot;bids_to_ask_delta&quot;: 1
+      }
+  },
+  &quot;exit_pricing&quot;: {
+      &quot;use_order_book&quot;: true,
+      &quot;order_book_top&quot;: 1
+  },
+</code></pre></div>
+<h4 id="_7">币安逐仓期货设置<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>用户还必须将期货设置中的"持仓模式"设置为"单向持仓模式"，并将"资产模式"设置为"单一资产模式"。
+这些设置将在启动时检查，如果设置错误，freqtrade 将显示错误。</p>
+<p><img alt="币安期货设置" src="../assets/binance_futures_settings.png" /></p>
+<p>Freqtrade 不会尝试更改这些设置。</p>
+<h4 id="bnfcr">币安 BNFCR 期货<a class="headerlink" href="#bnfcr" title="Permanent link">&para;</a></h4>
+<p>BNFCR 模式是币安上一种特殊的期货模式，用于规避欧洲的监管问题。
+要使用 BNFCR 期货，您必须使用以下设置组合：</p>
+<div class="highlight"><pre><span></span><code>{
+    // ...
+    &quot;trading_mode&quot;: &quot;futures&quot;,
+    &quot;margin_mode&quot;: &quot;cross&quot;,
+    &quot;proxy_coin&quot;: &quot;BNFCR&quot;,
+    &quot;stake_currency&quot;: &quot;USDT&quot; // or &quot;USDC&quot;
+    // ...
+}
+</code></pre></div>
+<p><code>stake_currency</code> 设置定义了机器人将操作的市场。这个选择实际上是任意的。</p>
+<p>在交易所上，您必须使用"多资产模式" - 并且"持仓模式"设置为"单向持仓模式"。
+Freqtrade 将在启动时检查这些设置，但不会尝试更改它们。</p>
+<h2 id="bingx">Bingx<a class="headerlink" href="#bingx" title="Permanent link">&para;</a></h2>
+<p>BingX 支持 <a href="../configuration/#understand-order_time_in_force">time_in_force</a> 设置，可选 "GTC"（取消前有效）、"IOC"（立即或取消）和 "PO"（仅限挂单）设置。</p>
+<div class="admonition tip">
+<p class="admonition-title">交易所止损</p>
+<p>Bingx 支持 <code>stoploss_on_exchange</code>，并可同时使用限价止损和市价止损订单。这提供了巨大优势，因此我们建议通过启用交易所止损来从中受益。</p>
+</div>
+<h2 id="kraken">Kraken<a class="headerlink" href="#kraken" title="Permanent link">&para;</a></h2>
+<p>Kraken 支持 <a href="../configuration/#understand-order_time_in_force">time_in_force</a> 设置，可选 "GTC"（取消前有效）、"IOC"（立即或取消）和 "PO"（仅限挂单）设置。</p>
+<div class="admonition tip">
+<p class="admonition-title">交易所止损</p>
+<p>Kraken 支持 <code>stoploss_on_exchange</code>，并可同时使用市价止损和限价止损订单。这提供了巨大优势，因此我们建议通过启用交易所止损来从中受益。
+您可以在 <code>order_types.stoploss</code> 配置设置中使用 <code>"limit"</code> 或 <code>"market"</code> 来决定使用哪种类型。</p>
+</div>
+<h3 id="kraken_1">Kraken 历史数据<a class="headerlink" href="#kraken_1" title="Permanent link">&para;</a></h3>
+<p>Kraken API 仅提供 720 根历史 K 线数据，这对于 Freqtrade 的模拟交易和实盘交易模式足够，但对于回测则存在问题。
+要为 Kraken 交易所下载数据，必须使用 <code>--dl-trades</code> 参数，否则机器人将反复下载相同的 720 根 K 线，您将没有足够的回测数据。</p>
+<p>为加速下载，您可下载 Kraken 提供的<a href="https://support.kraken.com/hc/en-us/articles/360047543791-Downloadable-historical-market-data-time-and-sales-">交易记录压缩包</a>。
+这些文件通常每季度更新一次。Freqtrade 要求将这些文件放置在 <code>user_data/data/kraken/trades_csv</code> 目录下。</p>
+<p>若使用增量文件，采用以下结构较为合理：将"完整"历史数据存放于一个目录，增量文件分置于不同目录。
+此模式的前提是数据下载解压后保持原始文件名不变。
+重复内容（基于时间戳判断）将被忽略——但前提是数据不存在断档。</p>
+<p>这意味着，如果您的"完整"历史数据截止到2022年第四季度，那么2023年第一季度和第二季度的增量更新需同时就位。
+若缺少增量文件将导致数据不完整，进而使使用该数据得出的结果无效。</p>
+<div class="highlight"><pre><span></span><code>└── trades_csv
+    ├── Kraken_full_history
+    │   ├── BCHEUR.csv
+    │   └── XBTEUR.csv
+    ├── Kraken_Trading_History_Q1_2023
+    │   ├── BCHEUR.csv
+    │   └── XBTEUR.csv
+    └── Kraken_Trading_History_Q2_2023
+        ├── BCHEUR.csv
+        └── XBTEUR.csv
+</code></pre></div>
+<p>您可将这些文件转换为 freqtrade 格式：</p>
+<div class="highlight"><pre><span></span><code>freqtrade<span class="w"> </span>convert-trade-data<span class="w"> </span>--exchange<span class="w"> </span>kraken<span class="w"> </span>--format-from<span class="w"> </span>kraken_csv<span class="w"> </span>--format-to<span class="w"> </span>feather
+<span class="c1"># Convert trade data to different ohlcv timeframes</span>
+freqtrade<span class="w"> </span>trades-to-ohlcv<span class="w"> </span>-p<span class="w"> </span>BTC/EUR<span class="w"> </span>BCH/EUR<span class="w"> </span>--exchange<span class="w"> </span>kraken<span class="w"> </span>-t<span class="w"> </span>1m<span class="w"> </span>5m<span class="w"> </span>15m<span class="w"> </span>1h
+</code></pre></div>
+<p>转换后的数据还支持增量下载功能，系统将从已载入的最新交易记录之后开始下载。</p>
+<div class="highlight"><pre><span></span><code>freqtrade<span class="w"> </span>download-data<span class="w"> </span>--exchange<span class="w"> </span>kraken<span class="w"> </span>--dl-trades<span class="w"> </span>-p<span class="w"> </span>BTC/EUR<span class="w"> </span>BCH/EUR<span class="w"> </span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">从 Kraken 下载数据</p>
+<p>下载 Kraken 数据将需要比任何其他交易所显著更多的内存（RAM），因为交易数据需要在您的机器上转换为 K 线数据。
+这也会花费很长时间，因为 freqtrade 需要下载该交易对/时间范围组合在交易所发生的每一笔交易，因此请耐心等待。</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">rateLimit 调优</p>
+<p>请注意，rateLimit 配置项表示请求之间的延迟时间（以毫秒为单位），而不是每秒请求速率。
+因此，为了避免 Kraken API 的"超出速率限制"异常，此配置值应该增加，而不是减少。</p>
+</div>
+<h2 id="kucoin">Kucoin<a class="headerlink" href="#kucoin" title="Permanent link">&para;</a></h2>
+<p>Kucoin 要求每个 API 密钥都附带一个密码短语，因此您需要将此密钥添加到配置中，使您的交易所配置部分如下所示：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;kucoin&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_key&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_secret&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_api_key_password&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Kucoin 支持 <a href="../configuration/#understand-order_time_in_force">time_in_force</a>，可设置"GTC"（取消前有效）、"FOK"（全部成交或取消）和"IOC"（立即成交或取消）选项。</p>
+<div class="admonition tip">
+<p class="admonition-title">交易所止损</p>
+<p>Kucoin 支持 <code>stoploss_on_exchange</code>，并且可以使用止损市价单和止损限价单。这提供了巨大优势，因此我们建议充分利用此功能。
+您可以在 <code>order_types.stoploss</code> 配置设置中使用 <code>"limit"</code> 或 <code>"market"</code> 来决定使用哪种类型的止损单。</p>
+</div>
+<h3 id="kucoin_1">Kucoin 黑名单<a class="headerlink" href="#kucoin_1" title="Permanent link">&para;</a></h3>
+<p>对于 Kucoin，建议将 <code>"KCS/&lt;STAKE&gt;"</code> 添加到您的黑名单中以避免问题，除非您愿意在账户中维持足够的额外 <code>KCS</code>，或者除非您愿意禁用使用 <code>KCS</code> 支付费用。
+Kucoin 账户可能使用 <code>KCS</code> 支付费用，如果交易恰好涉及 <code>KCS</code>，后续交易可能会消耗该头寸，导致初始的 <code>KCS</code> 交易无法卖出，因为预期的数量已不存在。</p>
+<h2 id="htx">HTX<a class="headerlink" href="#htx" title="Permanent link">&para;</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">交易所止损</p>
+<p>HTX 支持 <code>stoploss_on_exchange</code> 并使用 <code>stop-limit</code> 订单。这提供了巨大优势，因此我们建议通过启用交易所止损来利用这一功能。</p>
+</div>
+<h2 id="okx">OKX<a class="headerlink" href="#okx" title="Permanent link">&para;</a></h2>
+<p>OKX 要求每个 API 密钥都设置密码，因此您需要将此密钥添加到配置中，使您的交易所配置部分如下所示：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;okx&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_key&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_secret&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_api_key_password&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>如果您在主机 my.okx.com（OKX EAA）上注册了 OKX - 您需要使用 <code>"myokx"</code> 作为交易所名称。
+使用错误的交易所将导致错误 "OKX Error 50119: API key doesn't exist" - 因为这两个是独立的实体。</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>OKX 每次 API 调用仅提供 100 根 K 线。因此，在回测模式下，策略可用的数据量将相当有限。</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Futures</p>
+<p>OKX 期货交易存在"持仓模式"概念——可以是"买入/卖出"模式或多空(对冲模式)。
+Freqtrade 同时支持这两种模式（我们推荐使用买入/卖出模式）——但不支持在交易中途切换模式，否则将导致异常和下单失败。
+OKX 仅提供过去约3个月的标记价格K线数据。因此对该日期之前的期货数据进行回测会产生轻微偏差，因为缺少这些数据将无法准确计算资金费率。</p>
+</div>
+<h2 id="gateio">Gate.io<a class="headerlink" href="#gateio" title="Permanent link">&para;</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Stoploss on Exchange</p>
+<p>Gate.io 支持 <code>stoploss_on_exchange</code> 并使用<code>止损限价</code>订单。该功能优势显著，因此我们建议通过启用交易所止损来利用这一优势。</p>
+</div>
+<p>Gate.io 支持 <a href="../configuration/#understand-order_time_in_force">time_in_force</a> 参数，可设置为"GTC"(取消前有效)和"IOC"(立即成交或取消)模式。</p>
+<p>Gate.io 允许使用 <code>POINT</code> 支付手续费。由于这不是可交易货币（无常规市场），自动手续费计算将失败（并默认手续费为0）。
+可通过配置参数 <code>exchange.unknown_fee_rate</code> 指定 Point 与交易货币之间的汇率。显然，更改交易货币也需要同步调整此数值。</p>
+<p>Gate.io API密钥除所需交易的市场类型外，还需具备以下权限：</p>
+<ul>
+<li>"现货交易" <em>或</em> "永续合约" (读写权限) (可同时选择两者，或选择与您要交易的市场匹配的选项)</li>
+<li>"钱包" (只读权限)</li>
+<li>"账户" (只读权限)</li>
+</ul>
+<p>若缺少这些权限，机器人将无法正常启动并显示"权限缺失"等错误信息。</p>
+<h2 id="bybit">Bybit<a class="headerlink" href="#bybit" title="Permanent link">&para;</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">交易所止损功能</p>
+<p>Bybit (仅限合约) 支持 <code>stoploss_on_exchange</code> 并使用 <code>止损限价</code> 订单。这具有显著优势，因此我们建议通过启用交易所止损功能来利用此优势。
+在合约交易中，Bybit 同时支持 <code>止损限价</code> 和 <code>止损市价</code> 订单。您可以在 <code>order_types.stoploss</code> 配置设置中使用 <code>"limit"</code> 或 <code>"market"</code> 来决定使用哪种类型。</p>
+</div>
+<p>Bybit 支持 <a href="../configuration/#understand-order_time_in_force">订单时效</a> 设置，包括 "GTC"（取消前有效）、"FOK"（全部成交或取消）、"IOC"（立即成交或取消）和 "PO"（仅限挂单）设置。</p>
+<p>Bybit 的合约交易目前支持隔离保证金模式。</p>
+<p>启动时，freqtrade 将为整个（子）账户设置持仓模式为"单向持仓模式"。这避免了重复进行此调用（减缓机器人运行速度），但意味着手动更改此设置可能导致异常和错误。</p>
+<p>由于 Bybit 不提供资金费率历史数据，实盘交易同样使用模拟计算方式。</p>
+<p>用于实盘期货交易的API密钥必须具备以下权限：</p>
+<ul>
+<li>读写权限</li>
+<li>合约 - 订单</li>
+<li>合约 - 持仓</li>
+</ul>
+<p>我们强烈建议将所有API密钥限制在您将要使用的IP地址范围内。</p>
+<div class="admonition warning">
+<p class="admonition-title">统一账户</p>
+<p>Freqtrade假定账户专用于机器人交易。
+因此我们建议每个机器人使用一个子账户。在使用统一账户时这一点尤为重要。<br />
+其他配置（一个账户上运行多个机器人、在机器人账户上进行非机器人手动交易）不受支持，并可能导致意外行为。</p>
+</div>
+<h2 id="bitmart">Bitmart<a class="headerlink" href="#bitmart" title="Permanent link">&para;</a></h2>
+<p>Bitmart要求API密钥备注（您为API密钥设置的名称）与交易所密钥和密钥一起使用。
+因此还需要传递UID。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bitmart&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;uid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_bitmart_api_key_memo&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_secret&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_api_key_password&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">必要验证</p>
+<p>Bitmart要求通过Lvl2验证才能通过API在现货市场成功交易——即使仅通过Lvl1验证在UI界面交易也能正常工作。</p>
+</div>
+<h2 id="bitget">Bitget<a class="headerlink" href="#bitget" title="Permanent link">&para;</a></h2>
+<p>Bitget要求每个API密钥设置密码，因此您需要将此密钥添加到配置中，使您的交易所配置部分如下所示：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bitget&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_key&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_secret&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_exchange_api_key_password&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Bitget支持<a href="../configuration/#understand-order_time_in_force">time_in_force</a>设置，包括"GTC"（取消前有效）、"FOK"（全部成交或取消）、"IOC"（立即成交或取消）和"PO"（仅限挂单）设置。</p>
+<div class="admonition tip">
+<p class="admonition-title">Stoploss on Exchange</p>
+<p>Bitget 支持 <code>stoploss_on_exchange</code> 功能，并能同时使用止损市价单和止损限价单。这提供了巨大优势，因此我们建议充分利用该功能。
+您可以在 <code>order_types.stoploss</code> 配置设置中使用 <code>"limit"</code> 或 <code>"market"</code> 来决定使用哪种类型的止损单。</p>
+</div>
+<h2 id="hyperliquid">Hyperliquid<a class="headerlink" href="#hyperliquid" title="Permanent link">&para;</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Stoploss on Exchange</p>
+<p>Hyperliquid 支持 <code>stoploss_on_exchange</code> 功能并使用 <code>stop-loss-limit</code> 订单。这提供了巨大优势，因此我们建议充分利用该功能。</p>
+</div>
+<p>Hyperliquid 是一个去中心化交易所（DEX）。去中心化交易所与常规交易所的运作方式略有不同。私有 API 调用无需使用 API 密钥进行身份验证，而是需要使用您钱包的私钥进行签名（我们建议为此使用在 Hyperliquid 或您选择的钱包中生成的 API 钱包）。
+需要按如下方式配置：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hyperliquid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;walletAddress&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_eth_wallet_address&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// This should NOT be your API Wallet Address!</span>
+<span class="w">    </span><span class="nt">&quot;privateKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_api_private_key&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>十六进制格式的钱包地址：<code>0x&lt;40 位十六进制字符&gt;</code> - 可从您的钱包轻松复制 - 且应是您的主钱包地址，而非 API 钱包地址。</li>
+<li>十六进制格式的私钥：<code>0x&lt;64 位十六进制字符&gt;</code> - 使用 API 钱包创建时显示的密钥。</li>
+</ul>
+<p>Hyperliquid 在 Arbitrum One 链上处理存款和提现，这是一个构建在以太坊之上的 Layer 2 扩容解决方案。Hyperliquid 使用 USDC 作为报价/抵押品。在 Hyperliquid 上存入 USDC 的过程需要几个步骤，有关所需步骤的详细信息，请参阅 <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/onboarding/how-to-start-trading">如何开始交易</a>。</p>
+<div class="admonition note">
+<p class="admonition-title">Hyperliquid 通用使用说明</p>
+<p>Hyperliquid 不支持市价单，但 ccxt 将通过下止损限价单来模拟市价单，最大滑点率为 5%。
+遗憾的是，hyperliquid 仅提供 5000 根历史 K 线，因此回测要么需要历史性地构建 K 线（通过等待并随时间推移逐步下载数据），要么将限于最近 5000 根 K 线。</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">一些通用最佳实践（非详尽列表）</p>
+<ul>
+<li>警惕供应链攻击，例如 pip 包投毒等。每当使用私钥时，请确保环境安全。</li>
+<li>不要使用实际钱包私钥进行交易。使用 Hyperliquid <a href="https://app.hyperliquid.xyz/API">API 生成器</a>创建独立的 API 钱包。</li>
+<li>不要将实际钱包私钥存储在用于 freqtrade 的服务器上。请改用 API 钱包私钥。该密钥不允许提现，仅用于交易。</li>
+<li>始终保管好你的助记词和私钥。</li>
+<li>不要使用初始化硬件钱包时需要备份的相同助记词，使用相同助记词基本上会消除硬件钱包的安全性。</li>
+<li>创建不同的软件钱包，仅将想要用于交易的资金转入该钱包，并使用该钱包在 Hyperliquid 上进行交易。</li>
+<li>如果有不想用于交易的资金（例如获利后），请将其转回硬件钱包。</li>
+</ul>
+</div>
+<h3 id="hyperliquid_1">Hyperliquid 金库 / 子账户<a class="headerlink" href="#hyperliquid_1" title="Permanent link">&para;</a></h3>
+<p>Hyperliquid 允许你创建金库或子账户。<br />
+要在 Freqtrade 中使用这些功能，你需要使用以下配置模式：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hyperliquid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;walletAddress&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_vault_address&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// Vault or subaccount address</span>
+<span class="w">    </span><span class="nt">&quot;privateKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_api_private_key&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;ccxt_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;options&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;vaultAddress&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_vault_address&quot;</span><span class="w"> </span><span class="c1">// Optional, only if you want to use a vault or subaccount</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>现在将从你的金库/子账户使用余额和进行交易，而不再从主账户使用。</p>
+<h3 id="hyperliquid_2">Hyperliquid 历史数据<a class="headerlink" href="#hyperliquid_2" title="Permanent link">&para;</a></h3>
+<p>Hyperliquid API 不提供单次获取当前数据之外的历史数据，因此无法下载数据，因为下载的数据无法构成完整的历史数据。</p>
+<h2 id="bitvavo">Bitvavo<a class="headerlink" href="#bitvavo" title="Permanent link">&para;</a></h2>
+<p>如果您的账户需要使用 operatorId，可以在配置文件中按如下方式设置：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bitvavo&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;ccxt_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;options&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;operatorId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123567&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">   </span><span class="p">}</span>
+</code></pre></div>
+<p>Bitvavo 要求 <code>operatorId</code> 为整数类型。</p>
+<h2 id="_8">所有交易所<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>若持续遇到 Nonce 相关错误（例如 <code>InvalidNonce</code>），最佳解决方案是重新生成 API 密钥。重置 Nonce 较为困难，通常重新生成 API 密钥更为便捷。</p>
+<h2 id="_9">其他交易所的随机备注<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The Ocean（交易所 ID：<code>theocean</code>）使用 Web3 功能，需要安装 <code>web3</code> Python 包：</li>
+</ul>
+<div class="highlight"><pre><span></span><code>pip3<span class="w"> </span>install<span class="w"> </span>web3
+</code></pre></div>
+<h3 id="k">获取最新价格 / 不完整的 K 线<a class="headerlink" href="#k" title="Permanent link">&para;</a></h3>
+<p>大多数交易所通过其 OHLCV/K 线 API 接口返回当前未完成的 K 线。
+默认情况下，Freqtrade 假定从交易所获取的是不完整的 K 线，并会移除最后一根 K 线（假定其为未完成状态）。</p>
+<p>您可以通过<a href="../developer/#incomplete-candles">贡献者文档中的辅助脚本</a>来验证交易所是否返回不完整的 K 线。</p>
+<p>由于存在重新绘图的风险，Freqtrade 不允许使用这类未完成的 K 线。</p>
+<p>然而，如果这是基于策略对最新价格的需求——那么这一要求可以通过策略内部的<a href="../strategy-customization/#possible-options-for-dataprovider">数据提供器</a>来获取。</p>
+<h3 id="freqtrade">高级 Freqtrade 交易所配置<a class="headerlink" href="#freqtrade" title="Permanent link">&para;</a></h3>
+<p>高级选项可通过 <code>_ft_has_params</code> 设置进行配置，该设置将覆盖默认值和特定交易所的行为。</p>
+<p>可用选项在交易所类中列为 <code>_ft_has_default</code>。</p>
+<p>例如，要使用 Kraken 测试 <code>FOK</code> 订单类型，并将蜡烛图限制修改为 200（这样每次 API 调用仅获取 200 根蜡烛）：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;kraken&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;_ft_has_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;order_time_in_force&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;FOK&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;ohlcv_candle_limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">//...</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>请务必在修改这些设置前充分理解其影响。</p>
+</div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+    
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../plotting/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 绘图">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                绘图
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../data-analysis/" class="md-footer__link md-footer__link--next" aria-label="Next: Jupyter Notebooks">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Jupyter Notebooks
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate", "search.share", "content.code.copy", "content.action.edit", "navigation.top", "navigation.footer"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../javascripts/config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

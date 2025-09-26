@@ -1,0 +1,2701 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Freqtrade 是一个用 Python 编写的免费开源加密货币交易机器人，支持所有主要交易所，并可通过 Telegram 或内置的 Web 界面进行控制。">
+      
+      
+      
+        <link rel="canonical" href="https://freqtrade-zh.zdoc.app/zh/installation/">
+      
+      
+        <link rel="prev" href="../docker_quickstart/">
+      
+      
+        <link rel="next" href="../windows_installation/">
+      
+      
+      <link rel="icon" href="../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Linux/MacOS/Raspberry - Freqtrade 中文文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/ft.extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-PRBP5T5F5Y"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-PRBP5T5F5Y",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-PRBP5T5F5Y",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="tear">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Freqtrade 中文文档" class="md-header__button md-logo" aria-label="Freqtrade 中文文档" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Freqtrade 中文文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Linux/MacOS/Raspberry
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="tear"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="tear"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zdocapp/freqtrade-zh" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+
+  <!-- Main navigation -->
+  
+  
+  <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+    <div class="md-sidebar__scrollwrap">
+      <div class="md-sidebar__inner">
+        
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Freqtrade 中文文档" class="md-nav__button md-logo" aria-label="Freqtrade 中文文档" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    Freqtrade 中文文档
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zdocapp/freqtrade-zh" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker 快速开始
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    安装
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            安装
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Linux/MacOS/Raspberry
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux/MacOS/Raspberry
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      信息说明
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      系统要求
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="系统要求">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装指南
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装代码
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="安装代码">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装必要依赖项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装必要依赖项
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#freqtrade" class="md-nav__link">
+    <span class="md-ellipsis">
+      Freqtrade 代码库
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      脚本安装
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="脚本安装">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setupsh-install-linuxmacos" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 /setup.sh -install (Linux/MacOS)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      激活虚拟环境
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setupsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      /setup.sh 脚本的其他选项
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      手动安装
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="手动安装">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-virtualenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      设置 Python 虚拟环境 (virtualenv)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装 Python 依赖
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      （可选）安装后任务
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conda" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 Conda 安装
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用 Conda 安装">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conda_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      什么是 Conda？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conda_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 conda 安装
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用 conda 安装">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conda_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装 Conda
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#freqtrade_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      下载 Freqtrade
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#freqtrade-conda" class="md-nav__link">
+    <span class="md-ellipsis">
+      Freqtrade 安装：Conda 环境
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#freqtrade_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      进入/退出 freqtrade 环境
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      重要快捷键
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anaconda" class="md-nav__link">
+    <span class="md-ellipsis">
+      关于 anaconda 的更多信息
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      准备就绪
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="准备就绪">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      初始化配置
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      启动机器人
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      故障排除
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="故障排除">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#command-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      常见问题："command not found"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      MacOS 安装错误
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../windows_installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Windows
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bot-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Freqtrade 基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-101/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略快速入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略定制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-callbacks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略回调
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stoploss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    止损
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    插件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bot-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    启动机器人
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    控制机器人
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            控制机器人
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../telegram-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Telegram
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freq-ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    freqUI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rest-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REST API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webhook-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web Hook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-download/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数据下载
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    回测
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hyperopt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    超参数优化（Hyperopt）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    FreqAI
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            FreqAI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-parameter-table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    参数表
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-feature-engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    特征工程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-running/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    运行 FreqAI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    强化学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-developers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    开发者指南
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../leverage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    做空 / 杠杆
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    工具子命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    绘图
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exchanges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    交易所专属说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据分析
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            数据分析
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Jupyter Notebooks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy_analysis_example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    回测分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_22" >
+        
+          
+          <label class="md-nav__link" for="__nav_22" id="__nav_22_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    高级主题
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_22">
+            <span class="md-nav__icon md-icon"></span>
+            高级主题
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级安装后任务
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trade-object/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    交易对象
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lookahead-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    前视分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recursive-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    递归分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级策略
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-hyperopt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级超参数优化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-orderflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    订单流
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producer-consumer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    生产者/消费者模式
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sql_cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SQL 速查表
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    常见问题（FAQ）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy_migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略迁移
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../updating/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    更新 Freqtrade
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deprecated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    废弃功能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    贡献者指南
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Table of contents -->
+  
+  
+  <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+    <div class="md-sidebar__scrollwrap">
+      <div class="md-sidebar__inner">
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      信息说明
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      系统要求
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="系统要求">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装指南
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装代码
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="安装代码">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装必要依赖项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装必要依赖项
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#freqtrade" class="md-nav__link">
+    <span class="md-ellipsis">
+      Freqtrade 代码库
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      脚本安装
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="脚本安装">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setupsh-install-linuxmacos" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 /setup.sh -install (Linux/MacOS)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      激活虚拟环境
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setupsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      /setup.sh 脚本的其他选项
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      手动安装
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="手动安装">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-virtualenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      设置 Python 虚拟环境 (virtualenv)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装 Python 依赖
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      （可选）安装后任务
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conda" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 Conda 安装
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用 Conda 安装">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conda_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      什么是 Conda？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conda_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 conda 安装
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用 conda 安装">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conda_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装 Conda
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#freqtrade_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      下载 Freqtrade
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#freqtrade-conda" class="md-nav__link">
+    <span class="md-ellipsis">
+      Freqtrade 安装：Conda 环境
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#freqtrade_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      进入/退出 freqtrade 环境
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      重要快捷键
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anaconda" class="md-nav__link">
+    <span class="md-ellipsis">
+      关于 anaconda 的更多信息
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      准备就绪
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="准备就绪">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      初始化配置
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      启动机器人
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      故障排除
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="故障排除">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#command-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      常见问题："command not found"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      MacOS 安装错误
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      </div>
+    </div>
+  </div>
+  
+
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/zdocapp/freqtrade-zh/edit/develop/docs/installation.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="_1">安装<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>本页说明如何准备运行机器人的环境。</p>
+<p>freqtrade 文档介绍了多种安装 freqtrade 的方式</p>
+<ul>
+<li><a href="../docker_quickstart/">Docker 镜像</a>（单独页面）</li>
+<li><a href="#script-installation">脚本安装</a></li>
+<li><a href="#manual-installation">手动安装</a></li>
+<li><a href="#installation-with-conda">使用 Conda 安装</a></li>
+</ul>
+<p>在评估 freqtrade 工作原理时，建议使用预构建的 <a href="../docker_quickstart/">docker 镜像</a>来快速入门。</p>
+<hr />
+<h2 id="_2">信息说明<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Windows 系统安装请参考 <a href="../windows_installation/">Windows 安装指南</a>。</p>
+<p>安装和运行 Freqtrade 最简单的方法是克隆机器人 Github 仓库，然后运行 <code>./setup.sh</code> 脚本（如果该脚本适用于您的平台）。</p>
+<div class="admonition note">
+<p class="admonition-title">版本注意事项</p>
+<p>克隆仓库时，默认工作分支名为 <code>develop</code>。该分支包含所有最新功能（由于自动化测试，可视为相对稳定）。
+<code>stable</code> 分支包含最新发布的代码（通常每月发布一次，基于约一周前的 <code>develop</code> 分支快照，以防止打包错误，因此可能更稳定）。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>假定已安装 Python 3.11 或更高版本及对应的 <code>pip</code>。若未满足条件，安装脚本将发出警告并停止运行。同时需要 <code>git</code> 来克隆 Freqtrade 代码库。<br />
+此外，必须安装 Python 头文件（<code>python&lt;你的版本号&gt;-dev</code> / <code>python&lt;你的版本号&gt;-devel</code>）才能顺利完成安装。</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">系统时钟同步</p>
+<p>运行机器人的系统时钟必须准确，需频繁与 NTP 服务器同步以避免与交易所通信出现问题。</p>
+</div>
+<hr />
+<h2 id="_3">系统要求<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>这些要求同时适用于<a href="#script-installation">脚本安装</a>和<a href="#manual-installation">手动安装</a>。</p>
+<div class="admonition note">
+<p class="admonition-title">ARM64 系统</p>
+<p>若您运行的是 ARM64 系统（如 MacOS M1 或 Oracle VM），请使用 <a href="../docker_quickstart/">docker</a> 运行 freqtrade。
+虽然通过手动操作可实现原生安装，但目前暂不支持该方式。</p>
+</div>
+<h3 id="_4">安装指南<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="http://docs.python-guide.org/en/latest/starting/installation/">Python &gt;= 3.11</a></li>
+<li><a href="https://pip.pypa.io/en/stable/installing/">pip</a></li>
+<li><a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">git</a></li>
+<li><a href="https://virtualenv.pypa.io/en/stable/installation.html">virtualenv</a>（推荐）</li>
+</ul>
+<h3 id="_5">安装代码<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>我们已收录针对 Ubuntu、MacOS 和 Windows 的安装说明。这些仅为指导方针，在其他发行版上的成功率可能有所不同。
+操作系统特定步骤列于首位，下文通用章节是所有系统必需的。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>假定已安装 Python 3.11 或更高版本及对应的 pip。</p>
+</div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Debian/Ubuntu</label><label for="__tabbed_1_2">MacOS</label><label for="__tabbed_1_3">RaspberryPi/Raspbian</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<h4 id="_6">安装必要依赖项<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># update repository</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+
+<span class="c1"># install packages</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>python3-pip<span class="w"> </span>python3-venv<span class="w"> </span>python3-dev<span class="w"> </span>python3-pandas<span class="w"> </span>git<span class="w"> </span>curl
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<h4 id="_7">安装必要依赖项<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>Install <a href="https://brew.sh/">Homebrew</a> if you don't have it already.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># install packages</span>
+brew<span class="w"> </span>install<span class="w"> </span>gettext<span class="w"> </span>libomp
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>setup.sh</code> script will install these dependencies for you - assuming brew is installed on your system.</p>
+</div>
+</div>
+<div class="tabbed-block">
+<p>以下假设使用最新的 <a href="https://www.raspberrypi.org/downloads/raspbian/">Raspbian Buster 精简版镜像</a>。
+该镜像预装了 python3.11，使得 freqtrade 能够轻松安装运行。</p>
+<p>Tested using a Raspberry Pi 3 with the Raspbian Buster lite image, all updates applied.</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>python3-venv<span class="w"> </span>libatlas-base-dev<span class="w"> </span>cmake<span class="w"> </span>curl<span class="w"> </span>libffi-dev
+<span class="c1"># Use piwheels.org to speed up installation</span>
+sudo<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[global]\nextra-index-url=https://www.piwheels.org/simple&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>tee<span class="w"> </span>/etc/pip.conf
+
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/freqtrade/freqtrade.git
+<span class="nb">cd</span><span class="w"> </span>freqtrade
+
+bash<span class="w"> </span>setup.sh<span class="w"> </span>-i
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Installation duration</p>
+<p>Depending on your internet speed and the Raspberry Pi version, installation can take multiple hours to complete.
+Due to this, we recommend to use the pre-build docker-image for Raspberry, by following the <a href="../docker_quickstart/">Docker quickstart documentation</a></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The above does not install hyperopt dependencies. To install these, please use <code>python3 -m pip install -e .[hyperopt]</code>.
+We do not advise to run hyperopt on a Raspberry Pi, since this is a very resource-heavy operation, which should be done on powerful machine.</p>
+</div>
+</div>
+</div>
+</div>
+<hr />
+<h2 id="freqtrade">Freqtrade 代码库<a class="headerlink" href="#freqtrade" title="Permanent link">&para;</a></h2>
+<p>Freqtrade 是一个开源加密货币交易机器人，其代码托管在 <code>github.com</code></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Download `develop` branch of freqtrade repository</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/freqtrade/freqtrade.git
+
+<span class="c1"># Enter downloaded directory</span>
+<span class="nb">cd</span><span class="w"> </span>freqtrade
+
+<span class="c1"># your choice (1): novice user</span>
+git<span class="w"> </span>checkout<span class="w"> </span>stable
+
+<span class="c1"># your choice (2): advanced user</span>
+git<span class="w"> </span>checkout<span class="w"> </span>develop
+</code></pre></div>
+<p>(1) 此命令将克隆的代码库切换到使用 <code>stable</code> 分支。如果您希望停留在 (2) <code>develop</code> 分支，则无需执行此操作。</p>
+<p>您之后可以随时使用 <code>git checkout stable</code>/<code>git checkout develop</code> 命令在分支之间切换。</p>
+<details class="note">
+<summary>从 pypi 安装</summary>
+<p>安装 Freqtrade 的另一种方式是从 <a href="https://pypi.org/project/freqtrade/">pypi</a> 安装。这种方法的缺点是需要事先正确安装 ta-lib，因此目前不是推荐的 Freqtrade 安装方式。</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>freqtrade
+</code></pre></div>
+</details>
+<hr />
+<h2 id="_8">脚本安装<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>安装 Freqtrade 的首选方法是使用提供的 Linux/MacOS <code>./setup.sh</code> 脚本，该脚本将安装所有依赖项并帮助您配置机器人。</p>
+<p>请确保您已满足 <a href="#requirements">要求</a> 并下载了 <a href="#freqtrade-repository">Freqtrade 代码库</a>。</p>
+<h3 id="setupsh-install-linuxmacos">使用 /setup.sh -install (Linux/MacOS)<a class="headerlink" href="#setupsh-install-linuxmacos" title="Permanent link">&para;</a></h3>
+<p>如果您使用的是 Debian、Ubuntu 或 MacOS，freqtrade 提供了安装脚本。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># --install, Install freqtrade from scratch</span>
+./setup.sh<span class="w"> </span>-i
+</code></pre></div>
+<h3 id="_9">激活虚拟环境<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>每次打开新终端时，您必须运行 <code>source .venv/bin/activate</code> 来激活虚拟环境。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># activate virtual environment</span>
+<span class="nb">source</span><span class="w"> </span>./.venv/bin/activate
+</code></pre></div>
+<p><a href="#you-are-ready">您现在已准备就绪</a> 可以运行机器人了。</p>
+<h3 id="setupsh">/setup.sh 脚本的其他选项<a class="headerlink" href="#setupsh" title="Permanent link">&para;</a></h3>
+<p>您也可以使用 <code>./script.sh</code> 来更新、配置和重置机器人的代码库。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># --update, Command git pull to update.</span>
+./setup.sh<span class="w"> </span>-u
+<span class="c1"># --reset, Hard reset your develop/stable branch.</span>
+./setup.sh<span class="w"> </span>-r
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>** --install **
+
+With this option, the script will install the bot and most dependencies:
+You will need to have git and python3.11+ installed beforehand for this to work.
+
+* Mandatory software as: `ta-lib`
+* Setup your virtualenv under `.venv/`
+
+This option is a combination of installation tasks and `--reset`
+
+** --update **
+
+This option will pull the last version of your current branch and update your virtualenv. Run the script with this option periodically to update your bot.
+
+** --reset **
+
+This option will hard reset your branch (only if you are on either `stable` or `develop`) and recreate your virtualenv.
+</code></pre></div>
+<hr />
+<h2 id="_10">手动安装<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<p>请确保您已满足 <a href="#requirements">要求</a> 并已下载 <a href="#freqtrade-repository">Freqtrade 代码库</a>。</p>
+<h3 id="python-virtualenv">设置 Python 虚拟环境 (virtualenv)<a class="headerlink" href="#python-virtualenv" title="Permanent link">&para;</a></h3>
+<p>您将在独立的 <code>虚拟环境</code> 中运行 freqtrade。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># create virtualenv in directory /freqtrade/.venv</span>
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+
+<span class="c1"># run virtualenv</span>
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</code></pre></div>
+<h3 id="python">安装 Python 依赖<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<span class="c1"># install freqtrade</span>
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</code></pre></div>
+<p><a href="#you-are-ready">您现在已准备就绪</a> 可以运行机器人了。</p>
+<h3 id="_11">（可选）安装后任务<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>如果您在服务器上运行机器人，应考虑使用 <a href="../docker_quickstart/">Docker</a> 或终端多路复用器（如 <code>screen</code> 或 <a href="https://en.wikipedia.org/wiki/Tmux"><code>tmux</code></a>），以避免注销时机器人停止运行。</p>
+</div>
+<p>在使用 <code>systemd</code> 软件套件的 Linux 系统上，作为可选的安装后任务，您可能希望将机器人设置为 <code>systemd 服务</code> 运行，或将其配置为将日志消息发送到 <code>syslog</code>/<code>rsyslog</code> 或 <code>journald</code> 守护进程。有关详细信息，请参阅 <a href="../advanced-setup/#advanced-logging">高级日志记录</a>。</p>
+<hr />
+<h2 id="conda">使用 Conda 安装<a class="headerlink" href="#conda" title="Permanent link">&para;</a></h2>
+<p>Freqtrade 也可以使用 Miniconda 或 Anaconda 进行安装。我们推荐使用 Miniconda，因为它的安装占用空间更小。Conda 会自动准备和管理 Freqtrade 程序庞大的库依赖。</p>
+<h3 id="conda_1">什么是 Conda？<a class="headerlink" href="#conda_1" title="Permanent link">&para;</a></h3>
+<p>Conda 是一个支持多种编程语言的包、依赖和环境管理器：<a href="https://docs.conda.io/projects/conda/en/latest/index.html">conda 文档</a></p>
+<h3 id="conda_2">使用 conda 安装<a class="headerlink" href="#conda_2" title="Permanent link">&para;</a></h3>
+<h4 id="conda_3">安装 Conda<a class="headerlink" href="#conda_3" title="Permanent link">&para;</a></h4>
+<p><a href="https://conda.io/projects/conda/en/latest/user-guide/install/linux.html#install-linux-silent">在 Linux 上安装</a></p>
+<p><a href="https://conda.io/projects/conda/en/latest/user-guide/install/windows.html">在 Windows 上安装</a></p>
+<p>回答所有问题。安装后，必须关闭并重新打开终端。</p>
+<h4 id="freqtrade_1">下载 Freqtrade<a class="headerlink" href="#freqtrade_1" title="Permanent link">&para;</a></h4>
+<p>下载并安装 freqtrade。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># download freqtrade</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/freqtrade/freqtrade.git
+
+<span class="c1"># enter downloaded directory &#39;freqtrade&#39;</span>
+<span class="nb">cd</span><span class="w"> </span>freqtrade<span class="w">      </span>
+</code></pre></div>
+<h4 id="freqtrade-conda">Freqtrade 安装：Conda 环境<a class="headerlink" href="#freqtrade-conda" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>freqtrade<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">创建 Conda 环境</p>
+<p>conda 命令 <code>create -n</code> 会自动为选定的库安装所有嵌套依赖项，安装命令的一般结构为：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># choose your own packages</span>
+conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span><span class="o">[</span>name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>environment<span class="o">]</span><span class="w"> </span><span class="o">[</span>python<span class="w"> </span>version<span class="o">]</span><span class="w"> </span><span class="o">[</span>packages<span class="o">]</span>
+</code></pre></div>
+</div>
+<h4 id="freqtrade_2">进入/退出 freqtrade 环境<a class="headerlink" href="#freqtrade_2" title="Permanent link">&para;</a></h4>
+<p>要检查可用环境，请输入</p>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>env<span class="w"> </span>list
+</code></pre></div>
+<p>进入已安装的环境</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># enter conda environment</span>
+conda<span class="w"> </span>activate<span class="w"> </span>freqtrade
+
+<span class="c1"># exit conda environment - don&#39;t do it now</span>
+conda<span class="w"> </span>deactivate
+</code></pre></div>
+<p>使用 pip 安装最新的 python 依赖项</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</code></pre></div>
+<p><a href="#you-are-ready">您现在已准备就绪</a>，可以运行机器人了。</p>
+<h3 id="_12">重要快捷键<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># list installed conda environments</span>
+conda<span class="w"> </span>env<span class="w"> </span>list
+
+<span class="c1"># activate base environment</span>
+conda<span class="w"> </span>activate
+
+<span class="c1"># activate freqtrade environment</span>
+conda<span class="w"> </span>activate<span class="w"> </span>freqtrade
+
+<span class="c1">#deactivate any conda environments</span>
+conda<span class="w"> </span>deactivate<span class="w">                              </span>
+</code></pre></div>
+<h3 id="anaconda">关于 anaconda 的更多信息<a class="headerlink" href="#anaconda" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">新的大型软件包</p>
+<p>可能会出现这样的情况：创建一个新的 Conda 环境，并在创建时安装选定的软件包，比在先前设置的环境中安装一个大型、资源密集的库或应用程序所需的时间更短。</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">在 conda 环境中使用 pip</p>
+<p>conda 的文档指出，不应在 conda 环境中使用 pip，因为可能会发生内部问题。
+然而，这种情况很少见。<a href="https://www.anaconda.com/blog/using-pip-in-a-conda-environment">Anaconda 博客文章</a></p>
+<p>Nevertheless, that is why, the <code>conda-forge</code> channel is preferred:</p>
+<ul>
+<li>more libraries are available (less need for <code>pip</code>)</li>
+<li><code>conda-forge</code> works better with <code>pip</code></li>
+<li>the libraries are newer</li>
+</ul>
+</div>
+<p>祝交易愉快！</p>
+<hr />
+<h2 id="_13">准备就绪<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<p>您已经成功走到这一步，说明您已成功安装了 freqtrade。</p>
+<h3 id="_14">初始化配置<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Step 1 - Initialize user folder</span>
+freqtrade<span class="w"> </span>create-userdir<span class="w"> </span>--userdir<span class="w"> </span>user_data
+
+<span class="c1"># Step 2 - Create a new configuration file</span>
+freqtrade<span class="w"> </span>new-config<span class="w"> </span>--config<span class="w"> </span>user_data/config.json
+</code></pre></div>
+<p>您已准备就绪可以运行，请阅读 <a href="../configuration/">机器人配置</a>，记得从 <code>dry_run: True</code> 开始，并验证一切是否正常工作。</p>
+<p>要了解如何设置配置，请参阅 <a href="../configuration/">机器人配置</a> 文档页面。</p>
+<h3 id="_15">启动机器人<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>freqtrade<span class="w"> </span>trade<span class="w"> </span>--config<span class="w"> </span>user_data/config.json<span class="w"> </span>--strategy<span class="w"> </span>SampleStrategy
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>在启用真实货币交易之前，您应该通读其余文档，对将要使用的策略进行回测，并使用模拟交易模式。</p>
+</div>
+<hr />
+<h2 id="_16">故障排除<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h2>
+<h3 id="command-not-found">常见问题："command not found"<a class="headerlink" href="#command-not-found" title="Permanent link">&para;</a></h3>
+<p>如果您使用 (1)<code>脚本</code> 或 (2)<code>手动</code> 安装方式，则需要在虚拟环境中运行机器人。如果出现如下错误，请确保虚拟环境已激活。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># if:</span>
+bash:<span class="w"> </span>freqtrade:<span class="w"> </span><span class="nb">command</span><span class="w"> </span>not<span class="w"> </span>found
+
+<span class="c1"># then activate your virtual environment</span>
+<span class="nb">source</span><span class="w"> </span>./.venv/bin/activate
+</code></pre></div>
+<h3 id="macos">MacOS 安装错误<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h3>
+<p>较新版本的 MacOS 在安装时可能会失败，并出现类似 <code>error: command 'g++' failed with exit status 1</code> 的错误。</p>
+<p>此错误需要显式安装 SDK 头文件，这些文件在该版本的 MacOS 中默认未安装。
+对于 MacOS 10.14，可以通过以下命令完成安装。</p>
+<div class="highlight"><pre><span></span><code>open<span class="w"> </span>/Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg
+</code></pre></div>
+<p>如果该文件不存在，那么您可能使用的是其他版本的 MacOS，因此可能需要查阅互联网以获取具体的解决方案细节。</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+    
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../docker_quickstart/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Docker 快速开始">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Docker 快速开始
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../windows_installation/" class="md-footer__link md-footer__link--next" aria-label="Next: Windows">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Windows
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate", "search.share", "content.code.copy", "content.action.edit", "navigation.top", "navigation.footer"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../javascripts/config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

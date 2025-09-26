@@ -1,0 +1,2898 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Freqtrade 是一个用 Python 编写的免费开源加密货币交易机器人，支持所有主要交易所，并可通过 Telegram 或内置的 Web 界面进行控制。">
+      
+      
+      
+        <link rel="canonical" href="https://freqtrade-zh.zdoc.app/zh/telegram-usage/">
+      
+      
+        <link rel="prev" href="../bot-usage/">
+      
+      
+        <link rel="next" href="../freq-ui/">
+      
+      
+      <link rel="icon" href="../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Telegram - Freqtrade 中文文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/ft.extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-PRBP5T5F5Y"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-PRBP5T5F5Y",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-PRBP5T5F5Y",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="tear">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#telegram" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Freqtrade 中文文档" class="md-header__button md-logo" aria-label="Freqtrade 中文文档" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Freqtrade 中文文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Telegram
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="tear"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="tear"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zdocapp/freqtrade-zh" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+
+  <!-- Main navigation -->
+  
+  
+  <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+    <div class="md-sidebar__scrollwrap">
+      <div class="md-sidebar__inner">
+        
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Freqtrade 中文文档" class="md-nav__button md-logo" aria-label="Freqtrade 中文文档" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    Freqtrade 中文文档
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zdocapp/freqtrade-zh" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker 快速开始
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    安装
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            安装
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux/MacOS/Raspberry
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../windows_installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Windows
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bot-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Freqtrade 基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-101/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略快速入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略定制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-callbacks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略回调
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stoploss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    止损
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    插件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bot-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    启动机器人
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    控制机器人
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            控制机器人
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Telegram
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Telegram
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#telegram_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      设置您的 Telegram 机器人
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="设置您的 Telegram 机器人">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-telegram" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 创建 Telegram 机器人
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-telegram-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Telegram 用户 ID
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Telegram 用户 ID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#id" class="md-nav__link">
+    <span class="md-ellipsis">
+      获取您的用户 ID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#id_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用群组 ID
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用群组 ID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#id_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      群组话题 ID
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      授权用户
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#telegram_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      控制 Telegram 通知频率
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建自定义键盘（命令快捷按钮）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="创建自定义键盘（命令快捷按钮）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用方法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#telegram_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Telegram 命令
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#telegram_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Telegram 命令实战
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Telegram 命令实战">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#start" class="md-nav__link">
+    <span class="md-ellipsis">
+      /start
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pause-stopentry-stopbuy" class="md-nav__link">
+    <span class="md-ellipsis">
+      /pause | /stopentry | /stopbuy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop" class="md-nav__link">
+    <span class="md-ellipsis">
+      /stop
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      /status
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      /status 表格
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#count" class="md-nav__link">
+    <span class="md-ellipsis">
+      /count
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profit" class="md-nav__link">
+    <span class="md-ellipsis">
+      /profit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forceexit" class="md-nav__link">
+    <span class="md-ellipsis">
+      /forceexit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forcelong-forceshort" class="md-nav__link">
+    <span class="md-ellipsis">
+      /forcelong &lt;交易对&gt; [价格] | /forceshort &lt;交易对&gt; [价格]
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      /performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#balance" class="md-nav__link">
+    <span class="md-ellipsis">
+      /balance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#daily" class="md-nav__link">
+    <span class="md-ellipsis">
+      /daily
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weekly" class="md-nav__link">
+    <span class="md-ellipsis">
+      /weekly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monthly" class="md-nav__link">
+    <span class="md-ellipsis">
+      /monthly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#whitelist" class="md-nav__link">
+    <span class="md-ellipsis">
+      /whitelist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blacklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      /blacklist [交易对]
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version" class="md-nav__link">
+    <span class="md-ellipsis">
+      /version
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#marketdir" class="md-nav__link">
+    <span class="md-ellipsis">
+      /marketdir
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freq-ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    freqUI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rest-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REST API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webhook-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web Hook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-download/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数据下载
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    回测
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hyperopt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    超参数优化（Hyperopt）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    FreqAI
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            FreqAI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-parameter-table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    参数表
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-feature-engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    特征工程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-running/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    运行 FreqAI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    强化学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-developers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    开发者指南
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../leverage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    做空 / 杠杆
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    工具子命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    绘图
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exchanges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    交易所专属说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据分析
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            数据分析
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Jupyter Notebooks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy_analysis_example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    回测分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_22" >
+        
+          
+          <label class="md-nav__link" for="__nav_22" id="__nav_22_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    高级主题
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_22">
+            <span class="md-nav__icon md-icon"></span>
+            高级主题
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级安装后任务
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trade-object/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    交易对象
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lookahead-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    前视分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recursive-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    递归分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级策略
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-hyperopt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级超参数优化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-orderflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    订单流
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producer-consumer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    生产者/消费者模式
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sql_cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SQL 速查表
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    常见问题（FAQ）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy_migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略迁移
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../updating/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    更新 Freqtrade
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deprecated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    废弃功能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    贡献者指南
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Table of contents -->
+  
+  
+  <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+    <div class="md-sidebar__scrollwrap">
+      <div class="md-sidebar__inner">
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#telegram_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      设置您的 Telegram 机器人
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="设置您的 Telegram 机器人">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-telegram" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 创建 Telegram 机器人
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-telegram-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Telegram 用户 ID
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Telegram 用户 ID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#id" class="md-nav__link">
+    <span class="md-ellipsis">
+      获取您的用户 ID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#id_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用群组 ID
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用群组 ID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#id_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      群组话题 ID
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      授权用户
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#telegram_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      控制 Telegram 通知频率
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建自定义键盘（命令快捷按钮）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="创建自定义键盘（命令快捷按钮）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用方法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#telegram_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Telegram 命令
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#telegram_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Telegram 命令实战
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Telegram 命令实战">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#start" class="md-nav__link">
+    <span class="md-ellipsis">
+      /start
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pause-stopentry-stopbuy" class="md-nav__link">
+    <span class="md-ellipsis">
+      /pause | /stopentry | /stopbuy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop" class="md-nav__link">
+    <span class="md-ellipsis">
+      /stop
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      /status
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      /status 表格
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#count" class="md-nav__link">
+    <span class="md-ellipsis">
+      /count
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profit" class="md-nav__link">
+    <span class="md-ellipsis">
+      /profit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forceexit" class="md-nav__link">
+    <span class="md-ellipsis">
+      /forceexit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forcelong-forceshort" class="md-nav__link">
+    <span class="md-ellipsis">
+      /forcelong &lt;交易对&gt; [价格] | /forceshort &lt;交易对&gt; [价格]
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      /performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#balance" class="md-nav__link">
+    <span class="md-ellipsis">
+      /balance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#daily" class="md-nav__link">
+    <span class="md-ellipsis">
+      /daily
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weekly" class="md-nav__link">
+    <span class="md-ellipsis">
+      /weekly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monthly" class="md-nav__link">
+    <span class="md-ellipsis">
+      /monthly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#whitelist" class="md-nav__link">
+    <span class="md-ellipsis">
+      /whitelist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blacklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      /blacklist [交易对]
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version" class="md-nav__link">
+    <span class="md-ellipsis">
+      /version
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#marketdir" class="md-nav__link">
+    <span class="md-ellipsis">
+      /marketdir
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      </div>
+    </div>
+  </div>
+  
+
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/zdocapp/freqtrade-zh/edit/develop/docs/telegram-usage.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="telegram">Telegram 使用指南<a class="headerlink" href="#telegram" title="Permanent link">&para;</a></h1>
+<h2 id="telegram_1">设置您的 Telegram 机器人<a class="headerlink" href="#telegram_1" title="Permanent link">&para;</a></h2>
+<p>以下将说明如何创建 Telegram 机器人，以及如何获取您的 Telegram 用户 ID。</p>
+<h3 id="1-telegram">1. 创建 Telegram 机器人<a class="headerlink" href="#1-telegram" title="Permanent link">&para;</a></h3>
+<p>与 <a href="https://telegram.me/BotFather">Telegram BotFather</a> 开始对话</p>
+<p>发送消息 <code>/newbot</code>。</p>
+<p><em>BotFather 回复：</em></p>
+<blockquote>
+<p>好的，一个新机器人。我们该如何称呼它？请为您的机器人选择一个名称。</p>
+</blockquote>
+<p>选择您机器人的公开名称（例如 <code>Freqtrade 机器人</code>）</p>
+<p><em>BotFather 回复：</em></p>
+<blockquote>
+<p>很好。现在为您的机器人选择一个用户名。必须以 <code>bot</code> 结尾。例如：TetrisBot 或 tetris_bot。</p>
+</blockquote>
+<p>选择您机器人的名称 ID 并发送给 BotFather（例如 "<code>My_own_freqtrade_bot</code>"）</p>
+<p><em>BotFather 回复：</em></p>
+<blockquote>
+<p>完成！恭喜您创建了新机器人。您可以在 <code>t.me/yourbots_name_bot</code> 找到它。现在可以为您的机器人添加描述、关于章节和头像，请参阅 /help 查看命令列表。顺便一提，当您完成酷炫机器人的创建后，如果想要更好的用户名，可以联系我们的机器人支持。只需确保机器人在此之前完全可操作。</p>
+<p>使用此令牌访问 HTTP API：<code>22222222:APITOKEN</code></p>
+<p>有关机器人 API 的描述，请参阅此页面：<a href="https://core.telegram.org/bots/api">https://core.telegram.org/bots/api</a> BotFather 将返回令牌（API 密钥）</p>
+</blockquote>
+<p>复制 API 令牌（上例中的 <code>22222222:APITOKEN</code>）并将其用于配置参数 <code>token</code>。</p>
+<p>不要忘记通过点击 <code>/START</code> 按钮来启动与机器人的对话</p>
+<h3 id="2-telegram-id">2. Telegram 用户 ID<a class="headerlink" href="#2-telegram-id" title="Permanent link">&para;</a></h3>
+<h4 id="id">获取您的用户 ID<a class="headerlink" href="#id" title="Permanent link">&para;</a></h4>
+<p>与 <a href="https://telegram.me/userinfobot">userinfobot</a> 对话</p>
+<p>获取您的 "Id"，您将使用它作为配置参数 <code>chat_id</code>。</p>
+<h4 id="id_1">使用群组 ID<a class="headerlink" href="#id_1" title="Permanent link">&para;</a></h4>
+<p>要获取群组 ID，您可以将机器人添加到群组，启动 freqtrade，并执行 <code>/tg_info</code> 命令。
+这将返回群组 ID 给您，无需使用其他随机机器人。
+虽然 "chat_id" 仍然是必需的，但此命令不需要将其设置为特定的群组 ID。</p>
+<p>如有必要，响应还将包含 "topic_id"——两者均以可直接复制/粘贴到配置中的格式提供。</p>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;********&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;chat_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-1001332619709&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;topic_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;122&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>对于 Freqtrade 配置，您可以使用完整值（包括 <code>-</code>）作为字符串：</p>
+<div class="highlight"><pre><span></span><code><span class="w">   </span><span class="nt">&quot;chat_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-1001332619709&quot;</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">使用 Telegram 群组</p>
+<p>使用 Telegram 群组时，您将授予群组中每个成员访问您的 freqtrade 机器人以及通过 Telegram 执行所有命令的权限。请确保您信任 Telegram 群组中的每个人，以避免不愉快的意外。</p>
+</div>
+<h5 id="id_2">群组话题 ID<a class="headerlink" href="#id_2" title="Permanent link">&para;</a></h5>
+<p>要在群组中使用特定话题，可以通过配置中的 <code>topic_id</code> 参数实现。这将允许机器人在群组的特定话题中运作。<br />
+若不设置此参数，当群聊启用话题功能时，机器人将始终在群组的通用频道中响应。</p>
+<div class="highlight"><pre><span></span><code><span class="w">   </span><span class="nt">&quot;chat_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-1001332619709&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;topic_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3&quot;</span>
+</code></pre></div>
+<p>与获取群组ID类似 - 您可以在话题/线程中使用 <code>/tg_info</code> 命令获取正确的话题ID。</p>
+<h4 id="_1">授权用户<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
+<p>对于群组场景，限制可向机器人发送命令的用户范围会非常实用。</p>
+<p>若 <code>"authorized_users": []</code> 配置项存在且为空列表，则所有用户都将无权操控机器人。
+以下示例中，仅用户ID为"1234567"的用户被允许操控机器人——其他所有用户仅能接收消息。</p>
+<div class="highlight"><pre><span></span><code><span class="w">   </span><span class="nt">&quot;chat_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-1001332619709&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;topic_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;authorized_users&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;1234567&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h2 id="telegram_2">控制 Telegram 通知频率<a class="headerlink" href="#telegram_2" title="Permanent link">&para;</a></h2>
+<p>Freqtrade 提供了多种方式来调节机器人通知的详细程度。
+每个设置项支持以下可选值：</p>
+<ul>
+<li><code>on</code> - 发送消息并通知用户</li>
+<li><code>silent</code> - 发送消息但通知时无提示音/振动</li>
+<li><code>off</code> - 完全跳过该类消息的发送</li>
+</ul>
+<p>展示不同设置的配置示例：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;telegram&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_telegram_token&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;chat_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_telegram_chat_id&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;allow_custom_messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;notification_settings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;silent&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;warning&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;startup&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;entry&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;silent&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;entry_fill&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;entry_cancel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;silent&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;exit&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;roi&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;silent&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;emergency_exit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;force_exit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;exit_signal&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;silent&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;trailing_stop_loss&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;stop_loss&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;stoploss_on_exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;custom_exit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;silent&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// custom_exit without specifying an exit reason</span>
+<span class="w">            </span><span class="nt">&quot;partial_exit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="c1">// &quot;custom_exit_message&quot;: &quot;silent&quot;,  // Disable individual custom exit reasons</span>
+<span class="w">            </span><span class="nt">&quot;*&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="w">  </span><span class="c1">// Disable all other exit reasons</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="c1">// &quot;exit&quot;: &quot;off&quot;,  // Simplistic configuration to disable all exit messages</span>
+<span class="w">        </span><span class="nt">&quot;exit_cancel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;exit_fill&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;protection_trigger&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;protection_trigger_global&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;strategy_msg&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;show_candle&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;reload&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;balance_dust_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01</span>
+<span class="p">},</span>
+</code></pre></div>
+<ul>
+<li><code>entry</code> 通知在订单创建时发送，而 <code>entry_fill</code> 通知在交易所订单成交时发送。  </li>
+<li><code>exit</code> 通知在订单创建时发送，而 <code>exit_fill</code> 通知在交易所订单成交时发送。<br />
+    退出消息（<code>exit</code> 和 <code>exit_fill</code>）可以在单个退出原因级别进一步控制，以特定退出原因为键。所有退出原因的默认值为 <code>on</code> - 但可以通过特殊的 <code>*</code> 键进行配置 - 该键将作为所有未明确定义的退出原因的通配符。</li>
+<li><code>*_fill</code> 通知默认关闭，必须显式启用。  </li>
+<li><code>protection_trigger</code> 通知在保护机制触发时发送，而 <code>protection_trigger_global</code> 通知在全局保护触发时发送。  </li>
+<li><code>strategy_msg</code> - 接收来自策略的通知，通过策略中的 <code>self.dp.send_msg()</code> 发送 <a href="../strategy-customization/#send-notification">更多详情</a>。  </li>
+<li><code>show_candle</code> - 在入场/出场消息中显示蜡烛图数值。唯一可能的值为 <code>"ohlc"</code> 或 <code>"off"</code>。  </li>
+<li><code>balance_dust_level</code> 将定义 <code>/balance</code> 命令视为"粉尘"的阈值 - 余额低于此值的货币将被显示。  </li>
+<li><code>allow_custom_messages</code> 完全禁用策略消息。  </li>
+<li><code>reload</code> 允许您在选定消息上禁用重新加载按钮。</li>
+</ul>
+<h2 id="_2">创建自定义键盘（命令快捷按钮）<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Telegram 允许我们创建带有命令按钮的自定义键盘。
+默认的自定义键盘如下所示。</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+    <span class="p">[</span><span class="s2">&quot;/daily&quot;</span><span class="p">,</span> <span class="s2">&quot;/profit&quot;</span><span class="p">,</span> <span class="s2">&quot;/balance&quot;</span><span class="p">],</span> <span class="c1"># row 1, 3 commands</span>
+    <span class="p">[</span><span class="s2">&quot;/status&quot;</span><span class="p">,</span> <span class="s2">&quot;/status table&quot;</span><span class="p">,</span> <span class="s2">&quot;/performance&quot;</span><span class="p">],</span> <span class="c1"># row 2, 3 commands</span>
+    <span class="p">[</span><span class="s2">&quot;/count&quot;</span><span class="p">,</span> <span class="s2">&quot;/start&quot;</span><span class="p">,</span> <span class="s2">&quot;/stop&quot;</span><span class="p">,</span> <span class="s2">&quot;/help&quot;</span><span class="p">]</span> <span class="c1"># row 3, 4 commands</span>
+<span class="p">]</span>
+</code></pre></div>
+<h3 id="_3">使用方法<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>您可以在 <code>config.json</code> 中创建自己的键盘：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;telegram&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_telegram_token&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;chat_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_telegram_chat_id&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;keyboard&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="p">[</span><span class="s2">&quot;/daily&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;/stats&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;/balance&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;/profit&quot;</span><span class="p">],</span>
+<span class="w">          </span><span class="p">[</span><span class="s2">&quot;/status table&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;/performance&quot;</span><span class="p">],</span>
+<span class="w">          </span><span class="p">[</span><span class="s2">&quot;/reload_config&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;/count&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;/logs&quot;</span><span class="p">]</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">   </span><span class="p">},</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">支持的命令</p>
+<p>仅允许以下命令。不支持命令参数！</p>
+<p><code>/start</code>, <code>/pause</code>, <code>/stop</code>, <code>/status</code>, <code>/status table</code>, <code>/trades</code>, <code>/profit</code>, <code>/performance</code>, <code>/daily</code>, <code>/stats</code>, <code>/count</code>, <code>/locks</code>, <code>/balance</code>, <code>/stopentry</code>, <code>/reload_config</code>, <code>/show_config</code>, <code>/logs</code>, <code>/whitelist</code>, <code>/blacklist</code>, <code>/help</code>, <code>/version</code>, <code>/marketdir</code></p>
+</div>
+<h2 id="telegram_3">Telegram 命令<a class="headerlink" href="#telegram_3" title="Permanent link">&para;</a></h2>
+<p>默认情况下，Telegram 机器人会显示预定义的命令。某些命令
+只能通过发送给机器人来使用。下表列出了
+官方命令。您可以随时使用 <code>/help</code> 寻求帮助。</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>系统命令</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><code>/start</code></td>
+<td>启动交易机器人</td>
+</tr>
+<tr>
+<td><code>/pause | /stopentry | /stopbuy</code></td>
+<td>暂停交易机器人。根据规则妥善处理未平仓交易。不建立新仓位。</td>
+</tr>
+<tr>
+<td><code>/stop</code></td>
+<td>停止交易机器人</td>
+</tr>
+<tr>
+<td><code>/reload_config</code></td>
+<td>重新加载配置文件</td>
+</tr>
+<tr>
+<td><code>/show_config</code></td>
+<td>显示当前配置中与操作相关的部分设置</td>
+</tr>
+<tr>
+<td><code>/logs [limit]</code></td>
+<td>显示最新的日志消息。</td>
+</tr>
+<tr>
+<td><code>/help</code></td>
+<td>显示帮助信息</td>
+</tr>
+<tr>
+<td><code>/version</code></td>
+<td>显示版本信息</td>
+</tr>
+<tr>
+<td><strong>状态</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><code>/status</code></td>
+<td>列出所有未平仓交易</td>
+</tr>
+<tr>
+<td><code>/status &lt;trade_id&gt;</code></td>
+<td>列出一个或多个特定交易。多个 <trade_id> 用空格分隔。</td>
+</tr>
+<tr>
+<td><code>/status table</code></td>
+<td>以表格格式列出所有未平仓交易。挂单的买单用星号 (<em>) 标记，挂单的卖单用双星号 (</em>*) 标记。</td>
+</tr>
+<tr>
+<td><code>/order &lt;trade_id&gt;</code></td>
+<td>列出一个或多个特定交易的订单。多个 <trade_id> 用空格分隔。</td>
+</tr>
+<tr>
+<td><code>/trades [limit]</code></td>
+<td>以表格格式列出所有最近已平仓的交易。</td>
+</tr>
+<tr>
+<td><code>/count</code></td>
+<td>显示已使用和可用的交易数量</td>
+</tr>
+<tr>
+<td><code>/locks</code></td>
+<td>显示当前被锁定的交易对。</td>
+</tr>
+<tr>
+<td><code>/unlock &lt;pair or lock_id&gt;</code></td>
+<td>移除该交易对（或该锁定ID）的锁定。</td>
+</tr>
+<tr>
+<td><code>/marketdir [long | short | even | none]</code></td>
+<td>更新代表当前市场方向的用户管理变量。如果未提供方向，将显示当前设置的方向。</td>
+</tr>
+<tr>
+<td><code>/list_custom_data &lt;trade_id&gt; [key]</code></td>
+<td>列出交易ID和键组合的自定义数据。如果未提供键，将列出为该交易ID找到的所有键值对。</td>
+</tr>
+<tr>
+<td><strong>修改交易状态</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><code>/forceexit &lt;trade_id&gt; | /fx &lt;tradeid&gt;</code></td>
+<td>立即平仓给定交易（忽略 <code>minimum_roi</code>）。</td>
+</tr>
+<tr>
+<td><code>/forceexit all | /fx all</code></td>
+<td>立即平仓所有未平仓交易（忽略 <code>minimum_roi</code>）。</td>
+</tr>
+<tr>
+<td><code>/fx</code></td>
+<td><code>/forceexit</code> 的别名</td>
+</tr>
+<tr>
+<td><code>/forcelong &lt;pair&gt; [rate]</code></td>
+<td>立即买入给定交易对。价格是可选的，仅适用于限价单。（<code>force_entry_enable</code> 必须设置为 True）</td>
+</tr>
+<tr>
+<td><code>/forceshort &lt;pair&gt; [rate]</code></td>
+<td>立即做空给定交易对。价格是可选的，仅适用于限价单。这仅适用于非现货市场。（<code>force_entry_enable</code> 必须设置为 True）</td>
+</tr>
+<tr>
+<td><code>/delete &lt;trade_id&gt;</code></td>
+<td>从数据库中删除特定交易。尝试取消未成交订单。需要在交易所手动处理此交易。</td>
+</tr>
+<tr>
+<td><code>/reload_trade &lt;trade_id&gt;</code></td>
+<td>从交易所重新加载交易。仅适用于实盘交易，可能有助于恢复在交易所手动卖出的交易。</td>
+</tr>
+<tr>
+<td><code>/cancel_open_order &lt;trade_id&gt; | /coo &lt;trade_id&gt;</code></td>
+<td>取消交易的未成交订单。</td>
+</tr>
+<tr>
+<td><strong>指标</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><code>/profit [&lt;n&gt;]</code></td>
+<td>显示最近 n 天（默认为所有交易）已平仓交易的盈亏摘要以及一些绩效统计数据</td>
+</tr>
+<tr>
+<td><code>/profit_[long|short] [&lt;n&gt;]</code></td>
+<td>显示最近 n 天（默认为所有交易）某一方向已平仓交易的盈亏摘要以及一些绩效统计数据</td>
+</tr>
+<tr>
+<td><code>/performance</code></td>
+<td>按交易对分组显示每个已完成交易的绩效</td>
+</tr>
+<tr>
+<td><code>/balance</code></td>
+<td>显示每种货币由机器人管理的余额</td>
+</tr>
+<tr>
+<td><code>/balance full</code></td>
+<td>显示每种货币的账户余额</td>
+</tr>
+<tr>
+<td><code>/daily &lt;n&gt;</code></td>
+<td>显示最近 n 天（n 默认为 7）每天的盈亏情况</td>
+</tr>
+<tr>
+<td><code>/weekly &lt;n&gt;</code></td>
+<td>显示最近 n 周（n 默认为 8）每周的盈亏情况</td>
+</tr>
+<tr>
+<td><code>/monthly &lt;n&gt;</code></td>
+<td>显示最近 n 个月（n 默认为 6）每月的盈亏情况</td>
+</tr>
+<tr>
+<td><code>/stats</code></td>
+<td>按退出原因显示胜率/亏损率以及买入和卖出的平均持仓时间</td>
+</tr>
+<tr>
+<td><code>/exits</code></td>
+<td>按退出原因显示胜率/亏损率以及买入和卖出的平均持仓时间</td>
+</tr>
+<tr>
+<td><code>/entries</code></td>
+<td>按退出原因显示胜率/亏损率以及买入和卖出的平均持仓时间</td>
+</tr>
+<tr>
+<td><code>/whitelist [sorted] [baseonly]</code></td>
+<td>显示当前白名单。可选择按字母顺序显示和/或仅显示每个交易对的基础货币。</td>
+</tr>
+<tr>
+<td><code>/blacklist [pair]</code></td>
+<td>显示当前黑名单，或将交易对添加到黑名单。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="telegram_4">Telegram 命令实战<a class="headerlink" href="#telegram_4" title="Permanent link">&para;</a></h2>
+<p>以下展示每个命令对应的 Telegram 消息示例。</p>
+<h3 id="start">/start<a class="headerlink" href="#start" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>状态:</strong> <code>运行中</code></p>
+</blockquote>
+<h3 id="pause-stopentry-stopbuy">/pause | /stopentry | /stopbuy<a class="headerlink" href="#pause-stopentry-stopbuy" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>状态:</strong> <code>已暂停，此后不再开仓。执行 /start 命令可重新启用开仓功能。</code></p>
+</blockquote>
+<p>通过将状态更改为 <code>已暂停</code> 来阻止机器人开设新交易。
+已开仓的交易将继续按照其常规规则（ROI/退出信号、止损等）进行管理。
+请注意，仓位调整功能仍保持活跃，但仅限于退出方向——即当机器人处于 <code>已暂停</code> 状态时，只能减少已开仓交易的持仓规模。</p>
+<p>此后，请给机器人时间平仓（可通过 <code>/status table</code> 查看进度）。
+待所有仓位平仓后，执行 <code>/stop</code> 命令以完全停止机器人。</p>
+<p>使用 <code>/start</code> 命令可将机器人恢复至 <code>运行中</code> 状态，允许其开设新仓位。</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>暂停/停止开仓信号仅在机器人运行时有效，且不会被持久化保存，因此重启机器人将导致该设置重置。</p>
+</div>
+<h3 id="stop">/stop<a class="headerlink" href="#stop" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><code>正在停止交易程序...</code>
+<strong>状态:</strong> <code>已停止</code></p>
+</blockquote>
+<h3 id="status">/status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h3>
+<p>对于每个未平仓交易，机器人将向您发送以下消息。
+入场标签可通过策略进行配置。</p>
+<blockquote>
+<p><strong>交易ID:</strong> <code>123</code> <code>(开仓时间: 1天前)</code><br />
+<strong>当前交易对:</strong> CVC/BTC<br />
+<strong>方向:</strong> 做多<br />
+<strong>杠杆:</strong> 1.0<br />
+<strong>数量:</strong> <code>26.64180098</code><br />
+<strong>开仓标签:</strong> Awesome Long Signal<br />
+<strong>开仓价格:</strong> <code>0.00007489</code><br />
+<strong>当前价格:</strong> <code>0.00007489</code><br />
+<strong>未实现盈亏:</strong> <code>12.95%</code><br />
+<strong>止损价:</strong> <code>0.00007389 (-0.02%)</code></p>
+</blockquote>
+<h3 id="status_1">/status 表格<a class="headerlink" href="#status_1" title="Permanent link">&para;</a></h3>
+<p>以表格形式返回所有未平仓交易的状态。</p>
+<div class="highlight"><pre><span></span><code>ID L/S    Pair     Since   Profit
+----    --------  -------  --------
+  67 L   SC/BTC    1 d      13.33%
+ 123 S   CVC/BTC   1 h      12.95%
+</code></pre></div>
+<h3 id="count">/count<a class="headerlink" href="#count" title="Permanent link">&para;</a></h3>
+<p>返回已使用和可用的交易数量。</p>
+<div class="highlight"><pre><span></span><code>current    max
+---------  -----
+     2     10
+</code></pre></div>
+<h3 id="profit">/profit<a class="headerlink" href="#profit" title="Permanent link">&para;</a></h3>
+<p>也可使用 <code>/profit_long</code> 和 <code>/profit_short</code> 分别显示仅做多或仅做空交易的利润。</p>
+<p>返回您的盈亏和绩效摘要。</p>
+<blockquote>
+<p><strong>投资回报率:</strong> 已平仓交易<br />
+  ∙ <code>0.00485701 BTC (2.2%) (15.2 Σ%)</code><br />
+  ∙ <code>62.968 USD</code><br />
+<strong>投资回报率:</strong> 全部交易<br />
+  ∙ <code>0.00255280 BTC (1.5%) (6.43 Σ%)</code><br />
+  ∙ <code>33.095 EUR</code>  </p>
+<p><strong>总交易笔数:</strong> <code>138</code><br />
+<strong>机器人启动时间:</strong> <code>2022-07-11 18:40:44</code><br />
+<strong>首笔交易开仓时间:</strong> <code>3天前</code><br />
+<strong>最近交易开仓时间:</strong> <code>2分钟前</code><br />
+<strong>平均持仓时长:</strong> <code>2:33:45</code><br />
+<strong>最佳表现:</strong> <code>PAY/BTC: 50.23%</code><br />
+<strong>交易量:</strong> <code>0.5 BTC</code><br />
+<strong>盈利因子:</strong> <code>1.04</code><br />
+<strong>盈利/亏损交易数:</strong> <code>102 / 36</code><br />
+<strong>胜率:</strong> <code>73.91%</code><br />
+<strong>期望值 (比率):</strong> <code>4.87 (1.66)</code><br />
+<strong>最大回撤:</strong> <code>9.23% (0.01255 BTC)</code></p>
+</blockquote>
+<p><code>1.2%</code> 的相对利润是每笔交易的平均利润。<br />
+<code>15.2 Σ%</code> 的相对利润是基于起始资金计算的——因此在这种情况下，起始资金为 <code>0.00485701 * 1.152 = 0.00738 BTC</code>。<br />
+<strong>起始资金</strong> 要么取自 <code>available_capital</code> 设置，要么通过当前钱包规模减去利润来计算。<br />
+<strong>利润因子</strong> 的计算方式为总利润 / 总亏损，应作为策略的整体衡量指标。<br />
+<strong>期望值</strong> 对应于每单位风险货币的平均回报，即胜率和风险回报比（盈利交易的平均收益与亏损交易的平均损失之比）。<br />
+<strong>期望比率</strong> 是基于所有过往交易表现计算的后续交易的预期利润或损失。<br />
+<strong>最大回撤</strong> 对应于回测指标 <code>绝对回撤（账户）</code>——计算方式为 <code>（绝对回撤）/（回撤高点 + 起始余额）</code>。<br />
+<strong>机器人启动日期</strong> 将指机器人首次启动的日期。对于较旧的机器人，此日期将默认为第一笔交易的开仓日期。</p>
+<h3 id="forceexit">/forceexit <trade_id><a class="headerlink" href="#forceexit" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>BINANCE:</strong> 正在以限价 <code>0.01650000（利润：约 -4.07%，-0.00008168）</code> 退出 BTC/LTC</p>
+</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>您可以通过调用不带参数的 <code>/forceexit</code> 命令获取所有未平仓交易的列表，该命令将显示一组按钮以便快速平仓。
+此命令有一个别名 <code>/fx</code> - 功能完全相同，但在"紧急"情况下输入更快捷。</p>
+</div>
+<h3 id="forcelong-forceshort">/forcelong &lt;交易对&gt; [价格] | /forceshort &lt;交易对&gt; [价格]<a class="headerlink" href="#forcelong-forceshort" title="Permanent link">&para;</a></h3>
+<p><code>/forcebuy &lt;交易对&gt; [价格]</code> 也支持做多操作，但应视为已弃用。</p>
+<blockquote>
+<p><strong>币安：</strong> 以限价 <code>0.03400000</code> 做多 ETH/BTC (<code>1.000000 ETH</code>, <code>225.290 USD</code>)</p>
+</blockquote>
+<p>省略交易对将弹出查询窗口，要求输入要交易的货币对（基于当前白名单）。
+通过 <code>/forcelong</code> 创建的交易将带有 <code>force_entry</code> 买入标签。</p>
+<p><img alt="Telegram 强制买入截图" src="../assets/telegram_forcebuy.png" /></p>
+<p>请注意，此功能需要将 <code>force_entry_enable</code> 设置为 true 才能生效。</p>
+<p><a href="../configuration/#understand-force_entry_enable">更多详情</a></p>
+<h3 id="performance">/performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h3>
+<p>返回机器人已售出的每种加密货币的收益表现。</p>
+<blockquote>
+<p>收益表现：<br />
+1. <code>RCN/BTC 0.003 BTC (57.77%) (1)</code><br />
+2. <code>PAY/BTC 0.0012 BTC (56.91%) (1)</code><br />
+3. <code>VIB/BTC 0.0011 BTC (47.07%) (1)</code><br />
+4. <code>SALT/BTC 0.0010 BTC (30.24%) (1)</code><br />
+5. <code>STORJ/BTC 0.0009 BTC (27.24%) (1)</code><br />
+...</p>
+</blockquote>
+<p>相对收益率是针对该币种的总投资额计算的，汇总了该币种所有已成交的买入记录。</p>
+<h3 id="balance">/balance<a class="headerlink" href="#balance" title="Permanent link">&para;</a></h3>
+<p>返回您在交易所持有的所有加密货币余额。</p>
+<blockquote>
+<p><strong>币种:</strong> BTC<br />
+<strong>可用余额:</strong> 3.05890234<br />
+<strong>总余额:</strong> 3.05890234<br />
+<strong>待处理:</strong> 0.0  </p>
+<p><strong>币种:</strong> CVC<br />
+<strong>可用余额:</strong> 86.64180098<br />
+<strong>总余额:</strong> 86.64180098<br />
+<strong>待处理:</strong> 0.0</p>
+</blockquote>
+<h3 id="daily">/daily <n><a class="headerlink" href="#daily" title="Permanent link">&para;</a></h3>
+<p>默认情况下 <code>/daily</code> 将返回最近7天的数据。以下示例为 <code>/daily 3</code> 的结果：</p>
+<blockquote>
+<p><strong>最近3天的每日收益：</strong></p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>Day (count)     USDT          USD         Profit %
+--------------  ------------  ----------  ----------
+2022-06-11 (1)  -0.746 USDT   -0.75 USD   -0.08%
+2022-06-10 (0)  0 USDT        0.00 USD    0.00%
+2022-06-09 (5)  20 USDT       20.10 USD   5.00%
+</code></pre></div>
+<h3 id="weekly">/weekly <n><a class="headerlink" href="#weekly" title="Permanent link">&para;</a></h3>
+<p>默认情况下 <code>/weekly</code> 将返回最近8周的数据（包含当前周）。每周从周一开始计算。以下示例为 <code>/weekly 3</code> 的结果：</p>
+<blockquote>
+<p><strong>最近3周的每周收益（从周一开始）：</strong></p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>Monday (count)  Profit BTC      Profit USD   Profit %
+-------------  --------------  ------------    ----------
+2018-01-03 (5)  0.00224175 BTC  29,142 USD   4.98%
+2017-12-27 (1)  0.00033131 BTC   4,307 USD   0.00%
+2017-12-20 (4)  0.00269130 BTC  34.986 USD   5.12%
+</code></pre></div>
+<h3 id="monthly">/monthly <n><a class="headerlink" href="#monthly" title="Permanent link">&para;</a></h3>
+<p>默认情况下 <code>/monthly</code> 将返回最近6个月的数据（包含当前月）。以下示例为 <code>/monthly 3</code> 的结果：</p>
+<blockquote>
+<p><strong>最近3个月的每月收益：</strong></p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>Month (count)  Profit BTC      Profit USD    Profit %
+-------------  --------------  ------------    ----------
+2018-01 (20)    0.00224175 BTC  29,142 USD  4.98%
+2017-12 (5)    0.00033131 BTC   4,307 USD   0.00%
+2017-11 (10)    0.00269130 BTC  34.986 USD  5.10%
+</code></pre></div>
+<h3 id="whitelist">/whitelist<a class="headerlink" href="#whitelist" title="Permanent link">&para;</a></h3>
+<p>显示当前白名单</p>
+<blockquote>
+<p>使用包含22个交易对的 <code>StaticPairList</code> 白名单<br />
+<code>IOTA/BTC, NEO/BTC, TRX/BTC, VET/BTC, ADA/BTC, ETC/BTC, NCASH/BTC, DASH/BTC, XRP/BTC, XVG/BTC, EOS/BTC, LTC/BTC, OMG/BTC, BTG/BTC, LSK/BTC, ZEC/BTC, HOT/BTC, IOTX/BTC, XMR/BTC, AST/BTC, XLM/BTC, NANO/BTC</code></p>
+</blockquote>
+<h3 id="blacklist">/blacklist [交易对]<a class="headerlink" href="#blacklist" title="Permanent link">&para;</a></h3>
+<p>显示当前黑名单。
+如果设置了交易对，则该交易对将被添加到黑名单中。
+支持多个交易对，以空格分隔。<br />
+使用 <code>/reload_config</code> 可重置黑名单。</p>
+<blockquote>
+<p>使用包含 2 个交易对的静态配对列表黑名单<br />
+<code>DODGE/BTC</code>, <code>HOT/BTC</code>。</p>
+</blockquote>
+<h3 id="version">/version<a class="headerlink" href="#version" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>版本：</strong> <code>0.14.3</code></p>
+</blockquote>
+<h3 id="marketdir">/marketdir<a class="headerlink" href="#marketdir" title="Permanent link">&para;</a></h3>
+<p>如果提供了市场方向，该命令将更新代表当前市场方向的用户管理变量。
+该变量在机器人启动时不会设置为任何有效的市场方向，必须由用户设置。以下示例针对 <code>/marketdir long</code>：</p>
+<div class="highlight"><pre><span></span><code>Successfully updated marketdirection from none to long.
+</code></pre></div>
+<p>如果未提供市场方向，该命令将输出当前设置的市场方向。以下示例针对 <code>/marketdir</code>：</p>
+<div class="highlight"><pre><span></span><code>Currently set marketdirection: even
+</code></pre></div>
+<p>您可以通过 <code>self.market_direction</code> 在策略中使用市场方向。</p>
+<div class="admonition warning">
+<p class="admonition-title">机器人重启</p>
+<p>请注意，市场方向不会被持久化，在机器人重启/重载后将被重置。</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">回测</p>
+<p>由于此值/变量旨在用于模拟/实盘交易中手动更改，使用 <code>market_direction</code> 的策略可能无法产生可靠、可复现的结果（对此变量的更改不会反映在回测中）。使用风险自负。</p>
+</div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+    
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../bot-usage/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 启动机器人">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                启动机器人
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../freq-ui/" class="md-footer__link md-footer__link--next" aria-label="Next: freqUI">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                freqUI
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate", "search.share", "content.code.copy", "content.action.edit", "navigation.top", "navigation.footer"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../javascripts/config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

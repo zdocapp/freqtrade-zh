@@ -1,0 +1,3237 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Freqtrade 是一个用 Python 编写的免费开源加密货币交易机器人，支持所有主要交易所，并可通过 Telegram 或内置的 Web 界面进行控制。">
+      
+      
+      
+        <link rel="canonical" href="https://freqtrade-zh.zdoc.app/zh/utils/">
+      
+      
+        <link rel="prev" href="../leverage/">
+      
+      
+        <link rel="next" href="../plotting/">
+      
+      
+      <link rel="icon" href="../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>工具子命令 - Freqtrade 中文文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/ft.extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-PRBP5T5F5Y"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-PRBP5T5F5Y",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-PRBP5T5F5Y",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="tear">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Freqtrade 中文文档" class="md-header__button md-logo" aria-label="Freqtrade 中文文档" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Freqtrade 中文文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              工具子命令
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="tear"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="tear"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zdocapp/freqtrade-zh" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+
+  <!-- Main navigation -->
+  
+  
+  <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+    <div class="md-sidebar__scrollwrap">
+      <div class="md-sidebar__inner">
+        
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Freqtrade 中文文档" class="md-nav__button md-logo" aria-label="Freqtrade 中文文档" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    Freqtrade 中文文档
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zdocapp/freqtrade-zh" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker 快速开始
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    安装
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            安装
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux/MacOS/Raspberry
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../windows_installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Windows
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bot-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Freqtrade 基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-101/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略快速入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略定制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-callbacks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略回调
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stoploss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    止损
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    插件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bot-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    启动机器人
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    控制机器人
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            控制机器人
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../telegram-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Telegram
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freq-ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    freqUI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rest-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REST API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webhook-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web Hook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-download/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数据下载
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    回测
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hyperopt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    超参数优化（Hyperopt）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    FreqAI
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            FreqAI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-parameter-table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    参数表
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-feature-engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    特征工程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-running/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    运行 FreqAI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    强化学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../freqai-developers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    开发者指南
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../leverage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    做空 / 杠杆
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    工具子命令
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    工具子命令
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建用户目录
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建新配置
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="创建新配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建配置示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      显示配置
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建新策略
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="创建新策略">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      new-strategy 使用示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出策略
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hyperopt" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出 Hyperopt 损失函数
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#freqai" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出 FreqAI 模型
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出交易所
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出时间框架
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出交易对/市场列表
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="列出交易对/市场列表">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      测试交易对列表
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="测试交易对列表">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      转换数据库
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      网页服务器模式
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="网页服务器模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#webserver-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Webserver 模式 - docker
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      显示历史回测结果
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      详细回测分析
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出超参数优化结果
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="列出超参数优化结果">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hyperopt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      查看 Hyperopt 结果详情
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="查看 Hyperopt 结果详情">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      显示交易
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="显示交易">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      策略更新器
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    绘图
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exchanges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    交易所专属说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据分析
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            数据分析
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Jupyter Notebooks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy_analysis_example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    回测分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_22" >
+        
+          
+          <label class="md-nav__link" for="__nav_22" id="__nav_22_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    高级主题
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_22">
+            <span class="md-nav__icon md-icon"></span>
+            高级主题
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级安装后任务
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trade-object/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    交易对象
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lookahead-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    前视分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recursive-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    递归分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy-advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级策略
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-hyperopt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级超参数优化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-orderflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    订单流
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producer-consumer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    生产者/消费者模式
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sql_cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SQL 速查表
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    常见问题（FAQ）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strategy_migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    策略迁移
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../updating/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    更新 Freqtrade
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deprecated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    废弃功能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    贡献者指南
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Table of contents -->
+  
+  
+  <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+    <div class="md-sidebar__scrollwrap">
+      <div class="md-sidebar__inner">
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建用户目录
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建新配置
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="创建新配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建配置示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      显示配置
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建新策略
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="创建新策略">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      new-strategy 使用示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出策略
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hyperopt" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出 Hyperopt 损失函数
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#freqai" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出 FreqAI 模型
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出交易所
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出时间框架
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出交易对/市场列表
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="列出交易对/市场列表">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      测试交易对列表
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="测试交易对列表">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      转换数据库
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      网页服务器模式
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="网页服务器模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#webserver-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Webserver 模式 - docker
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      显示历史回测结果
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      详细回测分析
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      列出超参数优化结果
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="列出超参数优化结果">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hyperopt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      查看 Hyperopt 结果详情
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="查看 Hyperopt 结果详情">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      显示交易
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="显示交易">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      策略更新器
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      </div>
+    </div>
+  </div>
+  
+
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/zdocapp/freqtrade-zh/edit/develop/docs/utils.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="_1">实用子命令<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>除了实盘交易和模拟运行模式、<code>backtesting</code>和<code>hyperopt</code>优化子命令，以及用于准备历史数据的<code>download-data</code>子命令外，该机器人还包含多个实用子命令。本节将对这些子命令进行说明。</p>
+<h2 id="_2">创建用户目录<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>创建用于存放freqtrade相关文件的目录结构。
+同时会生成策略和超参数优化示例文件，帮助您快速入门。
+可多次使用 - 使用<code>--reset</code>参数会将示例策略和超参数优化文件重置为默认状态。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade create-userdir [-h] [--userdir PATH] [--reset]
+
+options:
+  -h, --help            show this help message and exit
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+  --reset               Reset sample files to their original state.
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>使用<code>--reset</code>可能导致数据丢失，因为这会直接覆盖所有示例文件且不会再次确认。</p>
+</div>
+<div class="highlight"><pre><span></span><code>├── backtest_results
+├── data
+├── hyperopt_results
+├── hyperopts
+│   ├── sample_hyperopt_loss.py
+├── notebooks
+│   └── strategy_analysis_example.ipynb
+├── plot
+└── strategies
+    └── sample_strategy.py
+</code></pre></div>
+<h2 id="_3">创建新配置<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>创建新的配置文件，会询问一些对配置至关重要的选择性问题。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade new-config [-h] [-c PATH]
+
+options:
+  -h, --help            show this help message and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>仅询问关键问题。Freqtrade提供了更多配置可能性，具体列表请参阅<a href="../configuration/#configuration-parameters">配置文档</a></p>
+</div>
+<h3 id="_4">创建配置示例<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>$ freqtrade new-config --config user_data/config_binance.json
+
+? Do you want to enable Dry-run (simulated trades)?  Yes
+? Please insert your stake currency: BTC
+? Please insert your stake amount: 0.05
+? Please insert max_open_trades (Integer or -1 for unlimited open trades): 3
+? Please insert your desired timeframe (e.g. 5m): 5m
+? Please insert your display Currency (for reporting): USD
+? Select exchange  binance
+? Do you want to enable Telegram?  No
+</code></pre></div>
+<h2 id="_5">显示配置<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>显示配置文件（默认已隐藏敏感值）。
+在使用<a href="../configuration/#multiple-configuration-files">分离配置文件</a>或<a href="../configuration/#environment-variables">环境变量</a>时特别有用，此命令将显示合并后的配置。</p>
+<p><img alt="显示配置输出" src="../assets/show-config-output.png" /></p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade show-config [-h] [--userdir PATH] [-c PATH]
+                             [--show-sensitive]
+
+options:
+  -h, --help            show this help message and exit
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  --show-sensitive      Show secrets in the output.
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="go">Your combined configuration is:</span>
+<span class="go">{</span>
+<span class="go">  &quot;exit_pricing&quot;: {</span>
+<span class="go">    &quot;price_side&quot;: &quot;other&quot;,</span>
+<span class="go">    &quot;use_order_book&quot;: true,</span>
+<span class="go">    &quot;order_book_top&quot;: 1</span>
+<span class="go">  },</span>
+<span class="go">  &quot;stake_currency&quot;: &quot;USDT&quot;,</span>
+<span class="go">  &quot;exchange&quot;: {</span>
+<span class="go">    &quot;name&quot;: &quot;binance&quot;,</span>
+<span class="go">    &quot;key&quot;: &quot;REDACTED&quot;,</span>
+<span class="go">    &quot;secret&quot;: &quot;REDACTED&quot;,</span>
+<span class="go">    &quot;ccxt_config&quot;: {},</span>
+<span class="go">    &quot;ccxt_async_config&quot;: {},</span>
+<span class="go">  }</span>
+<span class="go">  // ...</span>
+<span class="go">}</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">共享此命令提供的信息</p>
+<p>我们尝试从默认输出（不使用 <code>--show-sensitive</code> 参数）中移除所有已知的敏感信息。
+但请务必仔细检查输出中的敏感值，确保不会意外暴露任何私人信息。</p>
+</div>
+<h2 id="_6">创建新策略<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>基于类似 SampleStrategy 的模板创建新策略。
+文件将根据您的类名命名，且不会覆盖现有文件。</p>
+<p>结果文件将位于 <code>user_data/strategies/&lt;策略类名&gt;.py</code>。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade new-strategy [-h] [--userdir PATH] [-s NAME]
+                              [--strategy-path PATH]
+                              [--template {full,minimal,advanced}]
+
+options:
+  -h, --help            show this help message and exit
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+  -s NAME, --strategy NAME
+                        Specify strategy class name which will be used by the
+                        bot.
+  --strategy-path PATH  Specify additional strategy lookup path.
+  --template {full,minimal,advanced}
+                        Use a template which is either `minimal`, `full`
+                        (containing multiple sample indicators) or `advanced`.
+                        Default: `full`.
+</code></pre></div>
+<h3 id="new-strategy">new-strategy 使用示例<a class="headerlink" href="#new-strategy" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>freqtrade<span class="w"> </span>new-strategy<span class="w"> </span>--strategy<span class="w"> </span>AwesomeStrategy
+</code></pre></div>
+<p>使用自定义用户目录</p>
+<div class="highlight"><pre><span></span><code>freqtrade<span class="w"> </span>new-strategy<span class="w"> </span>--userdir<span class="w"> </span>~/.freqtrade/<span class="w"> </span>--strategy<span class="w"> </span>AwesomeStrategy
+</code></pre></div>
+<p>使用高级模板（填充所有可选函数和方法）</p>
+<div class="highlight"><pre><span></span><code>freqtrade<span class="w"> </span>new-strategy<span class="w"> </span>--strategy<span class="w"> </span>AwesomeStrategy<span class="w"> </span>--template<span class="w"> </span>advanced
+</code></pre></div>
+<h2 id="_7">列出策略<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>使用 <code>list-strategies</code> 子命令查看特定目录中的所有策略。</p>
+<p>该子命令有助于发现环境中加载策略的问题：包含错误且加载失败的策略模块将以红色显示（加载失败），而具有重复名称的策略将以黄色显示（重复名称）。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade list-strategies [-h] [-v] [--no-color] [--logfile FILE] [-V]
+                                 [-c PATH] [-d PATH] [--userdir PATH]
+                                 [--strategy-path PATH] [-1]
+                                 [--recursive-strategy-search]
+
+options:
+  -h, --help            show this help message and exit
+  --strategy-path PATH  Specify additional strategy lookup path.
+  -1, --one-column      Print output in one column.
+  --recursive-strategy-search
+                        Recursively search for a strategy in the strategies
+                        folder.
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>使用这些命令将尝试从目录加载所有 Python 文件。如果该目录中存在不受信任的文件，这可能存在安全风险，因为所有模块级代码都会被执行。</p>
+</div>
+<p>示例：搜索默认策略目录（位于默认用户目录内）。</p>
+<div class="highlight"><pre><span></span><code>freqtrade<span class="w"> </span>list-strategies
+</code></pre></div>
+<p>示例：搜索用户目录内的策略目录。</p>
+<div class="highlight"><pre><span></span><code>freqtrade<span class="w"> </span>list-strategies<span class="w"> </span>--userdir<span class="w"> </span>~/.freqtrade/
+</code></pre></div>
+<p>示例：搜索专用策略路径。</p>
+<div class="highlight"><pre><span></span><code>freqtrade<span class="w"> </span>list-strategies<span class="w"> </span>--strategy-path<span class="w"> </span>~/.freqtrade/strategies/
+</code></pre></div>
+<h2 id="hyperopt">列出 Hyperopt 损失函数<a class="headerlink" href="#hyperopt" title="Permanent link">&para;</a></h2>
+<p>使用 <code>list-hyperoptloss</code> 子命令查看所有可用的 hyperopt 损失函数。</p>
+<p>它提供了环境中所有可用损失函数的快速列表。</p>
+<p>该子命令有助于发现环境中加载损失函数的问题：包含错误且加载失败的 Hyperopt 损失函数模块将以红色显示（加载失败），而具有重复名称的 Hyperopt 损失函数将以黄色显示（重复名称）。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade list-hyperoptloss [-h] [-v] [--no-color] [--logfile FILE]
+                                   [-V] [-c PATH] [-d PATH] [--userdir PATH]
+                                   [--hyperopt-path PATH] [-1]
+
+options:
+  -h, --help            show this help message and exit
+  --hyperopt-path PATH  Specify additional lookup path for Hyperopt Loss
+                        functions.
+  -1, --one-column      Print output in one column.
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<h2 id="freqai">列出 FreqAI 模型<a class="headerlink" href="#freqai" title="Permanent link">&para;</a></h2>
+<p>使用 <code>list-freqaimodels</code> 子命令查看所有可用的 freqAI 模型。</p>
+<p>该子命令对于排查环境中加载 FreqAI 模型的问题非常有用：包含错误且加载失败的模型模块会以红色显示（LOAD FAILED），而具有重复名称的模型则会以黄色显示（DUPLICATE NAME）。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade list-freqaimodels [-h] [-v] [--no-color] [--logfile FILE]
+                                   [-V] [-c PATH] [-d PATH] [--userdir PATH]
+                                   [--freqaimodel-path PATH] [-1]
+
+options:
+  -h, --help            show this help message and exit
+  --freqaimodel-path PATH
+                        Specify additional lookup path for freqaimodels.
+  -1, --one-column      Print output in one column.
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<h2 id="_8">列出交易所<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>使用 <code>list-exchanges</code> 子命令查看机器人可用的交易所。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade list-exchanges [-h] [-v] [--no-color] [--logfile FILE] [-V]
+                                [-c PATH] [-d PATH] [--userdir PATH] [-1] [-a]
+                                [--trading-mode {spot,margin,futures}]
+                                [--dex-exchanges]
+
+options:
+  -h, --help            show this help message and exit
+  -1, --one-column      Print output in one column.
+  -a, --all             Print all exchanges known to the ccxt library.
+  --trading-mode {spot,margin,futures}, --tradingmode {spot,margin,futures}
+                        Select Trading mode
+  --dex-exchanges       Print only DEX exchanges.
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<p>示例：查看机器人可用的交易所：</p>
+<div class="highlight"><pre><span></span><code>$ freqtrade list-exchanges
+Exchanges available for Freqtrade:
+Exchange name       Supported    Markets                 Reason
+------------------  -----------  ----------------------  ------------------------------------------------------------------------
+binance             Official     spot, isolated futures
+bitmart             Official     spot
+bybit                            spot, isolated futures
+gate                Official     spot, isolated futures
+htx                 Official     spot
+huobi                            spot
+kraken              Official     spot
+okx                 Official     spot, isolated futures
+</code></pre></div>
+<div class="admonition info">
+<p>为清晰起见，输出已缩减 - 支持和可用的交易所可能随时间变化。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">缺失选项的交易所</p>
+<p>带有 "missing opt:" 标记的值可能需要特殊配置（例如，如果 <code>fetchTickers</code> 缺失则需使用订单簿）- 但理论上应该可以工作（尽管我们无法保证其稳定性）。</p>
+</div>
+<p>示例：查看 ccxt 库支持的所有交易所（包括'不良'交易所，即已知无法与 Freqtrade 配合使用的交易所）</p>
+<div class="highlight"><pre><span></span><code>$ freqtrade list-exchanges -a
+All exchanges supported by the ccxt library:
+Exchange name       Valid    Supported    Markets                 Reason
+------------------  -------  -----------  ----------------------  ---------------------------------------------------------------------------------
+binance             True     Official     spot, isolated futures
+bitflyer            False                 spot                    missing: fetchOrder. missing opt: fetchTickers.
+bitmart             True     Official     spot
+bybit               True                  spot, isolated futures
+gate                True     Official     spot, isolated futures
+htx                 True     Official     spot
+kraken              True     Official     spot
+okx                 True     Official     spot, isolated futures
+</code></pre></div>
+<div class="admonition info">
+<p>输出已缩减 - 支持和可用的交易所可能随时间变化。</p>
+</div>
+<h2 id="_9">列出时间框架<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>使用 <code>list-timeframes</code> 子命令查看交易所可用的时间框架列表。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade list-timeframes [-h] [-v] [--no-color] [--logfile FILE] [-V]
+                                 [-c PATH] [-d PATH] [--userdir PATH]
+                                 [--exchange EXCHANGE] [-1]
+
+options:
+  -h, --help            show this help message and exit
+  --exchange EXCHANGE   Exchange name. Only valid if no config is provided.
+  -1, --one-column      Print output in one column.
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<ul>
+<li>示例：查看配置文件中设置的 'binance' 交易所的时间框架：</li>
+</ul>
+<div class="highlight"><pre><span></span><code>$ freqtrade list-timeframes -c config_binance.json
+...
+Timeframes available for the exchange `binance`: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
+</code></pre></div>
+<ul>
+<li>示例：枚举 Freqtrade 可用的交易所并打印每个交易所支持的时间框架：</li>
+</ul>
+<div class="highlight"><pre><span></span><code>$ for i in `freqtrade list-exchanges -1`; do freqtrade list-timeframes --exchange $i; done
+</code></pre></div>
+<h2 id="_10">列出交易对/市场列表<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<p><code>list-pairs</code> 和 <code>list-markets</code> 子命令用于查看交易所上可用的交易对/市场。</p>
+<p>交易对是指在市场符号中，基础货币部分和计价货币部分之间用 '/' 字符分隔的市场。
+例如，在 'ETH/BTC' 交易对中，'ETH' 是基础货币，而 'BTC' 是计价货币。</p>
+<p>对于 Freqtrade 交易的交易对，其计价货币由配置设置 <code>stake_currency</code> 的值定义。</p>
+<p>您可以使用这些子命令打印任何交易对/市场的信息，并可以通过 <code>--quote BTC</code> 选项按计价货币过滤输出，或通过 <code>--base ETH</code> 选项按基础货币过滤输出。</p>
+<p>这些子命令具有相同的用法和相同的可用选项集：</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade list-pairs [-h] [-v] [--no-color] [--logfile FILE] [-V]
+                            [-c PATH] [-d PATH] [--userdir PATH]
+                            [--exchange EXCHANGE] [--print-list]
+                            [--print-json] [-1] [--print-csv]
+                            [--base BASE_CURRENCY [BASE_CURRENCY ...]]
+                            [--quote QUOTE_CURRENCY [QUOTE_CURRENCY ...]] [-a]
+                            [--trading-mode {spot,margin,futures}]
+
+options:
+  -h, --help            show this help message and exit
+  --exchange EXCHANGE   Exchange name. Only valid if no config is provided.
+  --print-list          Print list of pairs or market symbols. By default data
+                        is printed in the tabular format.
+  --print-json          Print list of pairs or market symbols in JSON format.
+  -1, --one-column      Print output in one column.
+  --print-csv           Print exchange pair or market data in the csv format.
+  --base BASE_CURRENCY [BASE_CURRENCY ...]
+                        Specify base currency(-ies). Space-separated list.
+  --quote QUOTE_CURRENCY [QUOTE_CURRENCY ...]
+                        Specify quote currency(-ies). Space-separated list.
+  -a, --all             Print all pairs or market symbols. By default only
+                        active ones are shown.
+  --trading-mode {spot,margin,futures}, --tradingmode {spot,margin,futures}
+                        Select Trading mode
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<p>默认情况下，仅显示活跃的交易对/市场。活跃的交易对/市场是当前可以在交易所进行交易的。
+您可以使用 <code>-a</code>/<code>-all</code> 选项查看所有交易对/市场的列表，包括非活跃的。
+如果市场的最小可交易价格非常小，即小于 <code>1e-11</code> (<code>0.00000000001</code>)，交易对可能被列为不可交易。</p>
+<p>在打印输出中，交易对/市场按其符号字符串排序。</p>
+<h3 id="_11">示例<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<ul>
+<li>以 JSON 格式打印默认配置文件（即 "Binance" 交易所）中计价货币为 USD 的活跃交易对列表：</li>
+</ul>
+<div class="highlight"><pre><span></span><code>$ freqtrade list-pairs --quote USD --print-json
+</code></pre></div>
+<ul>
+<li>打印交易所中所有交易对的列表，该列表在 <code>config_binance.json</code> 配置文件中指定（即在 "Binance" 交易所上），基础货币为 BTC 或 ETH，报价货币为 USDT 或 USD，以带摘要的人类可读列表形式呈现：</li>
+</ul>
+<div class="highlight"><pre><span></span><code>$ freqtrade list-pairs -c config_binance.json --all --base BTC ETH --quote USDT USD --print-list
+</code></pre></div>
+<ul>
+<li>以表格格式打印 "Kraken" 交易所上的所有市场：</li>
+</ul>
+<div class="highlight"><pre><span></span><code>$ freqtrade list-markets --exchange kraken --all
+</code></pre></div>
+<h2 id="_12">测试交易对列表<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<p>使用 <code>test-pairlist</code> 子命令来测试<a href="../plugins/#pairlists">动态交易对列表</a>的配置。</p>
+<p>需要配置中指定了 <code>pairlists</code> 属性。
+可用于生成在回测/超参数优化期间使用的静态交易对列表。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade test-pairlist [-h] [--userdir PATH] [-v] [-c PATH]
+                               [--quote QUOTE_CURRENCY [QUOTE_CURRENCY ...]]
+                               [-1] [--print-json] [--exchange EXCHANGE]
+
+options:
+  -h, --help            show this help message and exit
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  --quote QUOTE_CURRENCY [QUOTE_CURRENCY ...]
+                        Specify quote currency(-ies). Space-separated list.
+  -1, --one-column      Print output in one column.
+  --print-json          Print list of pairs or market symbols in JSON format.
+  --exchange EXCHANGE   Exchange name. Only valid if no config is provided.
+</code></pre></div>
+<h3 id="_13">示例<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p>显示使用<a href="../plugins/#pairlists">动态交易对列表</a>时的白名单。</p>
+<div class="highlight"><pre><span></span><code>freqtrade test-pairlist --config config.json --quote USDT BTC
+</code></pre></div>
+<h2 id="_14">转换数据库<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<p><code>freqtrade convert-db</code> 可用于将数据库从一个系统转换到另一个系统（sqlite -&gt; postgres, postgres -&gt; 其他 postgres），迁移所有交易、订单和交易对锁定。</p>
+<p>请参阅<a href="../advanced-setup/#use-a-different-database-system">相应文档</a>了解不同数据库系统的要求。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade convert-db [-h] [--db-url PATH] [--db-url-from PATH]
+
+options:
+  -h, --help          show this help message and exit
+  --db-url PATH       Override trades database URL, this is useful in custom
+                      deployments (default: `sqlite:///tradesv3.sqlite` for
+                      Live Run mode, `sqlite:///tradesv3.dryrun.sqlite` for
+                      Dry Run).
+  --db-url-from PATH  Source db url to use when migrating a database.
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>请确保仅在空的目标数据库上使用此功能。Freqtrade 将执行常规迁移，但如果条目已存在，可能会失败。</p>
+</div>
+<h2 id="_15">网页服务器模式<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Experimental</p>
+<p>Webserver 模式是一种实验性模式，旨在提高回测和策略开发效率。
+该模式可能仍存在错误——如果您遇到任何问题，请通过 GitHub issue 报告，谢谢。</p>
+</div>
+<p>以 webserver 模式运行 freqtrade。
+Freqtrade 将启动 webserver 并允许 FreqUI 启动和控制回测进程。
+这样做的好处是数据在多次回测运行之间无需重新加载（只要时间框架和时间范围保持不变）。
+FreqUI 还将显示回测结果。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade webserver [-h] [-v] [--no-color] [--logfile FILE] [-V]
+                           [-c PATH] [-d PATH] [--userdir PATH]
+
+options:
+  -h, --help            show this help message and exit
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<h3 id="webserver-docker">Webserver 模式 - docker<a class="headerlink" href="#webserver-docker" title="Permanent link">&para;</a></h3>
+<p>您也可以通过 docker 使用 webserver 模式。
+启动一次性容器需要显式配置端口，因为默认情况下端口不会暴露。
+您可以使用 <code>docker compose run --rm -p 127.0.0.1:8080:8080 freqtrade webserver</code> 启动一个一次性容器，该容器将在您停止时被移除。这假设端口 8080 仍然可用，并且没有其他机器人正在该端口上运行。</p>
+<p>或者，您可以重新配置 docker-compose 文件以更新命令：</p>
+<div class="highlight"><pre><span></span><code>    command: &gt;
+      webserver
+      --config /freqtrade/user_data/config.json
+</code></pre></div>
+<p>现在您可以使用 <code>docker compose up</code> 启动 webserver。
+这假设配置已启用 webserver 并为 docker 进行了配置（监听端口 = <code>0.0.0.0</code>）。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>如果您想启动实盘或模拟交易机器人，请不要忘记将命令重置为交易命令。</p>
+</div>
+<h2 id="_16">显示历史回测结果<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h2>
+<p>允许您显示历史回测结果。
+添加 <code>--show-pair-list</code> 参数可输出排序后的交易对列表，便于直接复制/粘贴到配置中（自动剔除表现不佳的交易对）。</p>
+<details class="warning">
+<summary>策略过拟合风险</summary>
+<p>仅使用盈利交易对可能导致策略过拟合，在未来数据上表现不佳。请务必在实盘前通过模拟交易进行全面测试。</p>
+</details>
+<div class="highlight"><pre><span></span><code>usage: freqtrade backtesting-show [-h] [-v] [--no-color] [--logfile FILE] [-V]
+                                  [-c PATH] [-d PATH] [--userdir PATH]
+                                  [--backtest-filename PATH]
+                                  [--backtest-directory PATH]
+                                  [--show-pair-list]
+                                  [--breakdown {day,week,month,year} [{day,week,month,year} ...]]
+
+options:
+  -h, --help            show this help message and exit
+  --backtest-filename PATH, --export-filename PATH
+                        Use this filename for backtest results.Example:
+                        `--backtest-
+                        filename=backtest_results_2020-09-27_16-20-48.json`.
+                        Assumes either `user_data/backtest_results/` or
+                        `--export-directory` as base directory.
+  --backtest-directory PATH, --export-directory PATH
+                        Directory to use for backtest results. Example:
+                        `--export-directory=user_data/backtest_results/`.
+  --show-pair-list      Show backtesting pairlist sorted by profit.
+  --breakdown {day,week,month,year} [{day,week,month,year} ...]
+                        Show backtesting breakdown per [day, week, month,
+                        year].
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<h2 id="_17">详细回测分析<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h2>
+<p>高级回测结果分析功能。</p>
+<p>更多细节请参阅<a href="../advanced-backtesting/#analyze-the-buyentry-and-sellexit-tags">回测分析</a>章节。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade backtesting-analysis [-h] [-v] [--no-color] [--logfile FILE]
+                                      [-V] [-c PATH] [-d PATH]
+                                      [--userdir PATH]
+                                      [--backtest-filename PATH]
+                                      [--backtest-directory PATH]
+                                      [--analysis-groups {0,1,2,3,4,5} [{0,1,2,3,4,5} ...]]
+                                      [--enter-reason-list ENTER_REASON_LIST [ENTER_REASON_LIST ...]]
+                                      [--exit-reason-list EXIT_REASON_LIST [EXIT_REASON_LIST ...]]
+                                      [--indicator-list INDICATOR_LIST [INDICATOR_LIST ...]]
+                                      [--entry-only] [--exit-only]
+                                      [--timerange TIMERANGE]
+                                      [--rejected-signals] [--analysis-to-csv]
+                                      [--analysis-csv-path ANALYSIS_CSV_PATH]
+
+options:
+  -h, --help            show this help message and exit
+  --backtest-filename PATH, --export-filename PATH
+                        Use this filename for backtest results.Example:
+                        `--backtest-
+                        filename=backtest_results_2020-09-27_16-20-48.json`.
+                        Assumes either `user_data/backtest_results/` or
+                        `--export-directory` as base directory.
+  --backtest-directory PATH, --export-directory PATH
+                        Directory to use for backtest results. Example:
+                        `--export-directory=user_data/backtest_results/`.
+  --analysis-groups {0,1,2,3,4,5} [{0,1,2,3,4,5} ...]
+                        grouping output - 0: simple wins/losses by enter tag,
+                        1: by enter_tag, 2: by enter_tag and exit_tag, 3: by
+                        pair and enter_tag, 4: by pair, enter_ and exit_tag
+                        (this can get quite large), 5: by exit_tag
+  --enter-reason-list ENTER_REASON_LIST [ENTER_REASON_LIST ...]
+                        Space separated list of entry signals to analyse.
+                        Default: all. e.g. &#39;entry_tag_a entry_tag_b&#39;
+  --exit-reason-list EXIT_REASON_LIST [EXIT_REASON_LIST ...]
+                        Space separated list of exit signals to analyse.
+                        Default: all. e.g. &#39;exit_tag_a roi stop_loss
+                        trailing_stop_loss&#39;
+  --indicator-list INDICATOR_LIST [INDICATOR_LIST ...]
+                        Space separated list of indicators to analyse. e.g.
+                        &#39;close rsi bb_lowerband profit_abs&#39;
+  --entry-only          Only analyze entry signals.
+  --exit-only           Only analyze exit signals.
+  --timerange TIMERANGE
+                        Specify what timerange of data to use.
+  --rejected-signals    Analyse rejected signals
+  --analysis-to-csv     Save selected analysis tables to individual CSVs
+  --analysis-csv-path ANALYSIS_CSV_PATH
+                        Specify a path to save the analysis CSVs if
+                        --analysis-to-csv is enabled. Default:
+                        user_data/basktesting_results/
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<h2 id="_18">列出超参数优化结果<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h2>
+<p>您可以使用 <code>hyperopt-list</code> 子命令查看 Hyperopt 模块先前评估过的超参数优化周期。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade hyperopt-list [-h] [-v] [--no-color] [--logfile FILE] [-V]
+                               [-c PATH] [-d PATH] [--userdir PATH] [--best]
+                               [--profitable] [--min-trades INT]
+                               [--max-trades INT] [--min-avg-time FLOAT]
+                               [--max-avg-time FLOAT] [--min-avg-profit FLOAT]
+                               [--max-avg-profit FLOAT]
+                               [--min-total-profit FLOAT]
+                               [--max-total-profit FLOAT]
+                               [--min-objective FLOAT] [--max-objective FLOAT]
+                               [--print-json] [--no-details]
+                               [--hyperopt-filename FILENAME]
+                               [--export-csv FILE]
+
+options:
+  -h, --help            show this help message and exit
+  --best                Select only best epochs.
+  --profitable          Select only profitable epochs.
+  --min-trades INT      Select epochs with more than INT trades.
+  --max-trades INT      Select epochs with less than INT trades.
+  --min-avg-time FLOAT  Select epochs above average time.
+  --max-avg-time FLOAT  Select epochs below average time.
+  --min-avg-profit FLOAT
+                        Select epochs above average profit.
+  --max-avg-profit FLOAT
+                        Select epochs below average profit.
+  --min-total-profit FLOAT
+                        Select epochs above total profit.
+  --max-total-profit FLOAT
+                        Select epochs below total profit.
+  --min-objective FLOAT
+                        Select epochs above objective.
+  --max-objective FLOAT
+                        Select epochs below objective.
+  --print-json          Print output in JSON format.
+  --no-details          Do not print best epoch details.
+  --hyperopt-filename FILENAME
+                        Hyperopt result filename.Example: `--hyperopt-
+                        filename=hyperopt_results_2020-09-27_16-20-48.pickle`
+  --export-csv FILE     Export to CSV-File. This will disable table print.
+                        Example: --export-csv hyperopt.csv
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>hyperopt-list</code> 会自动使用最新的超参数优化结果文件。
+可通过 <code>--hyperopt-filename</code> 参数指定其他可用文件名（无需路径！）来覆盖此默认行为。</p>
+</div>
+<h3 id="_19">示例<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h3>
+<p>列出所有结果并在末尾显示最佳结果的详细信息：</p>
+<div class="highlight"><pre><span></span><code>freqtrade hyperopt-list
+</code></pre></div>
+<p>仅列出盈利周期。不显示最佳周期的详细信息，便于脚本迭代处理：</p>
+<div class="highlight"><pre><span></span><code>freqtrade hyperopt-list --profitable --no-details
+</code></pre></div>
+<h2 id="hyperopt_1">查看 Hyperopt 结果详情<a class="headerlink" href="#hyperopt_1" title="Permanent link">&para;</a></h2>
+<p>您可以使用 <code>hyperopt-show</code> 子命令显示 Hyperopt 模块先前评估的任何超优化周期的详细信息。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade hyperopt-show [-h] [-v] [--no-color] [--logfile FILE] [-V]
+                               [-c PATH] [-d PATH] [--userdir PATH] [--best]
+                               [--profitable] [-n INT] [--print-json]
+                               [--hyperopt-filename FILENAME] [--no-header]
+                               [--disable-param-export]
+                               [--breakdown {day,week,month,year} [{day,week,month,year} ...]]
+
+options:
+  -h, --help            show this help message and exit
+  --best                Select only best epochs.
+  --profitable          Select only profitable epochs.
+  -n INT, --index INT   Specify the index of the epoch to print details for.
+  --print-json          Print output in JSON format.
+  --hyperopt-filename FILENAME
+                        Hyperopt result filename.Example: `--hyperopt-
+                        filename=hyperopt_results_2020-09-27_16-20-48.pickle`
+  --no-header           Do not print epoch details header.
+  --disable-param-export
+                        Disable automatic hyperopt parameter export.
+  --breakdown {day,week,month,year} [{day,week,month,year} ...]
+                        Show backtesting breakdown per [day, week, month,
+                        year].
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>hyperopt-show</code> 将自动使用最新的可用超优化结果文件。
+您可以使用 <code>--hyperopt-filename</code> 参数覆盖此行为，并指定另一个可用文件名（不带路径！）。</p>
+</div>
+<h3 id="_20">示例<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
+<p>打印周期 168 的详细信息（周期编号由 <code>hyperopt-list</code> 子命令或 Hyperopt 在超优化运行期间显示）：</p>
+<div class="highlight"><pre><span></span><code>freqtrade hyperopt-show -n 168
+</code></pre></div>
+<p>打印包含最后一个最佳周期（即所有周期中的最佳周期）详细信息的 JSON 数据：</p>
+<div class="highlight"><pre><span></span><code>freqtrade hyperopt-show --best -n -1 --print-json --no-header
+</code></pre></div>
+<h2 id="_21">显示交易<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h2>
+<p>将数据库中选择的（或全部）交易打印到屏幕。</p>
+<div class="highlight"><pre><span></span><code>usage: freqtrade show-trades [-h] [-v] [--no-color] [--logfile FILE] [-V]
+                             [-c PATH] [-d PATH] [--userdir PATH]
+                             [--db-url PATH]
+                             [--trade-ids TRADE_IDS [TRADE_IDS ...]]
+                             [--print-json]
+
+options:
+  -h, --help            show this help message and exit
+  --db-url PATH         Override trades database URL, this is useful in custom
+                        deployments (default: `sqlite:///tradesv3.sqlite` for
+                        Live Run mode, `sqlite:///tradesv3.dryrun.sqlite` for
+                        Dry Run).
+  --trade-ids TRADE_IDS [TRADE_IDS ...]
+                        Specify the list of trade ids.
+  --print-json          Print output in JSON format.
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+<h3 id="_22">示例<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h3>
+<p>以 JSON 格式打印 ID 为 2 和 3 的交易</p>
+<div class="highlight"><pre><span></span><code>freqtrade<span class="w"> </span>show-trades<span class="w"> </span>--db-url<span class="w"> </span>sqlite:///tradesv3.sqlite<span class="w"> </span>--trade-ids<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">3</span><span class="w"> </span>--print-json
+</code></pre></div>
+<h2 id="_23">策略更新器<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h2>
+<p>更新列出的策略或策略文件夹内的所有策略以符合 v3 规范。
+如果命令在没有 --strategy-list 参数的情况下运行，则策略文件夹内的所有策略都将被转换。
+您的原始策略将保留在 <code>user_data/strategies_orig_updater/</code> 目录中。</p>
+<div class="admonition warning">
+<p class="admonition-title">转换结果</p>
+<p>策略更新器将采用"尽力而为"的方法。请进行尽职调查并验证转换结果。
+我们还建议运行 Python 格式化工具（例如 <code>black</code>）以合理的方式格式化结果。</p>
+</div>
+<div class="highlight"><pre><span></span><code>usage: freqtrade strategy-updater [-h] [-v] [--no-color] [--logfile FILE] [-V]
+                                  [-c PATH] [-d PATH] [--userdir PATH]
+                                  [--strategy-list STRATEGY_LIST [STRATEGY_LIST ...]]
+                                  [--strategy-path PATH]
+                                  [--recursive-strategy-search]
+
+options:
+  -h, --help            show this help message and exit
+  --strategy-list STRATEGY_LIST [STRATEGY_LIST ...]
+                        Provide a space-separated list of strategies to
+                        backtest. Please note that timeframe needs to be set
+                        either in config or via command line. When using this
+                        together with `--export trades`, the strategy-name is
+                        injected into the filename (so `backtest-data.json`
+                        becomes `backtest-data-SampleStrategy.json`
+  --strategy-path PATH  Specify additional strategy lookup path.
+  --recursive-strategy-search
+                        Recursively search for a strategy in the strategies
+                        folder.
+
+Common arguments:
+  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
+  --no-color            Disable colorization of hyperopt results. May be
+                        useful if you are redirecting output to a file.
+  --logfile FILE, --log-file FILE
+                        Log to the file specified. Special values are:
+                        &#39;syslog&#39;, &#39;journald&#39;. See the documentation for more
+                        details.
+  -V, --version         show program&#39;s version number and exit
+  -c PATH, --config PATH
+                        Specify configuration file (default:
+                        `userdir/config.json` or `config.json` whichever
+                        exists). Multiple --config options may be used. Can be
+                        set to `-` to read config from stdin.
+  -d PATH, --datadir PATH, --data-dir PATH
+                        Path to the base directory of the exchange with
+                        historical backtesting data. To see futures data, use
+                        trading-mode additionally.
+  --userdir PATH, --user-data-dir PATH
+                        Path to userdata directory.
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+    
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../leverage/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 做空 / 杠杆">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                做空 / 杠杆
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../plotting/" class="md-footer__link md-footer__link--next" aria-label="Next: 绘图">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                绘图
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate", "search.share", "content.code.copy", "content.action.edit", "navigation.top", "navigation.footer"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../javascripts/config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
