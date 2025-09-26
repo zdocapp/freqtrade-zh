@@ -1,15 +1,15 @@
-# Producer / Consumer mode
+# 生产者 / 消费者模式
 
-freqtrade provides a mechanism whereby an instance (also called `consumer`) may listen to messages from an upstream freqtrade instance (also called `producer`) using the message websocket. Mainly, `analyzed_df` and `whitelist` messages. This allows the reuse of computed indicators (and signals) for pairs in multiple bots without needing to compute them multiple times.
+freqtrade 提供了一种机制，允许一个实例（也称为 `consumer`）通过消息 WebSocket 监听来自上游 freqtrade 实例（也称为 `producer`）的消息。主要包括 `analyzed_df` 和 `whitelist` 消息。这使得可以在多个机器人中重复使用交易对的已计算指标（和信号），而无需多次计算它们。
 
-See [Message Websocket](rest-api.md#message-websocket) in the Rest API docs for setting up the `api_server` configuration for your message websocket (this will be your producer).
+有关设置消息 WebSocket 的 `api_server` 配置（这将作为您的生产者），请参阅 Rest API 文档中的 [消息 WebSocket](rest-api.md#message-websocket)。
 
 !!! Note
-    We strongly recommend to set `ws_token` to something random and known only to yourself to avoid unauthorized access to your bot.
+    我们强烈建议将 `ws_token` 设置为随机且仅您自己知晓的值，以避免未经授权访问您的机器人。
 
-## Configuration
+## 配置
 
-Enable subscribing to an instance by adding the `external_message_consumer` section to the consumer's config file.
+通过在消费者的配置文件中添加 `external_message_consumer` 部分来启用对实例的订阅。
 
 ```json
 {
@@ -36,32 +36,32 @@ Enable subscribing to an instance by adding the `external_message_consumer` sect
 }
 ```
 
-|  Parameter | Description |
+| 参数 | 描述 |
 |------------|-------------|
-| `enabled` | **Required.** Enable consumer mode. If set to false, all other settings in this section are ignored.<br>*Defaults to `false`.*<br> **Datatype:** boolean .
-| `producers` | **Required.** List of producers <br> **Datatype:** Array.
-| `producers.name` | **Required.** Name of this producer. This name must be used in calls to `get_producer_pairs()` and `get_producer_df()` if more than one producer is used.<br> **Datatype:** string
-| `producers.host` | **Required.** The hostname or IP address from your producer.<br> **Datatype:** string
-| `producers.port` | **Required.** The port matching the above host.<br>*Defaults to `8080`.*<br> **Datatype:** Integer
-| `producers.secure` | **Optional.**  Use ssl in websockets connection. Default False.<br> **Datatype:** string
-| `producers.ws_token` | **Required.**  `ws_token` as configured on the producer.<br> **Datatype:** string
-| | **Optional settings**
-| `wait_timeout` | Timeout until we ping again if no message is received. <br>*Defaults to `300`.*<br> **Datatype:** Integer - in seconds.
-| `ping_timeout` | Ping timeout <br>*Defaults to `10`.*<br> **Datatype:** Integer - in seconds.
-| `sleep_time` | Sleep time before retrying to connect.<br>*Defaults to `10`.*<br> **Datatype:** Integer - in seconds.
-| `remove_entry_exit_signals` | Remove signal columns from the dataframe (set them to 0) on dataframe receipt.<br>*Defaults to `false`.*<br> **Datatype:** Boolean.
-| `initial_candle_limit` | Initial candles to expect from the Producer.<br>*Defaults to `1500`.*<br> **Datatype:** Integer - Number of candles.
-| `message_size_limit` | Size limit per message<br>*Defaults to `8`.*<br> **Datatype:** Integer - Megabytes.
+| `enabled` | **必需。** 启用消费者模式。如果设为 false，则忽略本节所有其他设置。<br>*默认值：`false`。<br>**数据类型：** 布尔值。|
+| `producers` | **必需。** 生产者列表<br>**数据类型：** 数组。|
+| `producers.name` | **必需。** 此生产者的名称。如果使用多个生产者，则必须在调用 `get_producer_pairs()` 和 `get_producer_df()` 时使用此名称。<br>**数据类型：** 字符串|
+| `producers.host` | **必需。** 生产者的主机名或 IP 地址。<br>**数据类型：** 字符串|
+| `producers.port` | **必需。** 与上述主机匹配的端口。<br>*默认值：`8080`。<br>**数据类型：** 整数|
+| `producers.secure` | **可选。** 在 WebSocket 连接中使用 SSL。默认 False。<br>**数据类型：** 字符串|
+| `producers.ws_token` | **必需。** 生产者上配置的 `ws_token`。<br>**数据类型：** 字符串|
+| | **可选设置**|
+| `wait_timeout` | 未收到消息时再次 ping 的超时时间。<br>*默认值：`300`。<br>**数据类型：** 整数 - 单位秒。|
+| `ping_timeout` | Ping 超时时间<br>*默认值：`10`。<br>**数据类型：** 整数 - 单位秒。|
+| `sleep_time` | 重试连接前的休眠时间。<br>*默认值：`10`。<br>**数据类型：** 整数 - 单位秒。|
+| `remove_entry_exit_signals` | 在接收数据帧时从数据帧中移除信号列（将其设为 0）。<br>*默认值：`false`。<br>**数据类型：** 布尔值。|
+| `initial_candle_limit` | 预期从生产者获取的初始 K 线数量。<br>*默认值：`1500`。<br>**数据类型：** 整数 - K 线数量。|
+| `message_size_limit` | 每条消息的大小限制<br>*默认值：`8`。<br>**数据类型：** 整数 - 单位兆字节。|
 
-Instead of (or as well as) calculating indicators in `populate_indicators()` the follower instance listens on the connection to a producer instance's messages (or multiple producer instances in advanced configurations) and requests the producer's most recently analyzed dataframes for each pair in the active whitelist.
+除了（或同时）在 `populate_indicators()` 中计算指标外，跟随者实例会监听与生产者实例消息（或高级配置中的多个生产者实例）的连接，并请求生产者针对活跃白名单中每个交易对最近分析过的数据帧。
 
-A consumer instance will then have a full copy of the analyzed dataframes without the need to calculate them itself.
+这样，消费者实例将获得已分析数据帧的完整副本，无需自行计算。
 
-## Examples
+## 使用示例
 
-### Example - Producer Strategy
+### 示例 - 生产者策略
 
-A simple strategy with multiple indicators. No special considerations are required in the strategy itself.
+一个包含多个指标的简单策略。策略本身无需特殊考量。
 
 ```py
 class ProducerStrategy(IStrategy):
@@ -96,12 +96,11 @@ class ProducerStrategy(IStrategy):
 ```
 
 !!! Tip "FreqAI"
-    You can use this to setup [FreqAI](freqai.md) on a powerful machine, while you run consumers on simple machines like raspberries, which can interpret the signals generated from the producer in different ways.
+    你可以利用此功能在性能强大的机器上设置 [FreqAI](freqai.md)，同时在树莓派等简易设备上运行消费者实例，这些设备能以不同方式解析生产者生成的信号。
 
+### 示例 - 消费者策略
 
-### Example - Consumer Strategy
-
-A logically equivalent strategy which calculates no indicators itself, but will have the same analyzed dataframes available to make trading decisions based on the indicators calculated in the producer. In this example the consumer has the same entry criteria, however this is not necessary. The consumer may use different logic to enter/exit trades, and only use the indicators as specified.
+这是一个逻辑等效的策略，其本身不计算任何指标，但将拥有相同的已分析数据帧，可基于生产者在生产者端计算的指标做出交易决策。本例中消费者采用相同的入场条件，但这并非必需。消费者可使用不同的逻辑进行入场/出场交易，仅使用指定的指标。
 
 ```py
 class ConsumerStrategy(IStrategy):
@@ -162,5 +161,5 @@ class ConsumerStrategy(IStrategy):
         return dataframe
 ```
 
-!!! Tip "Using upstream signals"
-    By setting `remove_entry_exit_signals=false`, you can also use the producer's signals directly. They should be available as `enter_long_default` (assuming `suffix="default"` was used) - and can be used as either signal directly, or as additional indicator.
+!!! Tip "使用上游信号"
+    通过设置 `remove_entry_exit_signals=false`，你也可以直接使用生产者的信号。这些信号应该以 `enter_long_default` 的形式可用（假设使用了 `suffix="default"`）——可以作为直接信号使用，也可以作为附加指标使用。

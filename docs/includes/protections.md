@@ -1,51 +1,51 @@
-## Protections
+## 保护机制
 
-Protections will protect your strategy from unexpected events and market conditions by temporarily stop trading for either one pair, or for all pairs.
-All protection end times are rounded up to the next candle to avoid sudden, unexpected intra-candle buys.
+保护机制通过临时停止单个交易对或所有交易对的交易，来保护您的策略免受意外事件和市场条件的影响。
+所有保护的结束时间都会向上取整到下一个K线周期，以避免突然、意外的K线内买入。
 
-!!! Tip "Usage tips"
-    Not all Protections will work for all strategies, and parameters will need to be tuned for your strategy to improve performance.  
+!!! Tip "使用提示"
+    并非所有保护机制都适用于所有策略，您需要根据策略调整参数以提高性能。
 
     Each Protection can be configured multiple times with different parameters, to allow different levels of protection (short-term / long-term).
 
-!!! Note "Backtesting"
-    Protections are supported by backtesting and hyperopt, but must be explicitly enabled by using the `--enable-protections` flag.
+!!! Note "回测"
+    回测和超参数优化支持保护机制，但必须使用 `--enable-protections` 参数显式启用。
 
-### Available Protections
+### 可用保护机制
 
-* [`StoplossGuard`](#stoploss-guard) Stop trading if a certain amount of stoploss occurred within a certain time window.
-* [`MaxDrawdown`](#maxdrawdown) Stop trading if max-drawdown is reached.
-* [`LowProfitPairs`](#low-profit-pairs) Lock pairs with low profits
-* [`CooldownPeriod`](#cooldown-period) Don't enter a trade right after selling a trade.
+* [`StoplossGuard`](#stoploss-guard) 在特定时间窗口内达到一定数量的止损时停止交易。
+* [`MaxDrawdown`](#maxdrawdown) 达到最大回撤时停止交易。
+* [`LowProfitPairs`](#low-profit-pairs) 锁定低收益交易对。
+* [`CooldownPeriod`](#cooldown-period) 在卖出交易后不立即进入新交易。
 
-### Common settings to all Protections
+### 所有保护机制的通用设置
 
-|  Parameter| Description |
+|  参数| 描述 |
 |------------|-------------|
-| `method` | Protection name to use. <br> **Datatype:** String, selected from [available Protections](#available-protections)
-| `stop_duration_candles` | For how many candles should the lock be set? <br> **Datatype:** Positive integer (in candles)
-| `stop_duration` | how many minutes should protections be locked. <br>Cannot be used together with `stop_duration_candles`. <br> **Datatype:** Float (in minutes)
-| `lookback_period_candles` | Only trades that completed within the last `lookback_period_candles` candles will be considered. This setting may be ignored by some Protections. <br> **Datatype:** Positive integer (in candles).
-| `lookback_period` | Only trades that completed after `current_time - lookback_period` will be considered. <br>Cannot be used together with `lookback_period_candles`. <br>This setting may be ignored by some Protections. <br> **Datatype:**  Float (in minutes)
-| `trade_limit` | Number of trades required at minimum (not used by all Protections). <br> **Datatype:** Positive integer
-| `unlock_at` | Time when trading will be unlocked regularly (not used by all Protections). <br> **Datatype:** string <br>**Input Format:** "HH:MM" (24-hours)
+| `method` | 使用的保护名称。<br> **数据类型:** 字符串，从[可用保护](#available-protections)中选择
+| `stop_duration_candles` | 锁定应持续多少根K线？<br> **数据类型:** 正整数（以K线数为单位）
+| `stop_duration` | 保护应锁定多少分钟。<br>不能与 `stop_duration_candles` 同时使用。<br> **数据类型:** 浮点数（以分钟为单位）
+| `lookback_period_candles` | 仅考虑在过去 `lookback_period_candles` 根K线内完成的交易。某些保护可能会忽略此设置。<br> **数据类型:** 正整数（以K线数为单位）
+| `lookback_period` | 仅考虑在 `当前时间 - lookback_period` 之后完成的交易。<br>不能与 `lookback_period_candles` 同时使用。<br>某些保护可能会忽略此设置。<br> **数据类型:** 浮点数（以分钟为单位）
+| `trade_limit` | 至少需要的交易数量（并非所有保护都使用）。<br> **数据类型:** 正整数
+| `unlock_at` | 交易将定期解锁的时间（并非所有保护都使用）。<br> **数据类型:** 字符串 <br>**输入格式:** "HH:MM"（24小时制）
 
-!!! Note "Durations"
-    Durations (`stop_duration*` and `lookback_period*` can be defined in either minutes or candles).
-    For more flexibility when testing different timeframes, all below examples will use the "candle" definition.
+!!! Note "持续时间"
+    持续时间（`stop_duration*` 和 `lookback_period*` 可以以分钟或K线数定义）。
+    为了在测试不同时间框架时获得更大灵活性，以下所有示例将使用"K线"定义。
 
 #### Stoploss Guard
 
-`StoplossGuard` selects all trades within `lookback_period` in minutes (or in candles when using `lookback_period_candles`).
-If `trade_limit` or more trades resulted in stoploss, trading will stop for `stop_duration` in minutes (or in candles when using `stop_duration_candles`, or until the set time when using `unlock_at`).
+`StoplossGuard` 会选择 `lookback_period` 分钟内（或使用 `lookback_period_candles` 时的蜡烛数内）的所有交易。
+如果 `trade_limit` 笔或更多交易触发了止损，交易将停止 `stop_duration` 分钟（或使用 `stop_duration_candles` 时的蜡烛数，或使用 `unlock_at` 时直到设定时间）。
 
-This applies across all pairs, unless `only_per_pair` is set to true, which will then only look at one pair at a time.
+这适用于所有交易对，除非将 `only_per_pair` 设置为 true，此时将仅针对单个交易对进行评估。
 
-Similarly, this protection will by default look at all trades (long and short). For futures bots, setting `only_per_side` will make the bot only consider one side, and will then only lock this one side, allowing for example shorts to continue after a series of long stoplosses.
+类似地，该保护默认会考虑所有交易（多单和空单）。对于期货机器人，设置 `only_per_side` 将使机器人仅考虑单侧交易，并仅锁定该侧交易，例如在一系列多单止损后允许空单继续交易。
 
-`required_profit` will determine the required relative profit (or loss) for stoplosses to consider. This should normally not be set and defaults to 0.0 - which means all losing stoplosses will be triggering a block.
+`required_profit` 将决定触发止损考虑的所需相对盈利（或亏损）。通常不应设置此参数，默认为 0.0——这意味着所有亏损的止损都会触发锁定。
 
-The below example stops trading for all pairs for 4 candles after the last trade if the bot hit stoploss 4 times within the last 24 candles.
+以下示例显示：如果机器人在过去 24 根蜡烛内触发了 4 次止损，则在最后一笔交易后所有交易对将停止交易 4 根蜡烛。
 
 ``` python
 @property
@@ -64,14 +64,14 @@ def protections(self):
 ```
 
 !!! Note
-    `StoplossGuard` considers all trades with the results `"stop_loss"`, `"stoploss_on_exchange"` and `"trailing_stop_loss"` if the resulting profit was negative.
-    `trade_limit` and `lookback_period` will need to be tuned for your strategy.
+    `StoplossGuard` 会考虑所有结果为 `"stop_loss"`、`"stoploss_on_exchange"` 和 `"trailing_stop_loss"` 且最终利润为负的交易。
+    需要根据您的策略调整 `trade_limit` 和 `lookback_period` 参数。
 
 #### MaxDrawdown
 
-`MaxDrawdown` uses all trades within `lookback_period` in minutes (or in candles when using `lookback_period_candles`) to determine the maximum drawdown. If the drawdown is below `max_allowed_drawdown`, trading will stop for `stop_duration` in minutes (or in candles when using `stop_duration_candles`) after the last trade - assuming that the bot needs some time to let markets recover.
+`MaxDrawdown` 使用 `lookback_period` 分钟内（或使用 `lookback_period_candles` 时的蜡烛数）的所有交易来计算最大回撤。如果回撤低于 `max_allowed_drawdown`，交易将在最后一笔交易后停止 `stop_duration` 分钟（或使用 `stop_duration_candles` 时的蜡烛数）——假设机器人需要一些时间让市场恢复。
 
-The below sample stops trading for 12 candles if max-drawdown is > 20% considering all pairs - with a minimum of `trade_limit` trades - within the last 48 candles. If desired, `lookback_period` and/or `stop_duration` can be used.
+以下示例会在过去48根蜡烛内（至少需要 `trade_limit` 笔交易）所有交易对的最大回撤超过20%时，停止交易12根蜡烛。如果需要，可以使用 `lookback_period` 和/或 `stop_duration`。
 
 ``` python
 @property
@@ -87,14 +87,14 @@ def protections(self):
     ]
 ```
 
-#### Low Profit Pairs
+#### 低收益交易对
 
-`LowProfitPairs` uses all trades for a pair within `lookback_period` in minutes (or in candles when using `lookback_period_candles`) to determine the overall profit ratio.
-If that ratio is below `required_profit`, that pair will be locked for `stop_duration` in minutes (or in candles when using `stop_duration_candles`, or until the set time when using `unlock_at`).
+`LowProfitPairs` 使用某个交易对在 `lookback_period` 分钟内（或使用 `lookback_period_candles` 时的蜡烛数）的所有交易来计算总收益率。
+如果该比率低于 `required_profit`，该交易对将被锁定 `stop_duration` 分钟（或使用 `stop_duration_candles` 时的蜡烛数，或使用 `unlock_at` 时直到设定时间）。
 
-For futures bots, setting `only_per_side` will make the bot only consider one side, and will then only lock this one side, allowing for example shorts to continue after a series of long losses.
+对于期货机器人，设置 `only_per_side` 将使机器人仅考虑单边交易，然后仅锁定该边，例如在连续多头亏损后允许空头继续交易。
 
-The below example will stop trading a pair for 60 minutes if the pair does not have a required profit of 2% (and a minimum of 2 trades) within the last 6 candles.
+以下示例会在过去6根蜡烛内某个交易对的收益率未达到2%（且至少2笔交易）时，停止交易该交易对60分钟。
 
 ``` python
 @property
@@ -111,11 +111,11 @@ def protections(self):
     ]
 ```
 
-#### Cooldown Period
+#### 冷却期
 
-`CooldownPeriod` locks a pair for `stop_duration` in minutes (or in candles when using `stop_duration_candles`, or until the set time when using `unlock_at`) after exiting, avoiding a re-entry for this pair for `stop_duration` minutes.
+`CooldownPeriod` 会在退出交易后将交易对锁定 `stop_duration` 分钟（或使用 `stop_duration_candles` 时锁定指定K线数量，或使用 `unlock_at` 时锁定到设定时间），在此 `stop_duration` 分钟内避免该交易对重新入场。
 
-The below example will stop trading a pair for 2 candles after closing a trade, allowing this pair to "cool down".
+以下示例将在平仓后停止交易该交易对2根K线时间，让该交易对进行"冷却"。
 
 ``` python
 @property
@@ -129,21 +129,21 @@ def protections(self):
 ```
 
 !!! Note
-    This Protection applies only at pair-level, and will never lock all pairs globally.
-    This Protection does not consider `lookback_period` as it only looks at the latest trade.
+    该保护机制仅作用于交易对级别，永远不会全局锁定所有交易对。
+    此保护不考虑 `lookback_period`，因为它仅关注最新交易。
 
-### Full example of Protections
+### 保护机制完整示例
 
-All protections can be combined at will, also with different parameters, creating a increasing wall for under-performing pairs.
-All protections are evaluated in the sequence they are defined.
+所有保护机制都可以自由组合，也可使用不同参数，为表现不佳的交易对构建递增的防护墙。
+所有保护机制按照定义顺序依次评估。
 
-The below example assumes a timeframe of 1 hour:
+以下示例假设时间框架为1小时：
 
-* Locks each pair after selling for an additional 5 candles (`CooldownPeriod`), giving other pairs a chance to get filled.
-* Stops trading for 4 hours (`4 * 1h candles`) if the last 2 days (`48 * 1h candles`) had 20 trades, which caused a max-drawdown of more than 20%. (`MaxDrawdown`).
-* Stops trading if more than 4 stoploss occur for all pairs within a 1 day (`24 * 1h candles`) limit (`StoplossGuard`).
-* Locks all pairs that had 2 Trades within the last 6 hours (`6 * 1h candles`) with a combined profit ratio of below 0.02 (<2%) (`LowProfitPairs`).
-* Locks all pairs for 2 candles that had a profit of below 0.01 (<1%) within the last 24h (`24 * 1h candles`), a minimum of 4 trades.
+* 每对货币在卖出后锁定额外5根K线时间（`冷却期`），给予其他货币对成交机会。
+* 若过去2天（`48根1小时K线`）内发生20笔交易且导致最大回撤超过20%（`最大回撤`），则停止交易4小时（`4根1小时K线`）。
+* 若所有货币对在1天内（`24根1小时K线`）触发超过4次止损（`止损防护`），则停止交易。
+* 锁定过去6小时内（`6根1小时K线`）发生2笔交易且累计收益率低于0.02（<2%）的所有货币对（`低收益货币对`）。
+* 锁定过去24小时内（`24根1小时K线`）收益率低于0.01（<1%）且至少完成4笔交易的所有货币对，持续2根K线时间。
 
 ``` python
 from freqtrade.strategy import IStrategy

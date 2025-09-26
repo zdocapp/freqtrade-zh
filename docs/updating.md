@@ -1,33 +1,33 @@
-# How to update
+# 如何更新
 
-To update your freqtrade installation, please use one of the below methods, corresponding to your installation method.
+要更新您的 freqtrade 安装，请根据您的安装方式使用以下对应方法。
 
-!!! Note "Tracking changes"
-    Breaking changes / changed behavior will be documented in the changelog that is posted alongside every release.
-    For the develop branch, please follow PR's to avoid being surprised by changes.
+!!! Note "跟踪变更"
+    重大变更/行为变化将在每个版本随附的更新日志中记录。
+    对于 develop 分支，请关注 PR 以避免被变更所影响。
 
-## Docker
+## Docker 部署
 
-!!! Note "Legacy installations using the `master` image"
-    We're switching from master to stable for the release Images - please adjust your docker-file and replace `freqtradeorg/freqtrade:master` with `freqtradeorg/freqtrade:stable`
+!!! Note "使用 `master` 镜像的传统安装"
+    我们正在将发布镜像从 master 切换为 stable - 请调整您的 docker 文件，将 `freqtradeorg/freqtrade:master` 替换为 `freqtradeorg/freqtrade:stable`
 
 ``` bash
 docker compose pull
 docker compose up -d
 ```
 
-## Installation via setup script
+## 通过安装脚本安装
 
 ``` bash
 ./setup.sh --update
 ```
 
 !!! Note
-    Make sure to run this command with your virtual environment disabled!
+    请确保在禁用虚拟环境的情况下运行此命令！
 
-## Plain native installation
+## 纯原生安装
 
-Please ensure that you're also updating dependencies - otherwise things might break without you noticing.
+请确保同时更新依赖项 - 否则可能会出现未察觉的故障。
 
 ``` bash
 git pull
@@ -38,7 +38,7 @@ pip install -e .
 freqtrade install-ui 
 ```
 
-### Problems updating
+### 更新问题
 
-Update-problems usually come missing dependencies (you didn't follow the above instructions) - or from updated dependencies, which fail to install (for example TA-lib).
-Please refer to the corresponding installation sections (common problems linked below)
+更新问题通常源于缺失依赖项（未遵循上述说明）- 或来自更新后无法安装的依赖项（例如 TA-lib）。
+请参考相应的安装章节（下方链接的常见问题）。

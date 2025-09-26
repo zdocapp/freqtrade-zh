@@ -1,43 +1,43 @@
-# Development
+# 开发
 
-## Project architecture
+## 项目架构
 
-The architecture and functions of FreqAI are generalized to encourages development of unique features, functions, models, etc.
+FreqAI 的架构和功能经过通用化设计，旨在鼓励开发独特的功能、函数、模型等。
 
-The class structure and a detailed algorithmic overview is depicted in the following diagram:
+类结构和详细算法概览如下图所示：
 
 ![image](assets/freqai_algorithm-diagram.jpg)
 
-As shown, there are three distinct objects comprising FreqAI:
+如图所示，FreqAI 由三个独立对象组成：
 
-* **IFreqaiModel** - A singular persistent object containing all the necessary logic to collect, store, and process data, engineer features, run training, and inference models.
-* **FreqaiDataKitchen** - A non-persistent object which is created uniquely for each unique asset/model. Beyond metadata, it also contains a variety of data processing tools.
-* **FreqaiDataDrawer** - A singular persistent object containing all the historical predictions, models, and save/load methods.
+* **IFreqaiModel** - 一个持久化单体对象，包含所有必要逻辑用于收集、存储和处理数据，特征工程，运行训练和推理模型。
+* **FreqaiDataKitchen** - 一个非持久化对象，为每个独特的资产/模型单独创建。除元数据外，还包含多种数据处理工具。
+* **FreqaiDataDrawer** - 一个持久化单体对象，包含所有历史预测、模型及保存/加载方法。
 
-There are a variety of built-in [prediction models](freqai-configuration.md#using-different-prediction-models) which inherit directly from `IFreqaiModel`. Each of these models have full access to all methods in `IFreqaiModel` and can therefore override any of those functions at will. However, advanced users will likely stick to overriding `fit()`, `train()`, `predict()`, and `data_cleaning_train/predict()`.
+系统内置了多种[预测模型](freqai-configuration.md#using-different-prediction-models)，这些模型直接继承自 `IFreqaiModel`。每个模型都可以完全访问 `IFreqaiModel` 中的所有方法，因此可以随意重写任何函数。但高级用户通常会选择重写 `fit()`、`train()`、`predict()` 以及 `data_cleaning_train/predict()` 方法。
 
-## Data handling
+## 数据处理
 
-FreqAI aims to organize model files, prediction data, and meta data in a way that simplifies post-processing and enhances crash resilience by automatic data reloading. The data is saved in a file structure,`user_data_dir/models/`, which contains all the data associated with the trainings and backtests. The `FreqaiDataKitchen()` relies heavily on the file structure for proper training and inferencing and should therefore not be manually modified.
+FreqAI 旨在以简化后处理并增强崩溃恢复能力的方式组织模型文件、预测数据和元数据，通过自动数据重载实现。数据保存在文件结构 `user_data_dir/models/` 中，其中包含与训练和回测相关的所有数据。`FreqaiDataKitchen()` 高度依赖此文件结构进行正确的训练和推理，因此不应手动修改。
 
-### File structure
+### 文件结构
 
-The file structure is automatically generated based on the model `identifier` set in the [config](freqai-configuration.md#setting-up-the-configuration-file). The following structure shows where the data is stored for post processing:
+文件结构基于[配置文件](freqai-configuration.md#setting-up-the-configuration-file)中设置的模型 `identifier` 自动生成。以下结构展示了后处理数据的存储位置：
 
-| Structure | Description |
+| 结构 | 描述 |
 |-----------|-------------|
-| `config_*.json` | A copy of the model specific configuration file. |
-| `historic_predictions.pkl` | A file containing all historic predictions generated during the lifetime of the `identifier` model during live deployment. `historic_predictions.pkl` is used to reload the model after a crash or a config change. A backup file is always held in case of corruption on the main file. FreqAI **automatically** detects corruption and replaces the corrupted file with the backup. |
-| `pair_dictionary.json` | A file containing the training queue as well as the on disk location of the most recently trained model. |
-| `sub-train-*_TIMESTAMP` | A folder containing all the files associated with a single model, such as: <br>
-|| `*_metadata.json` - Metadata for the model, such as normalization max/min, expected training feature list, etc. <br>
-|| `*_model.*` - The model file saved to disk for reloading from a crash. Can be `joblib` (typical boosting libs), `zip` (stable_baselines), `hd5` (keras type), etc. <br>
-|| `*_pca_object.pkl` - The [Principal component analysis (PCA)](freqai-feature-engineering.md#data-dimensionality-reduction-with-principal-component-analysis) transform (if `principal_component_analysis: True` is set in the config) which will be used to transform unseen prediction features. <br>
-|| `*_svm_model.pkl` - The [Support Vector Machine (SVM)](freqai-feature-engineering.md#identifying-outliers-using-a-support-vector-machine-svm) model (if `use_SVM_to_remove_outliers: True` is set in the config) which is used to detect outliers in unseen prediction features. <br>
-|| `*_trained_df.pkl` - The dataframe containing all the training features used to train the `identifier` model. This is used for computing the [Dissimilarity Index (DI)](freqai-feature-engineering.md#identifying-outliers-with-the-dissimilarity-index-di) and can also be used for post-processing. <br>
-|| `*_trained_dates.df.pkl` - The dates associated with the `trained_df.pkl`, which is useful for post-processing. |
+| `config_*.json` | 模型特定配置文件的副本。 |
+| `historic_predictions.pkl` | 包含 `identifier` 模型在实盘部署期间生成的所有历史预测的文件。`historic_predictions.pkl` 用于在崩溃或配置更改后重新加载模型。始终保留一个备份文件以防主文件损坏。FreqAI **自动**检测损坏并用备份替换损坏的文件。 |
+| `pair_dictionary.json` | 包含训练队列以及最新训练模型在磁盘上位置的文件。 |
+| `sub-train-*_TIMESTAMP` | 包含与单个模型相关的所有文件的文件夹，例如： <br>
+|| `*_metadata.json` - 模型的元数据，例如归一化最大值/最小值、预期训练特征列表等。 <br>
+|| `*_model.*` - 保存到磁盘的模型文件，用于从崩溃中重新加载。可以是 `joblib`（典型的 boosting 库）、`zip`（stable_baselines）、`hd5`（keras 类型）等。 <br>
+|| `*_pca_object.pkl` - [主成分分析（PCA）](freqai-feature-engineering.md#data-dimensionality-reduction-with-principal-component-analysis) 变换（如果在配置中设置了 `principal_component_analysis: True`），将用于转换未见过的预测特征。 <br>
+|| `*_svm_model.pkl` - [支持向量机（SVM）](freqai-feature-engineering.md#identifying-outliers-using-a-support-vector-machine-svm) 模型（如果在配置中设置了 `use_SVM_to_remove_outliers: True`），用于检测未见过的预测特征中的异常值。 <br>
+|| `*_trained_df.pkl` - 包含用于训练 `identifier` 模型的所有训练特征的数据框。这用于计算 [相异指数（DI）](freqai-feature-engineering.md#identifying-outliers-with-the-dissimilarity-index-di)，也可用于后处理。 <br>
+|| `*_trained_dates.df.pkl` - 与 `trained_df.pkl` 相关的日期，对后处理很有用。 |
 
-The example file structure would look like this:
+示例文件结构如下所示：
 
 ```
 ├── models

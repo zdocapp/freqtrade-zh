@@ -1,62 +1,62 @@
-site_name: Freqtrade
-site_url: !ENV [READTHEDOCS_CANONICAL_URL, 'https://www.freqtrade.io/en/']
-site_description: Freqtrade is a free and open source crypto trading bot written in Python, designed to support all major exchanges and be controlled via Telegram or builtin Web UI
-repo_url: https://github.com/freqtrade/freqtrade
+site_name: Freqtrade 中文文档
+site_url: !ENV [READTHEDOCS_CANONICAL_URL, "https://freqtrade-zh.zdoc.app/zh/"]
+site_description: Freqtrade 是一个用 Python 编写的免费开源加密货币交易机器人，支持所有主要交易所，并可通过 Telegram 或内置的 Web 界面进行控制。
+repo_url: https://github.com/zdocapp/freqtrade-zh
 edit_uri: edit/develop/docs/
 use_directory_urls: True
 nav:
-    - Home: index.md
-    - Quickstart with Docker: docker_quickstart.md
-    - Installation:
-        - Linux/MacOS/Raspberry: installation.md
-        - Windows: windows_installation.md
-    - Freqtrade Basics: bot-basics.md
-    - Configuration: configuration.md
-    - Strategy Quickstart: strategy-101.md
-    - Strategy Customization: strategy-customization.md
-    - Strategy Callbacks: strategy-callbacks.md
-    - Stoploss: stoploss.md
-    - Plugins: plugins.md
-    - Start the bot: bot-usage.md
-    - Control the bot:
-        - Telegram: telegram-usage.md
-        - freqUI: freq-ui.md
-        - REST API: rest-api.md
-        - Web Hook: webhook-config.md
-    - Data Downloading: data-download.md
-    - Backtesting: backtesting.md
-    - Hyperopt: hyperopt.md
-    - FreqAI:
-        - Introduction: freqai.md
-        - Configuration: freqai-configuration.md
-        - Parameter table: freqai-parameter-table.md
-        - Feature engineering: freqai-feature-engineering.md
-        - Running FreqAI: freqai-running.md
-        - Reinforcement Learning: freqai-reinforcement-learning.md
-        - Developer guide: freqai-developers.md
-    - Short / Leverage: leverage.md
-    - Utility Sub-commands: utils.md
-    - Plotting: plotting.md
-    - Exchange-specific Notes: exchanges.md
-    - Data Analysis:
-        - Jupyter Notebooks: data-analysis.md
-        - Strategy analysis: strategy_analysis_example.md
-        - Backtest analysis: advanced-backtesting.md
-    - Advanced Topics:
-        - Advanced Post-installation Tasks: advanced-setup.md
-        - Trade Object: trade-object.md
-        - Lookahead analysis: lookahead-analysis.md
-        - Recursive analysis: recursive-analysis.md
-        - Advanced Strategy: strategy-advanced.md
-        - Advanced Hyperopt: advanced-hyperopt.md
-        - Orderflow: advanced-orderflow.md
-        - Producer/Consumer mode: producer-consumer.md
-        - SQL Cheat-sheet: sql_cheatsheet.md
-    - FAQ: faq.md
-    - Strategy migration: strategy_migration.md
-    - Updating Freqtrade: updating.md
-    - Deprecated Features: deprecated.md
-    - Contributors Guide: developer.md
+  - 首页: index.md
+  - Docker 快速开始: docker_quickstart.md
+  - 安装:
+      - Linux/MacOS/Raspberry: installation.md
+      - Windows: windows_installation.md
+  - Freqtrade 基础: bot-basics.md
+  - 配置: configuration.md
+  - 策略快速入门: strategy-101.md
+  - 策略定制: strategy-customization.md
+  - 策略回调: strategy-callbacks.md
+  - 止损: stoploss.md
+  - 插件: plugins.md
+  - 启动机器人: bot-usage.md
+  - 控制机器人:
+      - Telegram: telegram-usage.md
+      - freqUI: freq-ui.md
+      - REST API: rest-api.md
+      - Web Hook: webhook-config.md
+  - 数据下载: data-download.md
+  - 回测: backtesting.md
+  - 超参数优化（Hyperopt）: hyperopt.md
+  - FreqAI:
+      - 简介: freqai.md
+      - 配置: freqai-configuration.md
+      - 参数表: freqai-parameter-table.md
+      - 特征工程: freqai-feature-engineering.md
+      - 运行 FreqAI: freqai-running.md
+      - 强化学习: freqai-reinforcement-learning.md
+      - 开发者指南: freqai-developers.md
+  - 做空 / 杠杆: leverage.md
+  - 工具子命令: utils.md
+  - 绘图: plotting.md
+  - 交易所专属说明: exchanges.md
+  - 数据分析:
+      - Jupyter Notebooks: data-analysis.md
+      - 策略分析: strategy_analysis_example.md
+      - 回测分析: advanced-backtesting.md
+  - 高级主题:
+      - 高级安装后任务: advanced-setup.md
+      - 交易对象: trade-object.md
+      - 前视分析: lookahead-analysis.md
+      - 递归分析: recursive-analysis.md
+      - 高级策略: strategy-advanced.md
+      - 高级超参数优化: advanced-hyperopt.md
+      - 订单流: advanced-orderflow.md
+      - 生产者/消费者模式: producer-consumer.md
+      - SQL 速查表: sql_cheatsheet.md
+  - 常见问题（FAQ）: faq.md
+  - 策略迁移: strategy_migration.md
+  - 更新 Freqtrade: updating.md
+  - 废弃功能: deprecated.md
+  - 贡献者指南: developer.md
 theme:
   name: material
   logo: "images/logo.png"
@@ -90,8 +90,8 @@ extra_javascript:
   - javascripts/config.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 exclude_docs: |
-    /commands/*
-    /includes/*
+  /commands/*
+  /includes/*
 markdown_extensions:
   - attr_list
   - admonition
@@ -126,10 +126,10 @@ extra:
     alias: true
   analytics:
     provider: google
-    property: G-VH170LG9M5
+    property: G-PRBP5T5F5Y
 plugins:
   - search:
       enabled: true
   - mike:
-      deploy_prefix: 'en'
-      canonical_version: 'stable'
+      deploy_prefix: "zh"
+      canonical_version: "stable"

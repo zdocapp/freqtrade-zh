@@ -1,18 +1,18 @@
-## Exit logic comparisons
+## 退出逻辑比较
 
-Freqtrade allows your strategy to implement different exit logic using signal-based or callback-based functions.
-This section aims to compare each different function, helping you to choose the one that best fits your needs.
+Freqtrade 允许您的策略使用基于信号或基于回调的函数来实现不同的退出逻辑。
+本节旨在比较各种不同的函数，帮助您选择最适合需求的方案。
 
-* **`populate_exit_trend()`** - Vectorized signal-based exit logic using indicators in the main dataframe
-  ✅ **Use** to define exit signals based on indicators or other data that can be calculated in a vectorized manner.
-  🚫 **Don't use** to customize exit conditions for each individual trade, or if trade data is necessary to make an exit decision.
-* **`custom_exit()`** - Custom exit logic that will fully exit a trade immediately, called for every open trade at every bot loop iteration until a trade is closed.
-  ✅ **Use** to specify exit conditions for each individual trade (including any additional adjusted orders using `adjust_trade_position()`), or if trade data is necessary to make an exit decision, e.g. using profit data to exit.
-  🚫 **Don't use** when you want to exit using vectorised indicator-based data (use a `populate_exit_trend()` signal instead), or as a proxy for `custom_stoploss()`, and be aware that rate-based exits in backtesting can be inaccurate.
-* **`custom_stoploss()`** - Custom trailing stoploss, called for every open trade every iteration until a trade is closed. The value returned here is also used for [stoploss on exchange](stoploss.md#stop-loss-on-exchangefreqtrade).  
-  ✅ **Use** to customize the stoploss logic to set a dynamic stoploss based on trade data or other conditions.
-  🚫 **Don't use** to exit a trade immediately based on a specific condition. Use `custom_exit()` for that purpose.
-* **`custom_roi()`** - Custom ROI, called for every open trade every iteration until a trade is closed.
-  ✅ **Use** to specify a minimum ROI threshold ("take-profit") to exit a trade at this ROI level at some point within the trade duration, based on profit or other conditions.
-  🚫 **Don't use** to exit a trade immediately based on a specific condition. Use `custom_exit()`.
-  🚫 **Don't use** for static ROI. Use `minimal_roi`.
+* **`populate_exit_trend()`** - 基于主数据框中指标的向量化信号退出逻辑
+  ✅ **适用场景**：基于指标或其他可通过向量化方式计算的数据定义退出信号。
+  🚫 **不适用场景**：为每笔独立交易定制退出条件，或需要交易数据才能做出退出决策的情况。
+* **`custom_exit()`** - 自定义退出逻辑，将立即完全平仓，在每次机器人循环迭代时为每个未平仓交易调用，直至交易关闭。
+  ✅ **适用场景**：为每笔独立交易指定退出条件（包括使用 `adjust_trade_position()` 的任何额外调整订单），或需要交易数据才能做出退出决策（例如使用利润数据退出）。
+  🚫 **不适用场景**：希望使用基于向量化指标的数据退出时（改用 `populate_exit_trend()` 信号），或作为 `custom_stoploss()` 的替代方案，并注意回测中基于速率的退出可能不准确。
+* **`custom_stoploss()`** - 自定义追踪止损，在每次迭代时为每个未平仓交易调用，直至交易关闭。此处返回的值也用于[交易所止损](stoploss.md#stop-loss-on-exchangefreqtrade)。  
+  ✅ **适用场景**：自定义止损逻辑，根据交易数据或其他条件设置动态止损。
+  🚫 **不适用场景**：基于特定条件立即退出交易。请使用 `custom_exit()` 实现该目的。
+* **`custom_roi()`** - 自定义ROI，在每次迭代时为每个未平仓交易调用，直至交易关闭。
+  ✅ **适用场景**：指定最小ROI阈值（"止盈"），根据利润或其他条件在交易持续时间内的某个时刻以此ROI水平退出交易。
+  🚫 **不适用场景**：基于特定条件立即退出交易。请使用 `custom_exit()`。
+  🚫 **不适用场景**：静态ROI。请使用 `minimal_roi`。

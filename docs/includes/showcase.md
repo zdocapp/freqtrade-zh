@@ -1,11 +1,11 @@
-This section will highlight a few projects from members of the community.
+本节将重点介绍社区成员的一些项目。
 !!! Note
-    The projects below are for the most part not maintained by the freqtrade , therefore use your own caution before using them.
+    以下项目大部分并非由 freqtrade 团队维护，因此在使用前请自行谨慎评估。
 
-- [Example freqtrade strategies](https://github.com/freqtrade/freqtrade-strategies/)
-- [FrequentHippo - Statistics of dry/live runs and backtests](http://frequenthippo.ddns.net) (by hippocritical).
-- [Online pairlist generator](https://remotepairlist.com/) (by Blood4rc).
-- [Freqtrade Backtesting Project](https://strat.ninja/) (by Blood4rc).
-- [Freqtrade analysis notebook](https://github.com/froggleston/freqtrade_analysis_notebook) (by Froggleston).
-- [TUI for freqtrade](https://github.com/froggleston/freqtrade-frogtrade9000) (by Froggleston).
-- [Bot Academy](https://botacademy.ddns.net/) (by stash86) - Blog about crypto bot projects.
+- [freqtrade 策略示例](https://github.com/freqtrade/freqtrade-strategies/)
+- [FrequentHippo - 模拟/实盘运行和回测统计](http://frequenthippo.ddns.net) (由 hippocritical 开发)。
+- [在线交易对列表生成器](https://remotepairlist.com/) (由 Blood4rc 开发)。
+- [Freqtrade 回测项目](https://strat.ninja/) (由 Blood4rc 开发)。
+- [Freqtrade 分析笔记](https://github.com/froggleston/freqtrade_analysis_notebook) (由 Froggleston 开发)。
+- [freqtrade 终端用户界面](https://github.com/froggleston/freqtrade-frogtrade9000) (由 Froggleston 开发)。
+- [Bot Academy](https://botacademy.ddns.net/) (由 stash86 开发) - 关于加密货币机器人项目的博客。

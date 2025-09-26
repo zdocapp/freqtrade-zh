@@ -1,31 +1,31 @@
-## Pairlists and Pairlist Handlers
+## 配对列表与配对列表处理器
 
-Pairlist Handlers define the list of pairs (pairlist) that the bot should trade. They are configured in the `pairlists` section of the configuration settings.
+配对列表处理器用于定义交易机器人应交易的配对列表（pairlist）。它们通过配置设置中的 `pairlists` 部分进行配置。
 
-In your configuration, you can use Static Pairlist (defined by the [`StaticPairList`](#static-pair-list) Pairlist Handler) and Dynamic Pairlist (defined by the [`VolumePairList`](#volume-pair-list) and [`PercentChangePairList`](#percent-change-pair-list) Pairlist Handlers).
+在配置中，您可以使用静态配对列表（由 [`StaticPairList`](#static-pair-list) 配对列表处理器定义）和动态配对列表（由 [`VolumePairList`](#volume-pair-list) 和 [`PercentChangePairList`](#percent-change-pair-list) 配对列表处理器定义）。
 
-Additionally, [`AgeFilter`](#agefilter), [`DelistFilter`](#delistfilter), [`PrecisionFilter`](#precisionfilter), [`PriceFilter`](#pricefilter), [`ShuffleFilter`](#shufflefilter), [`SpreadFilter`](#spreadfilter) and [`VolatilityFilter`](#volatilityfilter) act as Pairlist Filters, removing certain pairs and/or moving their positions in the pairlist.
+此外，[`AgeFilter`](#agefilter)、[`DelistFilter`](#delistfilter)、[`PrecisionFilter`](#precisionfilter)、[`PriceFilter`](#pricefilter)、[`ShuffleFilter`](#shufflefilter)、[`SpreadFilter`](#spreadfilter) 和 [`VolatilityFilter`](#volatilityfilter) 作为配对列表过滤器，用于移除特定交易对和/或调整它们在配对列表中的位置。
 
-If multiple Pairlist Handlers are used, they are chained and a combination of all Pairlist Handlers forms the resulting pairlist the bot uses for trading and backtesting. Pairlist Handlers are executed in the sequence they are configured. You can define either `StaticPairList`, `VolumePairList`, `ProducerPairList`, `RemotePairList`, `MarketCapPairList` or `PercentChangePairList` as the starting Pairlist Handler.
+如果使用多个配对列表处理器，它们将形成链式结构，所有配对列表处理器的组合结果构成了交易机器人用于交易和回测的最终配对列表。配对列表处理器按照配置顺序执行。您可以将 `StaticPairList`、`VolumePairList`、`ProducerPairList`、`RemotePairList`、`MarketCapPairList` 或 `PercentChangePairList` 定义为起始配对列表处理器。
 
-Inactive markets are always removed from the resulting pairlist. Explicitly blacklisted pairs (those in the `pair_blacklist` configuration setting) are also always removed from the resulting pairlist.
+非活跃市场总是会从最终配对列表中移除。明确列入黑名单的交易对（位于 `pair_blacklist` 配置设置中）也总是会从最终配对列表中移除。
 
-### Pair blacklist
+### 交易对黑名单
 
-The pair blacklist (configured via `exchange.pair_blacklist` in the configuration) disallows certain pairs from trading.
-This can be as simple as excluding `DOGE/BTC` - which will remove exactly this pair.
+交易对黑名单（通过配置文件中的 `exchange.pair_blacklist` 配置）禁止特定交易对进行交易。
+最简单的例子是排除 `DOGE/BTC`——这将精确移除该交易对。
 
-The pair-blacklist does also support wildcards (in regex-style) - so `BNB/.*` will exclude ALL pairs that start with BNB.
-You may also use something like `.*DOWN/BTC` or `.*UP/BTC` to exclude leveraged tokens (check Pair naming conventions for your exchange!)
+交易对黑名单也支持通配符（采用正则表达式风格）——因此 `BNB/.*` 将排除所有以 BNB 开头的交易对。
+您也可以使用类似 `.*DOWN/BTC` 或 `.*UP/BTC` 的模式来排除杠杆代币（请检查您交易所的交易对命名规范！）
 
-### Available Pairlist Handlers
+### 可用的交易对列表处理器
 
-* [`StaticPairList`](#static-pair-list) (default, if not configured differently)
-* [`VolumePairList`](#volume-pair-list)
-* [`PercentChangePairList`](#percent-change-pair-list)
+* [`StaticPairList`](#静态交易对列表)（默认选项，若未另行配置）
+* [`VolumePairList`](#成交量交易对列表)
+* [`PercentChangePairList`](#百分比变化交易对列表)
 * [`ProducerPairList`](#producerpairlist)
 * [`RemotePairList`](#remotepairlist)
-* [`MarketCapPairList`](#marketcappairlist)
+* [`MarketCapPairList`](#市值交易对列表)
 * [`AgeFilter`](#agefilter)
 * [`DelistFilter`](#delistfilter)
 * [`FullTradesFilter`](#fulltradesfilter)
@@ -38,16 +38,16 @@ You may also use something like `.*DOWN/BTC` or `.*UP/BTC` to exclude leveraged 
 * [`RangeStabilityFilter`](#rangestabilityfilter)
 * [`VolatilityFilter`](#volatilityfilter)
 
-!!! Tip "Testing pairlists"
-    Pairlist configurations can be quite tricky to get right. Best use freqUI in [webserver mode](freq-ui.md#webserver-mode) or the [`test-pairlist`](utils.md#test-pairlist) utility sub-command to test your Pairlist configuration quickly.
+!!! Tip "测试配对列表"
+    配对列表配置可能相当棘手，难以正确设置。最好在 [网页服务器模式](freq-ui.md#webserver-mode) 下使用 freqUI，或使用 [`test-pairlist`](utils.md#test-pairlist) 实用子命令来快速测试您的配对列表配置。
 
-#### Static Pair List
+#### 静态配对列表
 
-By default, the `StaticPairList` method is used, which uses a statically defined pair whitelist from the configuration. The pairlist also supports wildcards (in regex-style) - so `.*/BTC` will include all pairs with BTC as a stake.
+默认情况下，使用 `StaticPairList` 方法，该方法使用配置中静态定义的配对白名单。该配对列表还支持通配符（采用正则表达式风格）——因此 `.*/BTC` 将包含所有以 BTC 作为计价货币的配对。
 
-It uses configuration from `exchange.pair_whitelist` and `exchange.pair_blacklist`, which in the below example, will trade BTC/USDT and ETH/USDT - and will prevent BNB/USDT trading.
+它使用 `exchange.pair_whitelist` 和 `exchange.pair_blacklist` 中的配置，在以下示例中，将交易 BTC/USDT 和 ETH/USDT——并阻止 BNB/USDT 交易。
 
-Both `pair_*list` parameters support regex - so values like  `.*/USDT` would enable trading all pairs that are not in the blacklist.
+`pair_*list` 参数均支持正则表达式——因此像 `.*/USDT` 这样的值将启用所有不在黑名单中的配对交易。
 
 ```json
 "exchange": {
@@ -68,27 +68,27 @@ Both `pair_*list` parameters support regex - so values like  `.*/USDT` would ena
 ],
 ```
 
-By default, only currently enabled pairs are allowed.
-To skip pair validation against active markets, set `"allow_inactive": true` within the `StaticPairList` configuration.
-This can be useful for backtesting expired pairs (like quarterly spot-markets).
+默认情况下，仅允许当前启用的配对。
+要跳过对活跃市场的配对验证，请在 `StaticPairList` 配置中设置 `"allow_inactive": true`。
+这对于回测已过期配对（如季度现货市场）非常有用。
 
-When used in a "follow-up" position (e.g. after VolumePairlist), all pairs in `'pair_whitelist'` will be added to the end of the pairlist.
+当在"后续"位置（例如，在 VolumePairlist 之后）使用时，`'pair_whitelist'` 中的所有配对将被添加到配对列表的末尾。
 
-#### Volume Pair List
+#### 成交量配对列表
 
-`VolumePairList` employs sorting/filtering of pairs by their trading volume. It selects `number_assets` top pairs with sorting based on the `sort_key` (which can only be `quoteVolume`).
+`VolumePairList` 采用按交易量对交易对进行排序/筛选的方法。它根据 `sort_key`（只能是 `quoteVolume`）选择前 `number_assets` 个顶级交易对。
 
-When used in the chain of Pairlist Handlers in a non-leading position (after StaticPairList and other Pairlist Filters), `VolumePairList` considers outputs of previous Pairlist Handlers, adding its sorting/selection of the pairs by the trading volume.
+当在交易对处理程序链中处于非首位（位于 StaticPairList 和其他交易对过滤器之后）时，`VolumePairList` 会考虑先前交易对处理程序的输出，并在此基础上增加按交易量进行的排序/选择。
 
-When used in the leading position of the chain of Pairlist Handlers, the `pair_whitelist` configuration setting is ignored. Instead, `VolumePairList` selects the top assets from all available markets with matching stake-currency on the exchange.
+当在交易对处理程序链中处于首位时，将忽略 `pair_whitelist` 配置设置。相反，`VolumePairList` 会从交易所所有可用市场中筛选出与计价货币匹配的顶级资产。
 
-The `refresh_period` setting allows to define the period (in seconds), at which the pairlist will be refreshed. Defaults to 1800s (30 minutes).
-The pairlist cache (`refresh_period`) on `VolumePairList` is only applicable to generating pairlists.
-Filtering instances (not the first position in the list) will not apply any cache (beyond caching candles for the duration of the candle in advanced mode) and will always use up-to-date data.
+`refresh_period` 设置允许定义交易对列表的刷新周期（以秒为单位），默认为 1800 秒（30 分钟）。
+`VolumePairList` 上的交易对列表缓存（`refresh_period`）仅适用于生成交易对列表。
+筛选实例（非列表首位）不会应用任何缓存（在高级模式下仅缓存蜡烛图数据直至该周期结束），并始终使用最新数据。
 
-`VolumePairList` is per default based on the ticker data from exchange, as reported by the ccxt library:
+默认情况下，`VolumePairList` 基于 ccxt 库报告的交易所行情数据：
 
-* The `quoteVolume` is the amount of quote (stake) currency traded (bought or sold) in last 24 hours.
+* `quoteVolume` 是指过去 24 小时内计价（保证金）货币的交易量（买入或卖出）。
 
 ```json
 "pairlists": [
@@ -103,14 +103,14 @@ Filtering instances (not the first position in the list) will not apply any cach
 ],
 ```
 
-You can define a minimum volume with `min_value` - which will filter out pairs with a volume lower than the specified value in the specified timerange.
-In addition to that, you can also define a maximum volume with `max_value` - which will filter out pairs with a volume higher than the specified value in the specified timerange.
+您可以使用 `min_value` 定义最小交易量——这将过滤掉指定时间范围内交易量低于该值的交易对。
+此外，您还可以使用 `max_value` 定义最大交易量——这将过滤掉指定时间范围内交易量高于该值的交易对。
 
-##### VolumePairList Advanced mode
+##### 交易量交易对列表高级模式
 
-`VolumePairList` can also operate in an advanced mode to build volume over a given timerange of specified candle size. It utilizes exchange historical candle data, builds a typical price (calculated by (open+high+low)/3) and multiplies the typical price with every candle's volume. The sum is the `quoteVolume` over the given range. This allows different scenarios, for a  more smoothened volume, when using longer ranges with larger candle sizes, or the opposite when using a short range with small candles.
+`VolumePairList` 也可以在高级模式下运行，通过指定时间范围内的K线数据来构建交易量。它利用交易所的历史K线数据，构建典型价格（通过（开盘价+最高价+最低价）/3计算）并将典型价格与每根K线的交易量相乘。其总和即为给定时间范围内的 `quoteVolume`。这允许实现不同的场景：当使用较长周期和较大K线尺寸时，可获得更平滑的交易量；反之，当使用较短周期和较小K线时则效果相反。
 
-For convenience `lookback_days` can be specified, which will imply that 1d candles will be used for the lookback. In the example below the pairlist would be created based on the last 7 days:
+为方便起见，可以指定 `lookback_days`，这将意味着使用1天K线进行回看。以下示例中的交易对列表将基于过去7天数据创建：
 
 ```json
 "pairlists": [
@@ -125,16 +125,16 @@ For convenience `lookback_days` can be specified, which will imply that 1d candl
 ],
 ```
 
-!!! Warning "Range look back and refresh period"
-    When used in conjunction with `lookback_days` and `lookback_timeframe` the `refresh_period` can not be smaller than the candle size in seconds. As this will result in unnecessary requests to the exchanges API.
+!!! Warning "范围回看与刷新周期"
+    当与 `lookback_days` 和 `lookback_timeframe` 结合使用时，`refresh_period` 不能小于以秒为单位的K线尺寸。否则将导致向交易所API发送不必要的请求。
 
-!!! Warning "Performance implications when using lookback range"
-    If used in first position in combination with lookback, the computation of the range based volume can be time and resource consuming, as it downloads candles for all tradable pairs. Hence it's highly advised to use the standard approach with `VolumeFilter` to narrow the pairlist down for further range volume calculation.
+!!! Warning "使用回望范围时的性能影响"
+    如果在首位结合回望功能使用，基于范围的交易量计算可能会消耗大量时间和资源，因为它会下载所有可交易货币对的K线数据。因此强烈建议采用标准方法，先使用 `VolumeFilter` 缩小货币对列表范围，再进行后续的范围交易量计算。
 
-??? Tip "Unsupported exchanges"
-    On some exchanges (like Gemini), regular VolumePairList does not work as the api does not natively provide 24h volume. This can be worked around by using candle data to build the volume.
-    To roughly simulate 24h volume, you can use the following configuration.
-    Please note that These pairlists will only refresh once per day.
+??? Tip "不受支持的交易所"
+    在某些交易所（如Gemini），常规的VolumePairList无法正常工作，因为其API未原生提供24小时交易量数据。可以通过使用K线数据构建交易量来解决此问题。
+    要大致模拟24小时交易量，可采用以下配置方案。
+    请注意，这些货币对列表每天仅刷新一次。
 
     ```json
     "pairlists": [
@@ -149,7 +149,7 @@ For convenience `lookback_days` can be specified, which will imply that 1d candl
     ],
     ```
 
-More sophisticated approach can be used, by using `lookback_timeframe` for candle size and `lookback_period` which specifies the amount of candles. This example will build the volume pairs based on a rolling period of 3 days of 1h candles:
+可通过更复杂的方法实现：使用 `lookback_timeframe` 设置K线周期，并通过 `lookback_period` 指定K线数量。以下示例将基于3天1小时K线的滚动周期来构建交易量货币对列表：
 
 ```json
 "pairlists": [
@@ -166,30 +166,30 @@ More sophisticated approach can be used, by using `lookback_timeframe` for candl
 ```
 
 !!! Note
-    `VolumePairList` does not support backtesting mode.
+    `VolumePairList` 不支持回测模式。
 
-#### Percent Change Pair List
+#### 百分比变化货币对列表
 
-`PercentChangePairList` filters and sorts pairs based on the percentage change in their price over the last 24 hours or any defined timeframe as part of advanced options. This allows traders to focus on assets that have experienced significant price movements, either positive or negative.
+`PercentChangePairList` 根据货币对在过去24小时或高级选项中任意定义时间段内的价格百分比变化来筛选和排序货币对。这使得交易者能够重点关注经历显著价格波动（无论是正向还是负向）的资产。
 
-**Configuration Options**
+**配置选项**
 
-* `number_assets`: Specifies the number of top pairs to select based on the 24-hour percentage change.
-* `min_value`: Sets a minimum percentage change threshold. Pairs with a percentage change below this value will be filtered out.
-* `max_value`: Sets a maximum percentage change threshold. Pairs with a percentage change above this value will be filtered out.
-* `sort_direction`: Specifies the order in which pairs are sorted based on their percentage change. Accepts two values: `asc` for ascending order and `desc` for descending order.
-* `refresh_period`: Defines the interval (in seconds) at which the pairlist will be refreshed. The default is 1800 seconds (30 minutes).
-* `lookback_days`: Number of days to look back. When `lookback_days` is selected, the `lookback_timeframe` is defaulted to 1 day.
-* `lookback_timeframe`: Timeframe to use for the lookback period.
-* `lookback_period`: Number of periods to look back at.
+* `number_assets`: 指定基于24小时百分比变化选择的前几名交易对数量。
+* `min_value`: 设置最小百分比变化阈值。百分比变化低于此值的交易对将被过滤掉。
+* `max_value`: 设置最大百分比变化阈值。百分比变化高于此值的交易对将被过滤掉。
+* `sort_direction`: 指定基于百分比变化对交易对进行排序的顺序。接受两个值：`asc`表示升序，`desc`表示降序。
+* `refresh_period`: 定义配对列表刷新的时间间隔（以秒为单位）。默认为1800秒（30分钟）。
+* `lookback_days`: 回溯天数。当选择`lookback_days`时，`lookback_timeframe`默认为1天。
+* `lookback_timeframe`: 用于回溯周期的时间框架。
+* `lookback_period`: 回溯的周期数。
 
-When PercentChangePairList is used after other Pairlist Handlers, it will operate on the outputs of those handlers. If it is the leading Pairlist Handler, it will select pairs from all available markets with the specified stake currency.
+当百分比变化配对列表在其他配对列表处理器之后使用时，它将基于这些处理器的输出进行操作。如果它是首位的配对列表处理器，它将从具有指定计价货币的所有可用市场中选择交易对。
 
-`PercentChangePairList` uses ticker data from the exchange, provided via the ccxt library:
-The percentage change is calculated as the change in price over the last 24 hours.
+`PercentChangePairList`使用通过ccxt库提供的交易所行情数据：
+百分比变化计算为过去24小时内的价格变化。
 
-??? Note "Unsupported exchanges"
-    On some exchanges (like HTX), regular PercentChangePairList does not work as the api does not natively provide 24h percent change in price. This can be worked around by using candle data to calculate the percentage change. To roughly simulate 24h percent change, you can use the following configuration. Please note that these pairlists will only refresh once per day.
+!!! Note "Unsupported exchanges"
+    在某些交易所（如 HTX）上，常规的 PercentChangePairList 无法正常工作，因为其 API 并未原生提供 24 小时价格变动百分比。这可以通过使用 K 线数据计算变动百分比来解决。要大致模拟 24 小时变动百分比，您可以使用以下配置。请注意，这些交易对列表每天仅刷新一次。
     ```json
     "pairlists": [
         {
@@ -202,7 +202,7 @@ The percentage change is calculated as the change in price over the last 24 hour
     ],
     ```
 
-**Example Configuration to Read from Ticker**
+**从行情数据读取的示例配置**
 
 ```json
 "pairlists": [
@@ -215,12 +215,12 @@ The percentage change is calculated as the change in price over the last 24 hour
 ],
 ```
 
-In this configuration:
+在此配置中：
 
-1. The top 15 pairs are selected based on the highest percentage change in price over the last 24 hours.
-2. Only pairs with a percentage change between -10% and 50% are considered.
+1. 根据过去 24 小时内最高价格变动百分比选择前 15 个交易对。
+2. 仅考虑变动百分比在 -10% 到 50% 之间的交易对。
 
-**Example Configuration to Read from Candles**
+**从 K 线数据读取的示例配置**
 
 ```json
 "pairlists": [
@@ -236,30 +236,30 @@ In this configuration:
 ],
 ```
 
-This example builds the percent change pairs based on a rolling period of 3 days of 1-hour candles by using `lookback_timeframe` for candle size and `lookback_period` which specifies the number of candles.
+此示例通过使用 `lookback_timeframe` 指定 K 线周期和 `lookback_period` 指定 K 线数量，基于 3 天 1 小时 K 线的滚动周期构建变动百分比交易对。
 
-The percent change in price is calculated using the following formula, which expresses the percentage difference between the current candle's close price and the previous candle's close price, as defined by the specified timeframe and lookback period:
+价格变动百分比使用以下公式计算，该公式表示当前 K 线收盘价与指定时间周期和回溯周期所定义的先前 K 线收盘价之间的百分比差异：
 
-$$ Percent Change = (\frac{Current Close - Previous Close}{Previous Close}) * 100 $$
+$$ 百分比变化 = (\frac{当前收盘价 - 前收盘价}{前收盘价}) * 100 $$
 
-!!! Warning "Range look back and refresh period"
-    When used in conjunction with `lookback_days` and `lookback_timeframe` the `refresh_period` can not be smaller than the candle size in seconds. As this will result in unnecessary requests to the exchanges API.
+!!! Warning "回看范围与刷新周期"
+    当与 `lookback_days` 和 `lookback_timeframe` 结合使用时，`refresh_period` 不能小于以秒为单位的蜡烛图尺寸。否则将导致向交易所 API 发出不必要的请求。
 
-!!! Warning "Performance implications when using lookback range"
-    If used in first position in combination with lookback, the computation of the range-based percent change can be time and resource consuming, as it downloads candles for all tradable pairs. Hence it's highly advised to use the standard approach with `PercentChangePairList` to narrow the pairlist down for further percent-change calculation.
+!!! Warning "使用回看范围时的性能影响"
+    如果在首位结合回看功能使用，基于范围的百分比变化计算可能会消耗大量时间和资源，因为它会下载所有可交易对的蜡烛图数据。因此强烈建议先使用 `PercentChangePairList` 的标准方法来缩小交易对列表，再进行百分比变化计算。
 
-!!! Note "Backtesting"
-    `PercentChangePairList` does not support backtesting mode.
+!!! Note "回测"
+    `PercentChangePairList` 不支持回测模式。
 
 #### ProducerPairList
 
-With `ProducerPairList`, you can reuse the pairlist from a [Producer](producer-consumer.md) without explicitly defining the pairlist on each consumer.
+使用 `ProducerPairList`，您可以复用来自 [Producer](producer-consumer.md) 的交易对列表，而无需在每个消费者上显式定义交易对列表。
 
-[Consumer mode](producer-consumer.md) is required for this pairlist to work.
+此交易对列表需要启用 [消费者模式](producer-consumer.md) 才能正常工作。
 
-The pairlist will perform a check on active pairs against the current exchange configuration to avoid attempting to trade on invalid markets.
+该交易对列表会针对当前交易所配置检查活跃交易对，以避免尝试在无效市场上进行交易。
 
-You can limit the length of the pairlist with the optional parameter `number_assets`. Using `"number_assets"=0` or omitting this key will result in the reuse of all producer pairs valid for the current setup.
+您可以使用可选参数 `number_assets` 来限制配对列表的长度。使用 `"number_assets"=0` 或省略此键将导致复用当前设置下所有有效的生产者配对。
 
 ```json
 "pairlists": [
@@ -271,16 +271,16 @@ You can limit the length of the pairlist with the optional parameter `number_ass
 ],
 ```
 
-!!! Tip "Combining pairlists"
-    This pairlist can be combined with all other pairlists and filters for further pairlist reduction, and can also act as an "additional" pairlist, on top of already defined pairs.
-    `ProducerPairList` can also be used multiple times in sequence, combining the pairs from multiple producers.
-    Obviously in complex such configurations, the Producer may not provide data for all pairs, so the strategy must be fit for this.
+!!! Tip "组合配对列表"
+    此配对列表可与所有其他配对列表和过滤器结合使用，以进一步缩减配对列表，也可作为"附加"配对列表，叠加在已定义的配对上。
+    `ProducerPairList` 也可按顺序多次使用，组合来自多个生产者的配对。
+    显然在此类复杂配置中，生产者可能无法为所有配对提供数据，因此策略必须适应这种情况。
 
 #### RemotePairList
 
-It allows the user to fetch a pairlist from a remote server or a locally stored json file within the freqtrade directory, enabling dynamic updates and customization of the trading pairlist.
+它允许用户从远程服务器或 freqtrade 目录内本地存储的 json 文件获取配对列表，从而实现交易配对列表的动态更新和自定义。
 
-The RemotePairList is defined in the pairlists section of the configuration settings. It uses the following configuration options:
+RemotePairList 在配置设置的 pairlists 部分中定义。它使用以下配置选项：
 
 ```json
 "pairlists": [
@@ -299,19 +299,19 @@ The RemotePairList is defined in the pairlists section of the configuration sett
 ]
 ```
 
-The optional `mode` option specifies if the pairlist should be used as a `blacklist` or as a `whitelist`. The default value is "whitelist".
+可选的 `mode` 选项指定配对列表应作为 `blacklist`（黑名单）还是 `whitelist`（白名单）使用。默认值为 "whitelist"。
 
-The optional `processing_mode` option in the RemotePairList configuration determines how the retrieved pairlist is processed. It can have two values: "filter" or "append". The default value is "filter".
+RemotePairList 配置中的可选 `processing_mode` 选项决定了如何处​​理获取的配对列表。它可以有两个值："filter"（过滤）或 "append"（追加）。默认值为 "filter"。
 
-In "filter" mode, the retrieved pairlist is used as a filter. Only the pairs present in both the original pairlist and the retrieved pairlist are included in the final pairlist. Other pairs are filtered out.
+在"filter"模式下，检索到的交易对列表将用作过滤器。只有同时存在于原始交易对列表和检索到的交易对列表中的交易对才会被包含在最终列表中，其他交易对将被过滤掉。
 
-In "append" mode, the retrieved pairlist is added to the original pairlist. All pairs from both lists are included in the final pairlist without any filtering.
+在"append"模式下，检索到的交易对列表会被添加到原始交易对列表中。两个列表中的所有交易对都将被包含在最终列表中，不进行任何过滤。
 
-The `pairlist_url` option specifies the URL of the remote server where the pairlist is located, or the path to a local file (if file:/// is prepended). This allows the user to use either a remote server or a local file as the source for the pairlist.
+`pairlist_url`选项指定了远程服务器上交易对列表的URL地址，或者是本地文件的路径（如果前缀为file:///）。这允许用户使用远程服务器或本地文件作为交易对列表的数据源。
 
-The `save_to_file` option, when provided with a valid filename, saves the processed pairlist to that file in JSON format. This option is optional, and by default, the pairlist is not saved to a file.
+`save_to_file`选项在提供有效文件名时，会将处理后的交易对列表以JSON格式保存到该文件中。此选项为可选配置，默认情况下交易对列表不会保存到文件。
 
-??? Example "Multi bot with shared pairlist example"
+??? 示例 "多机器人共享交易对列表示例"
 
     `save_to_file` can be used to save the pairlist to a file with Bot1:
 
@@ -345,7 +345,7 @@ The `save_to_file` option, when provided with a valid filename, saves the proces
     ]
     ```    
 
-The user is responsible for providing a server or local file that returns a JSON object with the following structure:
+用户需要负责提供一个服务器或本地文件，该源应返回具有以下结构的JSON对象：
 
 ```json
 {
@@ -354,20 +354,20 @@ The user is responsible for providing a server or local file that returns a JSON
 }
 ```
 
-The `pairs` property should contain a list of strings with the trading pairs to be used by the bot. The `refresh_period` property is optional and specifies the number of seconds that the pairlist should be cached before being refreshed.
+`pairs`属性应包含一个字符串列表，列出机器人要使用的交易对。`refresh_period`属性为可选，指定交易对列表在刷新前应缓存的秒数。
 
-The optional `keep_pairlist_on_failure` specifies whether the previous received pairlist should be used if the remote server is not reachable or returns an error. The default value is true.
+可选的`keep_pairlist_on_failure`指定当远程服务器无法访问或返回错误时，是否应使用先前接收到的交易对列表。默认值为true。
 
-The optional `read_timeout` specifies the maximum amount of time (in seconds) to wait for a response from the remote source, The default value is 60.
+可选的 `read_timeout` 参数指定了等待远程源响应的最长时间（以秒为单位），默认值为 60。
 
-The optional `bearer_token` will be included in the requests Authorization Header.
+可选的 `bearer_token` 将被包含在请求的 Authorization 头部中。
 
 !!! Note
-    In case of a server error the last received pairlist will be kept if `keep_pairlist_on_failure` is set to true, when set to false a empty pairlist is returned.
+    当服务器发生错误时，如果 `keep_pairlist_on_failure` 设置为 true，将保留最后收到的交易对列表；若设置为 false，则返回空交易对列表。
 
 #### MarketCapPairList
 
-`MarketCapPairList` employs sorting/filtering of pairs by their marketcap rank based of CoinGecko. The returned pairlist will be sorted based of their marketcap ranks.
+`MarketCapPairList` 采用基于 CoinGecko 的市值排名对交易对进行排序/筛选。返回的交易对列表将根据其市值排名进行排序。
 
 ```json
 "pairlists": [
@@ -381,60 +381,58 @@ The optional `bearer_token` will be included in the requests Authorization Heade
 ]
 ```
 
-`number_assets` defines the maximum number of pairs returned by the pairlist. `max_rank` will determine the maximum rank used in creating/filtering the pairlist. It's expected that some coins within the top `max_rank` marketcap will not be included in the resulting pairlist since not all pairs will have active trading pairs in your preferred market/stake/exchange combination.  
-While using a `max_rank` bigger than 250 is supported, it's not recommended, as it'll cause multiple API calls to CoinGecko, which can lead to rate limit issues.
+`number_assets` 定义了交易对列表返回的最大交易对数量。`max_rank` 将决定创建/筛选交易对列表时使用的最大排名。需要注意的是，由于并非所有位于前 `max_rank` 市值的代币都会在您偏好的市场/计价货币/交易所组合中存在活跃交易对，因此部分代币可能不会出现在最终的交易对列表中。  
+虽然支持使用大于 250 的 `max_rank` 值，但不建议这样做，因为这会导致向 CoinGecko 发起多次 API 调用，可能引发速率限制问题。
 
-The `refresh_period` setting defines the interval (in seconds) at which the marketcap rank data will be refreshed. The default is 86,400 seconds (1 day). The pairlist cache (`refresh_period`) applies to both generating pairlists (when in the first position in the list) and filtering instances (when not in the first position in the list).
+`refresh_period` 设置定义了市值排名数据刷新的时间间隔（以秒为单位）。默认值为 86,400 秒（1 天）。该配对列表缓存（`refresh_period`）同时适用于生成配对列表（当位于列表首位时）和过滤实例（当不位于列表首位时）。
 
-The `categories` setting specifies the [coingecko categories](https://www.coingecko.com/en/categories) from which to select coins from. The default is an empty list `[]`, meaning no category filtering is applied.
-If an incorrect category string is chosen, the plugin will print the available categories from CoinGecko and fail. The category should be the ID of the category, for example, for `https://www.coingecko.com/en/categories/layer-1`, the category ID would be `layer-1`. You can pass multiple categories such as `["layer-1", "meme-token"]` to select from several categories.
+`categories` 设置指定了从中选择代币的 [CoinGecko 类别](https://www.coingecko.com/en/categories)。默认值为空列表 `[]`，表示不应用类别过滤。
+如果选择了错误的类别字符串，插件将打印 CoinGecko 提供的可用类别并执行失败。类别应使用其 ID，例如，对于 `https://www.coingecko.com/en/categories/layer-1`，类别 ID 为 `layer-1`。您可以传递多个类别，如 `["layer-1", "meme-token"]`，以从多个类别中进行选择。
 
-Coins like 1000PEPE/USDT or KPEPE/USDT:USDT are detected on a best effort basis, with the prefixes `1000` and `K` being used to identify them.
+对于像 1000PEPE/USDT 或 KPEPE/USDT:USDT 这样的代币，系统会尽最大努力进行检测，使用前缀 `1000` 和 `K` 来识别它们。
 
-!!! Warning "Many categories"
-    Each added category corresponds to one API call to CoinGecko. The more categories you add, the longer the pairlist generation will take, potentially causing rate limit issues.
+!!! Warning "类别过多"
+    每添加一个类别，就意味着要向 CoinGecko 发起一次 API 调用。添加的类别越多，生成配对列表所需的时间就越长，并可能引发速率限制问题。
 
-!!! Danger "Duplicate symbols in coingecko"
-    Coingecko often has duplicate symbols, where the same symbol is used for different coins. Freqtrade will use the symbol as is and try to search for it on the exchange. If the symbol exists - it will be used. Freqtrade will however not check if the _intended_ symbol is the one coingecko meant. This can sometimes lead to unexpected results, especially on low volume coins or with meme coin categories.
+!!! Danger "CoinGecko 中的重复符号"
+    CoinGecko 经常出现重复符号，即同一符号被用于不同的代币。Freqtrade 将按原样使用该符号并尝试在交易所中搜索。如果该符号存在，则会被使用。然而，Freqtrade 不会检查交易所上的符号是否是 CoinGecko 所指的 _预期_ 符号。这有时可能导致意外结果，尤其是在低交易量代币或 meme 币类别中。
 
 #### AgeFilter
 
-Removes pairs that have been listed on the exchange for less than `min_days_listed` days (defaults to `10`) or more than `max_days_listed` days (defaults `None` mean infinity).
+移除在交易所上市时间少于 `min_days_listed` 天（默认为 `10` 天）或多于 `max_days_listed` 天（默认为 `None`，表示无上限）的交易对。
 
-When pairs are first listed on an exchange they can suffer huge price drops and volatility
-in the first few days while the pair goes through its price-discovery period. Bots can often
-be caught out buying before the pair has finished dropping in price.
+当交易对首次在交易所上市时，在最初几天经历价格发现阶段，可能会遭遇巨大的价格下跌和波动。交易机器人常常会在交易对价格下跌结束前就买入而被套牢。
 
-This filter allows freqtrade to ignore pairs until they have been listed for at least `min_days_listed` days and listed before `max_days_listed`.
+此过滤器允许 freqtrade 忽略那些上市时间未达到至少 `min_days_listed` 天或上市时间早于 `max_days_listed` 天的交易对。
 
 #### DelistFilter
 
-Removes pairs that will be delisted on the exchange maximum `max_days_from_now` days from now (defaults to `0` which remove all future delisted pairs no matter how far from now). Currently this filter only supports following exchanges:
+移除将在未来最多 `max_days_from_now` 天（默认为 `0`，表示无论多久后，移除所有未来将被下架的货币对）内从交易所下架的货币对。目前此过滤器仅支持以下交易所：
 
 !!! Note "Available exchanges"
-    Delist filter is only available on Binance, where Binance Futures will work for both dry and live modes, while Binance Spot is limited to live mode (for technical reasons).
+    退市过滤器仅在币安交易所可用，其中币安期货在模拟和实盘模式下均可工作，而币安现货限于实盘模式（出于技术原因）。
 
 !!! Warning "Backtesting"
-    `DelistFilter` does not support backtesting mode.
+    `DelistFilter` 不支持回测模式。
 
 #### FullTradesFilter
 
-Shrink whitelist to consist only in-trade pairs when the trade slots are full (when `max_open_trades` isn't being set to `-1` in the config).
+当交易仓位已满时（配置中 `max_open_trades` 未设置为 `-1` 时），将白名单缩减为仅包含交易中的货币对。
 
-When the trade slots are full, there is no need to calculate indicators of the rest of the pairs (except informative pairs) since no new trade can be opened. By shrinking the whitelist to just the in-trade pairs, you can improve calculation speeds and reduce CPU usage. When a trade slot is free (either a trade is closed or `max_open_trades` value in config is increased), then the whitelist will return to normal state.
+当交易仓位已满时，无需计算其余货币对（信息对除外）的指标，因为无法开立新交易。通过将白名单缩减为仅交易中的货币对，可以提高计算速度并减少 CPU 使用率。当交易仓位空闲时（交易关闭或配置中 `max_open_trades` 值增加），白名单将恢复正常状态。
 
-When multiple pairlist filters are being used, it's recommended to put this filter at second position directly below the primary pairlist, so when the trade slots are full, the bot doesn't have to download data for the rest of the filters.
+当使用多个货币对列表过滤器时，建议将此过滤器置于主货币对列表正下方的第二个位置，这样当交易仓位已满时，机器人无需为其余过滤器下载数据。
 
 !!! Warning "Backtesting"
-    `FullTradesFilter` does not support backtesting mode.
+    `FullTradesFilter` 不支持回测模式。
 
 #### OffsetFilter
 
-Offsets an incoming pairlist by a given `offset` value.
+通过给定的 `offset` 值对传入的货币对列表进行偏移。
 
-As an example it can be used in conjunction with `VolumeFilter` to remove the top X volume pairs. Or to split a larger pairlist on two bot instances.
+例如，它可以与 `VolumeFilter` 结合使用，以移除交易量排名前 X 的交易对。或者将较大的交易对列表拆分到两个机器人实例上运行。
 
-Example to remove the first 10 pairs from the pairlist, and takes the next 20 (taking items 10-30 of the initial list):
+以下示例展示了如何从交易对列表中移除前 10 个交易对，并获取接下来的 20 个（即取初始列表的第 10-30 项）：
 
 ```json
 "pairlists": [
@@ -448,29 +446,28 @@ Example to remove the first 10 pairs from the pairlist, and takes the next 20 (t
 ```
 
 !!! Warning
-    When `OffsetFilter` is used to split a larger pairlist among multiple bots in combination with `VolumeFilter`
-    it can not be guaranteed that pairs won't overlap due to slightly different refresh intervals for the
-    `VolumeFilter`.
+    当 `OffsetFilter` 与 `VolumeFilter` 结合使用，将较大的交易对列表拆分到多个机器人时，
+    由于 `VolumeFilter` 的刷新间隔可能存在细微差异，无法保证交易对不会出现重叠。
 
 !!! Note
-    An offset larger than the total length of the incoming pairlist will result in an empty pairlist.
+    如果偏移量大于传入交易对列表的总长度，将导致返回空的交易对列表。
 
 #### PerformanceFilter
 
-Sorts pairs by past trade performance, as follows:
+根据历史交易表现对交易对进行排序，排序规则如下：
 
-1. Positive performance.
-2. No closed trades yet.
-3. Negative performance.
+1.  正收益的交易对。
+2.  尚未有成交记录的交易对。
+3.  负收益的交易对。
 
-Trade count is used as a tie breaker.
+交易次数被用作平局决胜条件。
 
-You can use the `minutes` parameter to only consider performance of the past X minutes (rolling window).
-Not defining this parameter (or setting it to 0) will use all-time performance.
+您可以使用 `minutes` 参数来仅考虑过去 X 分钟内的表现（滚动窗口）。
+不定义此参数（或将其设置为 0）将使用全时段的表现数据。
 
-The optional `min_profit` (as ratio -> a setting of `0.01` corresponds to 1%) parameter defines the minimum profit a pair must have to be considered.
-Pairs below this level will be filtered out.
-Using this parameter without `minutes` is highly discouraged, as it can lead to an empty pairlist without a way to recover.
+可选的 `min_profit` 参数（比率为单位 -> 设置为 `0.01` 对应 1%）定义了交易对被纳入考虑所需的最低利润。
+低于此水平的交易对将被过滤掉。
+强烈不建议在不使用 `minutes` 参数的情况下单独使用此参数，因为这可能导致交易对列表为空且无法恢复。
 
 ```json
 "pairlists": [
@@ -483,61 +480,61 @@ Using this parameter without `minutes` is highly discouraged, as it can lead to 
 ],
 ```
 
-As this Filter uses past performance of the bot, it'll have some startup-period - and should only be used after the bot has a few 100 trades in the database.
+由于此过滤器使用机器人过去的表现数据，因此会有一个启动期——并且仅当机器人在数据库中积累了几百笔交易后才应使用。
 
-!!! Warning "Backtesting"
-    `PerformanceFilter` does not support backtesting mode.
+!!! Warning "回测"
+    `PerformanceFilter` 不支持回测模式。
 
 #### PrecisionFilter
 
-Filters low-value coins which would not allow setting stoplosses.
+过滤那些无法设置止损的低价值币种。
 
-Namely, pairs are blacklisted if a variance of one percent or more in the stop price would be caused by precision rounding on the exchange, i.e. `rounded(stop_price) <= rounded(stop_price * 0.99)`. The idea is to avoid coins with a value VERY close to their lower trading boundary, not allowing setting of proper stoploss.
+具体来说，如果止损价格因交易所精度舍入导致1%或以上的变动，即满足 `rounded(stop_price) <= rounded(stop_price * 0.99)` 时，交易对将被列入黑名单。其原理是避免交易价格极度接近最低交易边界的币种，这类币种无法设置合理的止损位。
 
-!!! Tip "PrecisionFilter is pointless for futures trading"
-    The above does not apply to shorts. And for longs, in theory the trade will be liquidated first.
+!!! Tip "PrecisionFilter 在期货交易中无意义"
+    上述情况不适用于空头交易。而对于多头交易，理论上仓位会先被强平。
 
-!!! Warning "Backtesting"
-    `PrecisionFilter` does not support backtesting mode using multiple strategies.
+!!! Warning "回测"
+    `PrecisionFilter` 不支持使用多策略的回测模式。
 
 #### PriceFilter
 
-The `PriceFilter` allows filtering of pairs by price. Currently the following price filters are supported:
+`PriceFilter` 支持按价格筛选交易对。目前支持以下价格过滤器：
 
 * `min_price`
 * `max_price`
 * `max_value`
 * `low_price_ratio`
 
-The `min_price` setting removes pairs where the price is below the specified price. This is useful if you wish to avoid trading very low-priced pairs.
-This option is disabled by default, and will only apply if set to > 0.
+`min_price` 设置会过滤掉价格低于指定值的交易对。若希望避免交易极低价格的币对时，此功能非常实用。
+该选项默认禁用，仅当设置值 > 0 时生效。
 
-The `max_price` setting removes pairs where the price is above the specified price. This is useful if you wish to trade only low-priced pairs.
-This option is disabled by default, and will only apply if set to > 0.
+`max_price` 设置会移除价格高于指定价格的交易对。如果您希望仅交易低价币种，此功能非常实用。
+该选项默认禁用，仅当设置值 > 0 时生效。
 
-The `max_value` setting removes pairs where the minimum value change is above a specified value.
-This is useful when an exchange has unbalanced limits. For example, if step-size = 1 (so you can only buy 1, or 2, or 3, but not 1.1 Coins) - and the price is pretty high (like 20\$) as the coin has risen sharply since the last limit adaption.
-As a result of the above, you can only buy for 20\$, or 40\$ - but not for 25\$.
-On exchanges that deduct fees from the receiving currency (e.g. binance) - this can result in high value coins / amounts that are unsellable as the amount is slightly below the limit.
+`max_value` 设置会移除最小价值变动超过指定值的交易对。
+当交易所存在不平衡的限制时，此功能非常有用。例如，当步长=1（即只能购买1、2、3枚代币，不能购买1.1枚）且代币价格因近期暴涨而处于高位（如20美元）时。
+基于上述情况，您只能以20美元或40美元购买，而无法以25美元购买。
+在从接收货币中扣除手续费的交易所（如币安），这可能导致高价值代币/金额因略低于限制而无法卖出。
 
-The `low_price_ratio` setting removes pairs where a raise of 1 price unit (pip) is above the `low_price_ratio` ratio.
-This option is disabled by default, and will only apply if set to > 0.
+`low_price_ratio` 设置会移除1个价格单位（点）涨幅超过 `low_price_ratio` 比率的交易对。
+该选项默认禁用，仅当设置值 > 0 时生效。
 
-For `PriceFilter` at least one of its `min_price`, `max_price` or `low_price_ratio` settings must be applied.
+对于 `PriceFilter`，必须至少应用其 `min_price`、`max_price` 或 `low_price_ratio` 设置中的一项。
 
-Calculation example:
+计算示例：
 
-Min price precision for SHITCOIN/BTC is 8 decimals. If its price is 0.00000011 - one price step above would be 0.00000012, which is ~9% higher than the previous price value. You may filter out this pair by using PriceFilter with `low_price_ratio` set to 0.09 (9%) or with `min_price` set to 0.00000011, correspondingly.
+SHITCOIN/BTC 的最低价格精度为 8 位小数。如果其价格为 0.00000011，那么下一个价格步长将是 0.00000012，比前一个价格高出约 9%。您可以通过使用 PriceFilter 并相应地将 `low_price_ratio` 设置为 0.09（9%）或将 `min_price` 设置为 0.00000011 来过滤掉该交易对。
 
-!!! Warning "Low priced pairs"
-    Low priced pairs with high "1 pip movements" are dangerous since they are often illiquid and it may also be impossible to place the desired stoploss, which can often result in high losses since price needs to be rounded to the next tradable price - so instead of having a stoploss of -5%, you could end up with a stoploss of -9% simply due to price rounding.
+!!! Warning "低价交易对"
+    具有高"1 点波动"的低价交易对非常危险，因为它们通常流动性差，并且可能无法设置所需的止损单。这往往会导致巨大损失，因为价格需要四舍五入到下一个可交易价格——因此，您的止损可能不是预期的 -5%，而最终变成 -9%，这仅仅是价格取整的结果。
 
 #### ShuffleFilter
 
-Shuffles (randomizes) pairs in the pairlist. It can be used for preventing the bot from trading some of the pairs more frequently then others when you want all pairs be treated with the same priority.
+对配对列表中的交易对进行随机排序。当您希望所有交易对具有相同优先级时，此过滤器可用于防止机器人更频繁地交易某些交易对。
 
-By default, ShuffleFilter will shuffle pairs once per candle.
-To shuffle on every iteration, set `"shuffle_frequency"` to `"iteration"` instead of  the default of `"candle"`.
+默认情况下，ShuffleFilter 每根 K 线周期随机排序一次。
+若要在每次迭代时都进行随机排序，请将 `"shuffle_frequency"` 设置为 `"iteration"`，而非默认的 `"candle"`。
 
 ``` json
     {
@@ -549,22 +546,22 @@ To shuffle on every iteration, set `"shuffle_frequency"` to `"iteration"` instea
 ```
 
 !!! Tip
-    You may set the `seed` value for this Pairlist to obtain reproducible results, which can be useful for repeated backtesting sessions. If `seed` is not set, the pairs are shuffled in the non-repeatable random order. ShuffleFilter will automatically detect runmodes and apply the `seed` only for backtesting modes - if a `seed` value is set.
+    您可以为该配对列表设置 `seed` 值以获得可重现的结果，这在重复回测会话时非常有用。如果未设置 `seed`，配对将以不可重复的随机顺序进行洗牌。ShuffleFilter 会自动检测运行模式，并仅在回测模式下应用 `seed`（如果设置了 `seed` 值）。
 
 #### SpreadFilter
 
-Removes pairs that have a difference between asks and bids above the specified ratio, `max_spread_ratio` (defaults to `0.005`).
+移除买卖差价高于指定比率 `max_spread_ratio`（默认为 `0.005`）的交易对。
 
-Example:
+示例：
 
-If `DOGE/BTC` maximum bid is 0.00000026 and minimum ask is 0.00000027, the ratio is calculated as: `1 - bid/ask ~= 0.037` which is `> 0.005` and this pair will be filtered out.
+如果 `DOGE/BTC` 的最高买价为 0.00000026，最低卖价为 0.00000027，则比率计算为：`1 - 买价/卖价 ≈ 0.037`，该值 `> 0.005`，因此该交易对将被过滤掉。
 
 #### RangeStabilityFilter
 
-Removes pairs where the difference between lowest low and highest high over `lookback_days` days is below `min_rate_of_change` or above `max_rate_of_change`. Since this is a filter that requires additional data, the results are cached for `refresh_period`.
+移除在过去 `lookback_days` 天内最低价与最高价之差低于 `min_rate_of_change` 或高于 `max_rate_of_change` 的交易对。由于此过滤器需要额外数据，结果会缓存 `refresh_period` 时长。
 
-In the below example:
-If the trading range over the last 10 days is <1% or >99%, remove the pair from the whitelist.
+以下示例中：
+如果过去 10 天的交易波动范围 <1% 或 >99%，则将该交易对从白名单中移除。
 
 ```json
 "pairlists": [
@@ -578,22 +575,22 @@ If the trading range over the last 10 days is <1% or >99%, remove the pair from 
 ]
 ```
 
-Adding `"sort_direction": "asc"` or `"sort_direction": "desc"` enables sorting for this pairlist.
+添加 `"sort_direction": "asc"` 或 `"sort_direction": "desc"` 可启用此配对列表的排序功能。
 
 !!! Tip
-    This Filter can be used to automatically remove stable coin pairs, which have a very low trading range, and are therefore extremely difficult to trade with profit.
-    Additionally, it can also be used to automatically remove pairs with extreme high/low variance over a given amount of time.
+    该过滤器可用于自动移除交易范围极小的稳定币对，这类币对极难通过交易获利。
+    此外，它还可用于自动移除在给定时间段内波动率极高或极低的交易对。
 
 #### VolatilityFilter
 
-Volatility is the degree of historical variation of a pairs over time, it is measured by the standard deviation of logarithmic daily returns. Returns are assumed to be normally distributed, although actual distribution might be different. In a normal distribution, 68% of observations fall within one standard deviation and 95% of observations fall within two standard deviations. Assuming a volatility of 0.05 means that the expected returns for 20 out of 30 days is expected to be less than 5% (one standard deviation). Volatility is a positive ratio of the expected deviation of return and can be greater than 1.00. Please refer to the wikipedia definition of [`volatility`](https://en.wikipedia.org/wiki/Volatility_(finance)).
+波动率是交易对历史价格随时间变化的程度，通过对数日收益的标准差来衡量。虽然实际分布可能有所不同，但收益通常被假设为正态分布。在正态分布中，68%的观测值落在一个标准差范围内，95%的观测值落在两个标准差范围内。假设波动率为0.05，意味着30天中有20天的预期收益将低于5%（一个标准差）。波动率是预期收益偏差的正比率，可能大于1.00。请参考维基百科对[`波动率`](https://en.wikipedia.org/wiki/Volatility_(finance))的定义。
 
-This filter removes pairs if the average volatility over a `lookback_days` days is below `min_volatility` or above `max_volatility`. Since this is a filter that requires additional data, the results are cached for `refresh_period`.
+该过滤器会在`lookback_days`天内的平均波动率低于`min_volatility`或高于`max_volatility`时移除交易对。由于这是需要额外数据的过滤器，结果会缓存`refresh_period`时间。
 
-This filter can be used to narrow down your pairs to a certain volatility or avoid very volatile pairs.
+该过滤器可用于将交易对筛选至特定波动率范围，或避免波动率极高的交易对。
 
-In the below example:
-If the volatility over the last 10 days is not in the range of 0.05-0.50, remove the pair from the whitelist. The filter is applied every 24h.
+在以下示例中：
+如果过去10天的波动率不在0.05-0.50范围内，则将该交易对从白名单中移除。该过滤器每24小时应用一次。
 
 ```json
 "pairlists": [
@@ -607,11 +604,11 @@ If the volatility over the last 10 days is not in the range of 0.05-0.50, remove
 ]
 ```
 
-Adding `"sort_direction": "asc"` or `"sort_direction": "desc"` enables sorting mode for this pairlist.
+添加 `"sort_direction": "asc"` 或 `"sort_direction": "desc"` 可启用该配对列表的排序模式。
 
-### Full example of Pairlist Handlers
+### 配对列表处理器的完整示例
 
-The below example blacklists `BNB/BTC`, uses `VolumePairList` with `20` assets, sorting pairs by `quoteVolume`, then filter future delisted pairs using [`DelistFilter`](#delistfilter) and [`AgeFilter`](#agefilter) to remove pairs that are listed less than 10 days ago. After that [`PrecisionFilter`](#precisionfilter) and [`PriceFilter`](#pricefilter) are applied, filtering all assets where 1 price unit is > 1%. Then the [`SpreadFilter`](#spreadfilter) and [`VolatilityFilter`](#volatilityfilter) are applied and pairs are finally shuffled with the random seed set to some predefined value.
+以下示例将 `BNB/BTC` 加入黑名单，使用包含 `20` 个资产的 `VolumePairList`，按 `quoteVolume` 对交易对进行排序，然后使用 [`DelistFilter`](#delistfilter) 和 [`AgeFilter`](#agefilter) 过滤即将下架的交易对，并移除上市时间少于10天的交易对。随后应用 [`PrecisionFilter`](#precisionfilter) 和 [`PriceFilter`](#pricefilter)，过滤掉1个价格单位变动超过1%的所有资产。接着应用 [`SpreadFilter`](#spreadfilter) 和 [`VolatilityFilter`](#volatilityfilter)，最后使用预设的随机种子对交易对进行随机打乱。
 
 ```json
 "exchange": {

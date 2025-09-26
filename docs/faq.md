@@ -1,177 +1,168 @@
-# Freqtrade FAQ
+# Freqtrade 常见问题解答
 
-## Supported Markets
+## 支持的市场类型
 
-Freqtrade supports spot trading, as well as (isolated) futures trading for some selected exchanges. Please refer to the [documentation start page](index.md#supported-futures-exchanges-experimental) for an up-to-date list of supported exchanges.
+Freqtrade 支持现货交易，以及部分选定交易所的（隔离）期货交易。请查阅[文档首页](index.md#supported-futures-exchanges-experimental)获取最新支持的交易所列表。
 
-### Can my bot open short positions?
+### 我的机器人能否开立空头仓位？
 
-Freqtrade can open short positions in futures markets.
-This requires the strategy to be made for this - and `"trading_mode": "futures"` in the configuration.
-Please make sure to read the [relevant documentation page](leverage.md) first.
+Freqtrade 可以在期货市场中开立空头仓位。
+这需要策略专门为此设计 - 并在配置中设置 `"trading_mode": "futures"`。
+请务必先阅读[相关文档页面](leverage.md)。
 
-In spot markets, you can in some cases use leveraged spot tokens, which reflect an inverted pair (eg. BTCUP/USD, BTCDOWN/USD, ETHBULL/USD, ETHBEAR/USD,...) which can be traded with Freqtrade.
+在现货市场中，某些情况下您可以使用杠杆现货代币，这些代币反映反向交易对（例如 BTCUP/USD、BTCDOWN/USD、ETHBULL/USD、ETHBEAR/USD 等），Freqtrade 可以交易这些代币。
 
-### Can my bot trade options or futures?
+### 我的机器人能否交易期权或期货？
 
-Futures trading is supported for selected exchanges. Please refer to the [documentation start page](index.md#supported-futures-exchanges-experimental) for an up-to-date list of supported exchanges.
+部分选定交易所支持期货交易。请查阅[文档首页](index.md#supported-futures-exchanges-experimental)获取最新支持的交易所列表。
 
-## Beginner Tips & Tricks
+## 新手技巧与提示
 
-* When you work with your strategy & hyperopt file you should use a proper code editor like VSCode or PyCharm. A good code editor will provide syntax highlighting as well as line numbers, making it easy to find syntax errors (most likely pointed out by Freqtrade during startup).
+* 当您处理策略和超参数优化文件时，应使用专业的代码编辑器如 VSCode 或 PyCharm。优秀的代码编辑器会提供语法高亮和行号显示，便于发现语法错误（Freqtrade 在启动时很可能会指出这些错误）。
 
-## Freqtrade common questions
+## Freqtrade 常见问题
 
-### Can freqtrade open multiple positions on the same pair in parallel?
+### Freqtrade 能否在同一交易对上并行开立多个仓位？
 
-No. Freqtrade will only open one position per pair at a time.
-You can however use the [`adjust_trade_position()` callback](strategy-callbacks.md#adjust-trade-position) to adjust an open position.
+不会。Freqtrade 一次只会为每个交易对开设一个仓位。
+但您可以使用 [`adjust_trade_position()` 回调函数](strategy-callbacks.md#adjust-trade-position) 来调整已开仓位。
 
-Backtesting provides an option for this in `--eps` - however this is only there to highlight "hidden" signals, and will not work in live.
+回测中通过 `--eps` 选项提供了此功能 - 但这仅用于突出显示"隐藏"信号，在实盘交易中无效。
 
-### The bot does not start
+### 机器人无法启动
 
-Running the bot with `freqtrade trade --config config.json` shows the output `freqtrade: command not found`.
+使用 `freqtrade trade --config config.json` 运行机器人时显示输出 `freqtrade: command not found`。
 
-This could be caused by the following reasons:
+这可能是由以下原因造成的：
 
-* The virtual environment is not active.
-  * Run `source .venv/bin/activate` to activate the virtual environment.
-* The installation did not complete successfully.
-  * Please check the [Installation documentation](installation.md).
+* 虚拟环境未激活。
+  * 运行 `source .venv/bin/activate` 来激活虚拟环境。
+* 安装未成功完成。
+  * 请查阅 [安装文档](installation.md)。
 
-### The bot starts, but in STOPPED mode
+### 机器人启动，但处于 STOPPED 模式
 
-Make sure you set the `initial_state` config option to `"running"` in your config.json
+请确保在 config.json 中将 `initial_state` 配置选项设置为 `"running"`。
 
-### I have waited 5 minutes, why hasn't the bot made any trades yet?
+### 我已经等了 5 分钟，为什么机器人还没有进行任何交易？
 
-* Depending on the entry strategy, the amount of whitelisted coins, the
-situation of the market etc, it can take up to hours or days to find a good entry
-position for a trade. Be patient!
+* 根据入场策略、白名单币种数量、市场状况等因素，可能需要数小时甚至数天才能找到合适的交易入场点。请保持耐心！
 
-* Backtesting will tell you roughly how many trades to expect - but that won't guarantee that they'll be distributed evenly across time - so you could have 20 trades on one day, and 0 for the rest of the week.
+* 回测会告诉你大致预期的交易数量——但这并不能保证它们会均匀分布在时间线上——所以你可能会在一天内进行20笔交易，而本周其余时间则为0笔。
 
-* It may be because of a configuration error. It's best to check the logs, they usually tell you if the bot is simply not getting buy signals (only heartbeat messages), or if there is something wrong (errors / exceptions in the log).
+* 可能是配置错误导致的。最好检查日志，日志通常会告诉你机器人是否只是没有收到买入信号（只有心跳消息），或者是否存在其他问题（日志中的错误/异常）。
 
-### I have made 12 trades already, why is my total profit negative?
+### 我已经完成了12笔交易，为什么总收益是负的？
 
-I understand your disappointment but unfortunately 12 trades is just
-not enough to say anything. If you run backtesting, you can see that the
-current algorithm does leave you on the plus side, but that is after
-thousands of trades and even there, you will be left with losses on
-specific coins that you have traded tens if not hundreds of times. We
-of course constantly aim to improve the bot but it will _always_ be a
-gamble, which should leave you with modest wins on monthly basis but
-you can't say much from few trades.
+我理解您的失望，但遗憾的是，仅凭12笔交易还不足以说明任何问题。如果运行回测，您会发现当前算法最终确实能让您盈利，但那是在经过数千笔交易之后——即使如此，某些特定币种上您交易了数十次甚至数百次后仍可能处于亏损状态。我们当然会持续优化机器人，但这始终是一种博弈，应该能让您实现月度小幅盈利，但仅凭少量交易无法得出有效结论。
 
-### I’d like to make changes to the config. Can I do that without having to kill the bot?
+### 我想修改配置。能否在不停止机器人的情况下进行？
 
-Yes. You can edit your config and use the `/reload_config` command to reload the configuration. The bot will stop, reload the configuration and strategy and will restart with the new configuration and strategy.
+是的。您可以编辑配置文件并使用 `/reload_config` 命令重新加载配置。机器人将停止运行，重新加载配置和策略，并以新的配置和策略重新启动。
 
-### Why does my bot not sell everything it bought?
+### 为什么我的机器人没有卖出所有买入的币种？
 
-This is called "coin dust" and can happen on all exchanges.
-It happens because many exchanges subtract fees from the "receiving currency" - so you buy 100 COIN - but you only get 99.9 COIN.
-As COIN is trading in full lot sizes (1COIN steps), you cannot sell 0.9 COIN (or 99.9 COIN) - but you need to round down to 99 COIN.
+这种情况称为"币种粉尘"，在所有交易所都可能发生。
+出现这种情况是因为许多交易所会从"接收币种"中扣除手续费——例如您买入100个COIN，但实际只获得99.9个COIN。
+由于COIN以整手数量进行交易（1COIN为单位），您无法卖出0.9个COIN（或99.9个COIN）——必须向下取整为99个COIN。
 
-This is not a bot-problem, but will also happen while manual trading.
+这不是机器人本身的问题，手动交易时同样会出现这种情况。
 
-While freqtrade can handle this (it'll sell 99 COIN), fees are often below the minimum tradable lot-size (you can only trade full COIN, not 0.9 COIN).
-Leaving the dust (0.9 COIN) on the exchange makes usually sense, as the next time freqtrade buys COIN, it'll eat into the remaining small balance, this time selling everything it bought, and therefore slowly declining the dust balance (although it most likely will never reach exactly 0).
+虽然freqtrade能够处理这种情况（会卖出99个COIN），但手续费通常低于最小交易单位（只能交易整枚COIN，不能交易0.9个COIN）。
+将粉尘余额（0.9个COIN）留在交易所通常比较合理，因为下次freqtrade购买COIN时，会使用剩余的小额余额，这次将卖出所有买入的币种，从而逐渐减少粉尘余额（尽管很可能永远不会精确归零）。
 
-Where possible (e.g. on binance), the use of the exchange's dedicated fee currency will fix this.
-On binance, it's sufficient to have BNB in your account, and have "Pay fees in BNB" enabled in your profile. Your BNB balance will slowly decline (as it's used to pay fees) - but you'll no longer encounter dust (Freqtrade will include the fees in the profit calculations).
-Other exchanges don't offer such possibilities, where it's simply something you'll have to accept or move to a different exchange.
+在可能的情况下（例如在币安上），使用交易所的专用费用货币可以解决这个问题。
+在币安上，只需账户中有 BNB 并在个人资料中启用"使用 BNB 支付费用"即可。你的 BNB 余额会缓慢减少（因为它被用来支付费用）——但你将不再遇到粉尘问题（Freqtrade 会将费用计入利润计算）。
+其他交易所不提供此类可能性，这只能接受或转移到其他交易所。
 
-### I deposited more funds to the exchange, but my bot doesn't recognize this
+### 我向交易所存入了更多资金，但我的机器人没有识别到
 
-Freqtrade will update the exchange balance when necessary (Before placing an order).
-RPC calls (Telegram's `/balance`, API calls to `/balance`) can trigger an update at max. once per hour.
+Freqtrade 会在必要时（下订单前）更新交易所余额。
+RPC 调用（Telegram 的 `/balance`，API 调用 `/balance`）最多每小时触发一次更新。
 
-If `adjust_trade_position` is enabled (and the bot has open trades eligible for position adjustments) - then the wallets will be refreshed once per hour.
-To force an immediate update, you can use `/reload_config` - which will restart the bot.
+如果启用了 `adjust_trade_position`（且机器人有符合仓位调整条件的未平仓交易）——那么钱包将每小时刷新一次。
+要强制立即更新，可以使用 `/reload_config`——这将重启机器人。
 
-### I want to use incomplete candles
+### 我想使用不完整的K线
 
-Freqtrade will not provide incomplete candles to strategies. Using incomplete candles will lead to repainting and consequently to strategies with "ghost" buys, which are impossible to both backtest, and verify after they happened.
+Freqtrade 不会向策略提供不完整的K线。使用不完整的K线会导致重绘，进而产生"幽灵"买入的策略，这在回测和事后验证中都是不可能的。
 
-You can use "current" market data by using the [dataprovider](strategy-customization.md#orderbookpair-maximum)'s orderbook or ticker methods - which however cannot be used during backtesting.
+您可以通过使用[数据提供器](strategy-customization.md#orderbookpair-maximum)的订单簿或行情方法来获取"实时"市场数据——但这些方法在回测期间无法使用。
 
-### Is there a setting to only Exit the trades being held and not perform any new Entries?
+### 是否有设置可以仅平仓持有的交易而不进行任何新开仓？
 
-You can use the `/stopentry` command in Telegram to prevent future trade entry, followed by `/forceexit all` (sell all open trades).
+您可以在Telegram中使用`/stopentry`命令来阻止未来的交易开仓，然后使用`/forceexit all`（平仓所有未平仓交易）。
 
-### I sold the bot's capital and now there's errors in the log
+### 我卖出了机器人的资金，现在日志中出现错误
 
-Freqtrade assumes that the trades it opens are managed only though the bot.  
-If you happen to (accidentally) sell the bot's capital, freqtrade will try to recover by trying to re-find on-exchange orders.
+Freqtrade假定其开仓的交易仅通过机器人进行管理。  
+如果您（意外地）卖出了机器人的资金，freqtrade将尝试通过重新查找交易所订单来进行恢复。
 
-This is a best-effort approach, and will not work in all cases, especially when using order types that are not supported by freqtrade (OCO, iceberg, etc.), or when working with older trades (where the exchange no longer provides full order information).
-The exact limits will vary between exchanges - with the details usually being documented in the exchange's API documentation.
+这是一种尽力而为的方法，并非在所有情况下都有效，特别是在使用freqtrade不支持的订单类型（OCO、冰山订单等）或处理较旧交易（交易所不再提供完整订单信息）时。  
+具体限制因交易所而异——详细信息通常记录在交易所的API文档中。
 
-### I want to run multiple bots on the same machine
+### 我想在同一台机器上运行多个机器人
 
-Please look at the [advanced setup documentation Page](advanced-setup.md#running-multiple-instances-of-freqtrade).
+请查阅[高级设置文档页面](advanced-setup.md#running-multiple-instances-of-freqtrade)。
 
-### I'm getting "Impossible to load Strategy" when starting the bot
+### 启动机器人时出现"无法加载策略"错误
 
-This error message is shown when the bot cannot load the strategy.
-Usually, you can use `freqtrade list-strategies` to list all available strategies. 
-The output of this command will also include a status column, showing if the strategy can be loaded.
+当机器人无法加载策略时，会显示此错误信息。
+通常，你可以使用 `freqtrade list-strategies` 命令列出所有可用策略。
+该命令的输出还会包含一个状态列，显示策略是否可以被加载。
 
-Please check the following:
+请检查以下事项：
 
-* Are you using the correct strategy name? The strategy name is case-sensitive and must correspond to the Strategy class name (not the filename!).
-* Is the strategy in the `user_data/strategies` directory, and has the file-ending `.py`?
-* Does the bot show other warnings before this error? Maybe you're missing some dependencies for the strategy - which would be highlighted in the log.
-* In case of docker - is the strategy directory mounted correctly (check the volumes part of the docker-compose file)?
+* 你使用的策略名称是否正确？策略名称区分大小写，且必须与策略类名相对应（而非文件名！）。
+* 策略是否位于 `user_data/strategies` 目录中，并且文件扩展名为 `.py`？
+* 机器人是否在此错误之前显示了其他警告？可能你缺少策略所需的某些依赖项——这会在日志中高亮显示。
+* 如果使用 Docker——策略目录是否正确挂载（检查 docker-compose 文件中的 volumes 部分）？
 
-### I'm getting "Missing data fillup" messages in the log
+### 日志中出现 "Missing data fillup" 消息
 
-This message is just a warning that the latest candles had missing candles in them.
-Depending on the exchange, this can indicate that the pair didn't have a trade for the timeframe you are using - and the exchange does only return candles with volume.
-On low volume pairs, this is a rather common occurrence.
+此消息只是一个警告，表示最新的K线数据中存在缺失的K线。
+根据交易所的不同，这可能表示你所使用的交易对在对应时间周期内没有交易——而交易所仅返回有成交量的K线。
+对于低成交量交易对，这是相当常见的情况。
 
-If this happens for all pairs in the pairlist, this might indicate a recent exchange downtime. Please check your exchange's public channels for details.
+如果配对列表中的所有交易对都出现这种情况，则可能表明交易所近期出现停机。请查看交易所的公开频道了解详情。
 
-Irrespectively of the reason, Freqtrade will fill up these candles with "empty" candles, where open, high, low and close are set to the previous candle close - and volume is empty. In a chart, this will look like a `_` - and is aligned with how exchanges usually represent 0 volume candles.
+无论出于何种原因，Freqtrade 都会用"空"蜡烛填充这些数据，其中开盘价、最高价、最低价和收盘价都设置为前一根蜡烛的收盘价，而交易量为空。在图表中，这将显示为 `_` 形状，与交易所通常表示零交易量蜡烛的方式一致。
 
-### I'm getting "Price jump between 2 candles detected"
+### 日志中出现"检测到两根蜡烛间价格跳空"
 
-This message is a warning that the candles had a price jump of > 30%.
-This might be a sign that the pair stopped trading, and some token exchange took place (e.g. COCOS in 2021 - where price jumped from 0.0000154 to 0.01621).
-This message is often accompanied by ["Missing data fillup"](#im-getting-missing-data-fillup-messages-in-the-log) - as trading on such pairs is often stopped for some time.
+此消息是警告蜡烛数据出现超过 30% 的价格跳空。
+这可能意味着该交易对暂停交易，并发生了代币置换（例如 2021 年的 COCOS 事件——价格从 0.0000154 跳涨至 0.01621）。
+该消息通常伴随["缺失数据填充"](#im-getting-missing-data-fillup-messages-in-the-log)出现，因为此类交易对通常会暂停交易一段时间。
 
-### I want to reset the bot's database
+### 我想重置机器人的数据库
 
-To reset the bot's database, you can either delete the database (by default `tradesv3.sqlite` or `tradesv3.dryrun.sqlite`), or use a different database url via `--db-url` (e.g. `sqlite:///mynewdatabase.sqlite`).
+要重置机器人数据库，您可以删除数据库文件（默认为 `tradesv3.sqlite` 或 `tradesv3.dryrun.sqlite`），或通过 `--db-url` 使用不同的数据库路径（例如 `sqlite:///mynewdatabase.sqlite`）。
 
-### I'm getting "Outdated history for pair xxx" in the log
+### 日志中出现"交易对 xxx 的历史数据已过时"
 
-The bot is trying to tell you that it got an outdated last candle (not the last complete candle).
-As a consequence, Freqtrade will not enter a trade for this pair - as trading on old information is usually not what is desired.
+机器人试图告知您获取到的最后一根蜡烛数据已过时（非最后一根完整蜡烛）。
+因此，Freqtrade 将不会为该交易对开仓——因为基于陈旧信息进行交易通常不符合预期。
 
-This warning can point to one of the below problems:
+此警告可能指向以下问题之一：
 
-* Exchange downtime -> Check your exchange status page / blog / twitter feed for details.
-* Wrong system time -> Ensure your system-time is correct.
-* Barely traded pair -> Check the pair on the exchange webpage, look at the timeframe your strategy uses. If the pair does not have any volume in some candles (usually visualized with a "volume 0" bar, and a "_" as candle), this pair did not have any trades in this timeframe. These pairs should ideally be avoided, as they can cause problems with order-filling.
-* API problem -> API returns wrong data (this only here for completeness, and should not happen with supported exchanges).
+* 交易所停机 -> 查看交易所状态页面/博客/Twitter动态了解详情。
+* 系统时间错误 -> 确保系统时间正确。
+* 交易量极低的交易对 -> 在交易所网页上检查该交易对，查看策略使用的时间框架。如果该交易对在某些K线中没有交易量（通常显示为"成交量0"的柱状图和"_"形K线），则该交易对在此时间框架内没有任何交易。理想情况下应避免使用这些交易对，因为它们可能导致订单成交问题。
+* API问题 -> API返回错误数据（此处仅为完整性说明，受支持交易所不应出现此问题）。
 
-### I get the message "Couldn't reuse watch for xxx" in the log
+### 日志中出现"无法复用xxx的watch"消息
 
-This is an informational message that the bot tried to use candles from the websocket, but the exchange didn't provide the right information.
-This can happen if there was an interruption to the websocket connection - or if the pair didn't have any trades happen in the timeframe you are using.
+这是一条信息性消息，表示机器人尝试使用来自websocket的K线数据，但交易所未提供正确信息。
+当websocket连接中断或交易对在您使用的时间框架内没有任何交易时，可能会发生这种情况。
 
-Freqtrade will handle this gracefully by falling back to the REST api.
-While this makes the iteration slightly slower (due to the REST Api call) - it will not cause any problems to the bot's operation.
+Freqtrade将通过回退到REST API来优雅处理此问题。
+虽然这会使迭代速度稍慢（由于REST API调用），但不会对机器人的运行造成任何问题。
 
-### I'm getting the "Exchange XXX does not support market orders." message and cannot run my strategy
+### 收到"交易所XXX不支持市价单"消息且无法运行策略
 
-As the message says, your exchange does not support market orders and you have one of the [order types](configuration.md/#understand-order_types) set to "market". Your strategy was probably written with other exchanges in mind and sets "market" orders for "stoploss" orders, which is correct and preferable for most of the exchanges supporting market orders (but not for Gate.io).
+正如消息所示，您的交易所不支持市价单，而您的策略中某个[订单类型](configuration.md/#understand-order_types)被设置为"market"。您的策略可能是为其他交易所编写的，并为"stoploss"订单设置了"market"订单，这对于大多数支持市价单的交易所来说是正确的且更可取（但Gate.io不支持）。
 
-To fix this, redefine order types in the strategy to use "limit" instead of "market":
+要解决此问题，请在策略中重新定义订单类型，使用"limit"替代"market"：
 
 ``` python
     order_types = {
@@ -181,124 +172,132 @@ To fix this, redefine order types in the strategy to use "limit" instead of "mar
     }
 ```
 
-The same fix should be applied in the configuration file, if order types are defined in your custom config rather than in the strategy.
+如果订单类型是在您的自定义配置文件中定义的，而不是在策略中，则应在配置文件中应用相同的修复。
 
-### I'm trying to start the bot live, but get an API permission error
+### 我尝试启动实盘机器人，但遇到API权限错误
 
-Errors like `Invalid API-key, IP, or permissions for action` mean exactly what they actually say.  
-Your API key is either invalid (copy/paste error? check for leading/trailing spaces in the config), expired, or the IP you're running the bot from is not enabled in the Exchange's API console.  
-Usually, the permission "Spot Trading" (or the equivalent in the exchange you use) will be necessary.  
-Futures will usually have to be enabled specifically.
+诸如`Invalid API-key, IP, or permissions for action`之类的错误信息通常就是字面意思。  
+您的API密钥可能无效（复制/粘贴错误？请检查配置中是否有前导/尾随空格）、已过期，或者您运行机器人的IP未在交易所的API控制台中启用。  
+通常需要"现货交易"（或您所用交易所的等效权限）权限。  
+期货交易通常需要单独启用。
 
-### How do I search the bot logs for something?
+### 如何在机器人日志中搜索特定内容？
 
-By default, the bot writes its log into stderr stream. This is implemented this way so that you can easily separate the bot's diagnostics messages from Backtesting, Edge and Hyperopt results, output from other various Freqtrade utility sub-commands, as well as from the output of your custom `print()`'s you may have inserted into your strategy. So if you need to search the log messages with the grep utility, you need to redirect stderr to stdout and disregard stdout.
+默认情况下，机器人会将其日志写入标准错误流。这样设计是为了让你能轻松区分机器人的诊断信息与回测、Edge和超参数优化结果，以及其他各种Freqtrade实用子命令的输出，还有你可能插入策略的自定义`print()`语句的输出。因此，如果需要使用grep工具搜索日志消息，你需要将标准错误重定向到标准输出并忽略标准输出。
 
-* In unix shells, this normally can be done as simple as:
+* 在Unix shell中，通常可以这样简单实现：
+
 ```shell
 $ freqtrade --some-options 2>&1 >/dev/null | grep 'something'
 ```
-(note, `2>&1` and `>/dev/null` should be written in this order)
 
-* Bash interpreter also supports so called process substitution syntax, you can grep the log for a string with it as:
+（注意，`2>&1`和`>/dev/null`应按此顺序书写）
+
+* Bash解释器还支持所谓的进程替换语法，你可以通过以下方式在日志中搜索字符串：
+
 ```shell
 $ freqtrade --some-options 2> >(grep 'something') >/dev/null
 ```
-or
+
+或
+
 ```shell
 $ freqtrade --some-options 2> >(grep -v 'something' 1>&2)
 ```
 
-* You can also write the copy of Freqtrade log messages to a file with the `--logfile` option:
+* 你也可以使用`--logfile`选项将Freqtrade日志消息的副本写入文件：
+
 ```shell
 $ freqtrade --logfile /path/to/mylogfile.log --some-options
 ```
-and then grep it as:
+
+然后通过以下方式搜索：
+
 ```shell
 $ cat /path/to/mylogfile.log | grep 'something'
 ```
-or even on the fly, as the bot works and the log file grows:
+
+甚至可以在机器人运行且日志文件增长时实时搜索：
+
 ```shell
 $ tail -f /path/to/mylogfile.log | grep 'something'
 ```
-from a separate terminal window.
 
-On Windows, the `--logfile` option is also supported by Freqtrade and you can use the `findstr` command to search the log for the string of interest:
+在单独的终端窗口中执行。
+
+在Windows系统上，Freqtrade同样支持`--logfile`选项，你可以使用`findstr`命令在日志中搜索目标字符串：
+
 ```
 > type \path\to\mylogfile.log | findstr "something"
 ```
 
-## Hyperopt module
+## 超参数优化模块
 
-### Why does freqtrade not have GPU support?
+### 为什么freqtrade不支持GPU加速？
 
-First of all, most indicator libraries don't have GPU support - as such, there would be little benefit for indicator calculations.
-The GPU improvements would only apply to pandas-native calculations - or ones written by yourself.
+首先，大多数指标库本身就不支持GPU加速——因此指标计算能获得的收益非常有限。
+GPU加速仅适用于pandas原生计算——或你自行编写的计算逻辑。
 
-GPU's are only good at crunching numbers (floating point operations).
-For hyperopt, we need both number-crunching (find next parameters) and running python code (running backtesting).
-As such, GPU's are not too well suited for most parts of hyperopt.
+GPU 仅擅长处理数值计算（浮点运算）。
+对于超参数优化（hyperopt），我们既需要数值计算（寻找下一组参数），也需要运行 Python 代码（执行回测）。
+因此，GPU 并不太适合超参数优化的大部分环节。
 
-The benefit of using GPU would therefore be pretty slim - and will not justify the complexity introduced by trying to add GPU support.
+使用 GPU 带来的收益将非常有限——且不足以证明尝试添加 GPU 支持所引入的复杂性是合理的。
 
-There is however nothing preventing you from using GPU-enabled indicators within your strategy if you think you must have this - you will however probably be disappointed by the slim gain that will give you (compared to the complexity).
+但如果您坚持认为必须使用 GPU，也完全可以在策略中使用支持 GPU 的指标——不过您可能会对由此带来的微弱增益（相较于其复杂性）感到失望。
 
-### How many epochs do I need to get a good Hyperopt result?
+### 需要多少次迭代才能获得良好的超参数优化结果？
 
-Per default Hyperopt called without the `-e`/`--epochs` command line option will only
-run 100 epochs, means 100 evaluations of your triggers, guards, ... Too few
-to find a great result (unless if you are very lucky), so you probably
-have to run it for 10000 or more. But it will take an eternity to
-compute.
+默认情况下，若调用超参数优化时不使用 `-e`/`--epochs` 命令行选项，则仅会运行 100 次迭代，即对您的触发条件、保护条件等进行 100 次评估。这个次数太少，很难找到理想结果（除非您非常幸运），因此您可能需要运行 10000 次或更多。但这将耗费极其漫长的时间。
 
-Since hyperopt uses Bayesian search, running for too many epochs may not produce greater results.
+由于超参数优化采用贝叶斯搜索，运行过多迭代可能不会产生更好的结果。
 
-It's therefore recommended to run between 500-1000 epochs over and over until you hit at least 10000 epochs in total (or are satisfied with the result). You can best judge by looking at the results - if the bot keeps discovering better strategies, it's best to keep on going.
+因此建议反复运行 500-1000 次迭代，直到总迭代次数至少达到 10000 次（或对结果满意为止）。最佳判断方式是观察结果——如果机器人持续发现更优策略，就应继续运行。
 
 ```bash
 freqtrade hyperopt --hyperopt-loss SharpeHyperOptLossDaily --strategy SampleStrategy -e 1000
 ```
 
-### Why does it take a long time to run hyperopt?
+### 为什么运行超参数优化需要很长时间？
 
-* Discovering a great strategy with Hyperopt takes time. Study www.freqtrade.io, the Freqtrade Documentation page, join the Freqtrade [discord community](https://discord.gg/p7nuUNVfP7). While you patiently wait for the most advanced, free crypto bot in the world, to hand you a possible golden strategy specially designed just for you.
+* 使用 Hyperopt 发现优秀策略需要时间。请仔细研究 www.freqtrade.io（Freqtrade 文档页面），并加入 Freqtrade [discord 社区](https://discord.gg/p7nuUNVfP7)。在您耐心等待这个全球最先进的免费加密货币交易机器人，为您量身定制潜在黄金策略的同时。
 
-* If you wonder why it can take from 20 minutes to days to do 1000 epochs here are some answers:
+* 如果您好奇为何完成 1000 次迭代可能需要 20 分钟到数天不等，以下是一些解释：
 
-This answer was written during the release 0.15.1, when we had:
+此回答基于 0.15.1 版本发布时的情况，当时我们拥有：
 
-* 8 triggers
-* 9 guards: let's say we evaluate even 10 values from each
-* 1 stoploss calculation: let's say we want 10 values from that too to be evaluated
+* 8 种触发条件
+* 9 种保护条件：假设每个条件我们评估 10 个参数值
+* 1 个止损计算：假设我们也需要评估其 10 个参数值
 
-The following calculation is still very rough and not very precise
-but it will give the idea. With only these triggers and guards there is
-already 8\*10^9\*10 evaluations. A roughly total of 80 billion evaluations.
-Did you run 100 000 evaluations? Congrats, you've done roughly 1 / 100 000 th
-of the search space, assuming that the bot never tests the same parameters more than once.
+以下计算仍非常粗略且不够精确，
+但能帮助理解。仅这些触发和保护条件就需要进行
+8*10^9*10 次评估。粗略总计 800 亿次评估。
+您运行了 10 万次评估？恭喜，您大约完成了搜索空间的 1/100000，
+前提是机器人从未重复测试相同参数。
 
-* The time it takes to run 1000 hyperopt epochs depends on things like: The available cpu, hard-disk, ram, timeframe, timerange, indicator settings, indicator count, amount of coins that hyperopt test strategies on and the resulting trade count - which can be 650 trades in a year or 100000 trades depending if the strategy aims for big profits by trading rarely or for many low profit trades.
+* 运行 1000 次 hyperopt 迭代所需时间取决于：可用 CPU、硬盘、内存、时间框架、时间范围、指标设置、指标数量、hyperopt 测试策略的币种数量以及最终交易次数——根据策略目标是追求低频交易获取高额利润还是高频交易获取小额利润，年交易量可能为 650 笔或 100000 笔。
 
-Example: 4% profit 650 times vs 0,3% profit a trade 10000 times in a year. If we assume you set the --timerange to 365 days.
+示例：一年内 4% 利润执行 650 次 vs 单笔交易 0.3% 利润执行 10000 次（假设设置 `--timerange` 为 365 天）。
 
-Example:
+示例：
 `freqtrade --config config.json --strategy SampleStrategy --hyperopt SampleHyperopt -e 1000 --timerange 20190601-20200601`
 
-## Official channels
+## 官方渠道
 
-Freqtrade is using exclusively the following official channels:
+Freqtrade 仅使用以下官方渠道：
 
-* [Freqtrade discord server](https://discord.gg/p7nuUNVfP7)
-* [Freqtrade documentation (https://freqtrade.io)](https://freqtrade.io)
-* [Freqtrade github organization](https://github.com/freqtrade)
+* [Freqtrade discord 服务器](https://discord.gg/p7nuUNVfP7)
+* [Freqtrade 文档 (https://freqtrade.io)](https://freqtrade.io)
+* [Freqtrade github 组织](https://github.com/freqtrade)
 
-Nobody affiliated with the freqtrade project will ask you about your exchange keys or anything else exposing your funds to exploitation.
-Should you be asked to expose your exchange keys or send funds to some random wallet, then please don't follow these instructions.
+任何与 freqtrade 项目相关的人员都不会向您索要交易所密钥或任何可能导致资金遭受风险的信息。
+若有人要求您泄露交易所密钥或向随机钱包地址转账，请勿遵循此类指示。
 
-Failing to follow these guidelines will not be responsibility of freqtrade.
+因未遵守本指南而导致的损失，freqtrade 不承担任何责任。
 
-## "Freqtrade token"
+## "Freqtrade 代币"
 
-Freqtrade does not have a Crypto token offering.
+Freqtrade 未发行任何加密代币。
 
-Token offerings you find on the internet referring Freqtrade, FreqAI or freqUI must be considered to be a scam, trying to exploit freqtrade's popularity for their own, nefarious gains.
+互联网上任何提及 Freqtrade、FreqAI 或 freqUI 的代币发行都应视为骗局，其企图利用 freqtrade 的知名度谋取非法利益。

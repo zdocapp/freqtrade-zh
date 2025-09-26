@@ -1,72 +1,66 @@
-# Deprecated features
+# 已弃用功能
 
-This page contains description of the command line arguments, configuration parameters
-and the bot features that were declared as DEPRECATED by the bot development team
-and are no longer supported. Please avoid their usage in your configuration.
+本页包含已被开发团队声明为弃用且不再支持的命令行参数、配置参数和机器人功能的说明。请避免在配置中使用这些功能。
 
-## Removed features
+## 已移除功能
 
-### the `--refresh-pairs-cached` command line option
+### `--refresh-pairs-cached` 命令行选项
 
-`--refresh-pairs-cached` in the context of backtesting, hyperopt and edge allows to refresh candle data for backtesting.
-Since this leads to much confusion, and slows down backtesting (while not being part of backtesting) this has been singled out as a separate freqtrade sub-command `freqtrade download-data`.
+在回测、超参数优化和边缘功能中，`--refresh-pairs-cached` 允许刷新回测用的蜡烛图数据。由于这会导致很多混淆，并且会减慢回测速度（而这并非回测的一部分），该功能已被独立为单独的 freqtrade 子命令 `freqtrade download-data`。
 
-This command line option was deprecated in 2019.7-dev (develop branch) and removed in 2019.9.
+该命令行选项在 2019.7-dev（开发分支）中被弃用，并在 2019.9 版本中移除。
 
-### The **--dynamic-whitelist** command line option
+### **--dynamic-whitelist** 命令行选项
 
-This command line option was deprecated in 2018 and removed freqtrade 2019.6-dev (develop branch) and in freqtrade 2019.7.
-Please refer to [pairlists](plugins.md#pairlists-and-pairlist-handlers) instead.
+该命令行选项在 2018 年被弃用，并在 freqtrade 2019.6-dev（开发分支）和 freqtrade 2019.7 版本中移除。请参考 [交易对列表](plugins.md#pairlists-and-pairlist-handlers) 替代方案。
 
-### the `--live` command line option
+### `--live` 命令行选项
 
-`--live` in the context of backtesting allowed to download the latest tick data for backtesting.
-Did only download the latest 500 candles, so was ineffective in getting good backtest data.
-Removed in 2019-7-dev (develop branch) and in freqtrade 2019.8.
+在回测场景中，`--live` 允许下载最新的 tick 数据进行回测。但该功能仅下载最新的 500 根蜡烛图，因此无法有效获取高质量的回测数据。该功能在 2019-7-dev（开发分支）和 freqtrade 2019.8 版本中被移除。
 
-### `ticker_interval` (now `timeframe`)
+### `ticker_interval`（现为 `timeframe`）
 
-Support for `ticker_interval` terminology was deprecated in 2020.6 in favor of `timeframe` - and compatibility code was removed in 2022.3.
+对 `ticker_interval` 术语的支持已于 2020.6 版本弃用，改用 `timeframe`——兼容性代码已于 2022.3 版本移除。
 
-### Allow running multiple pairlists in sequence
+### 允许按顺序运行多个交易对列表
 
-The former `"pairlist"` section in the configuration has been removed, and is replaced by `"pairlists"` - being a list to specify a sequence of pairlists.
+配置中原来的 `"pairlist"` 部分已被移除，替换为 `"pairlists"`——这是一个用于指定交易对列表序列的列表。
 
-The old section of configuration parameters (`"pairlist"`) has been deprecated in 2019.11 and has been removed in 2020.4.
+旧的配置参数部分（`"pairlist"`）已于 2019.11 版本弃用，并于 2020.4 版本移除。
 
-### deprecation of bidVolume and askVolume from volume-pairlist
+### 弃用 volume-pairlist 中的 bidVolume 和 askVolume
 
-Since only quoteVolume can be compared between assets, the other options (bidVolume, askVolume) have been deprecated in 2020.4, and have been removed in 2020.9.
+由于只有 quoteVolume 可以在资产之间进行比较，其他选项（bidVolume、askVolume）已于 2020.4 版本弃用，并于 2020.9 版本移除。
 
-### Using order book steps for exit price
+### 使用订单簿步进设置退出价格
 
-Using `order_book_min` and `order_book_max` used to allow stepping the orderbook and trying to find the next ROI slot - trying to place sell-orders early.
-As this does however increase risk and provides no benefit, it's been removed for maintainability purposes in 2021.7.
+使用 `order_book_min` 和 `order_book_max` 曾允许步进订单簿并尝试寻找下一个 ROI 位置——试图提前放置卖出订单。
+然而，由于这会增加风险且无实际益处，出于可维护性考虑，该功能已于 2021.7 版本移除。
 
-### Legacy Hyperopt mode
+### 传统超参数优化模式
 
-Using separate hyperopt files was deprecated in 2021.4 and was removed in 2021.9.
-Please switch to the new [Parametrized Strategies](hyperopt.md) to benefit from the new hyperopt interface.
+使用独立的超参数优化文件已于 2021.4 版本弃用，并于 2021.9 版本移除。
+请切换到新的 [参数化策略](hyperopt.md) 以受益于新的超参数优化界面。
 
-## Strategy changes between V2 and V3
+## V2 与 V3 版本间的策略变更
 
-Isolated Futures / short trading was introduced in 2022.4. This required major changes to configuration settings, strategy interfaces, ...
+隔离期货/做空交易于 2022.4 版本引入。这需要对配置设置、策略接口等进行重大更改。
 
-We have put a great effort into keeping compatibility with existing strategies, so if you just want to continue using freqtrade in spot markets, there are no changes necessary.
-While we may drop support for the current interface sometime in the future, we will announce this separately and have an appropriate transition period.
+我们投入了大量精力来保持与现有策略的兼容性，因此如果您只想继续在现货市场使用 freqtrade，无需进行任何更改。
+虽然我们可能在未来某个时候停止对当前接口的支持，但我们会另行公告并设置适当的过渡期。
 
-Please follow the [Strategy migration](strategy_migration.md) guide to migrate your strategy to the new format to start using the new functionalities.
+请遵循[策略迁移指南](strategy_migration.md)将您的策略迁移至新格式，以开始使用新功能。
 
-### webhooks - changes with 2022.4
+### webhooks - 2022.4 版本变更
 
-#### `buy_tag` has been renamed to `enter_tag`
+#### `buy_tag` 已重命名为 `enter_tag`
 
-This should apply only to your strategy and potentially to webhooks.
-We will keep a compatibility layer for 1-2 versions (so both `buy_tag` and `enter_tag` will still work), but support for this in webhooks will disappear after that.
+这仅适用于您的策略以及可能的 webhooks。
+我们将保留 1-2 个版本的兼容层（因此 `buy_tag` 和 `enter_tag` 仍将有效），但在此之后 webhooks 中对这一命名的支持将会消失。
 
-#### Naming changes
+#### 命名变更
 
-Webhook terminology changed from "sell" to "exit", and from "buy" to "entry", removing "webhook" in the process.
+Webhook 术语从 "sell" 改为 "exit"，从 "buy" 改为 "entry"，并在此过程中移除了 "webhook" 字样。
 
 * `webhookbuy`, `webhookentry` -> `entry`
 * `webhookbuyfill`, `webhookentryfill` -> `entry_fill`
@@ -75,26 +69,26 @@ Webhook terminology changed from "sell" to "exit", and from "buy" to "entry", re
 * `webhooksellfill`, `webhookexitfill` -> `exit_fill`
 * `webhooksellcancel`, `webhookexitcancel` -> `exit_cancel`
 
-## Removal of `populate_any_indicators`
+## 移除 `populate_any_indicators`
 
-version 2023.3 saw the removal of `populate_any_indicators` in favor of split methods for feature engineering and targets. Please read the [migration document](strategy_migration.md#freqai-strategy) for full details.
+2023.3 版本移除了 `populate_any_indicators`，转而采用拆分方法进行特征工程和目标设置。请阅读 [迁移文档](strategy_migration.md#freqai-strategy) 了解完整详情。
 
-## Removal of `protections` from configuration
+## 从配置中移除 `protections`
 
-Setting protections from the configuration via `"protections": [],` has been removed in 2024.10, after having raised deprecation warnings for over 3 years.
+通过 `"protections": [],` 在配置中设置保护的功能已在 2024.10 版本中移除，此前该功能已发出弃用警告超过 3 年。
 
-## hdf5 data storage
+## hdf5 数据存储
 
-Using hdf5 as data storage has been deprecated in 2024.12 and was removed in 2025.1. We recommend switching to the feather data format.
+使用 hdf5 作为数据存储的功能在 2024.12 版本中已被弃用，并已于 2025.1 版本中移除。我们建议切换到 feather 数据格式。
 
-Please use the [`convert-data` subcommand](data-download.md#sub-command-convert-data) to convert your existing data to one of the supported formats before updating.
+请在更新前使用 [`convert-data` 子命令](data-download.md#sub-command-convert-data) 将现有数据转换为支持的格式之一。
 
-## Configuring advanced logging via config
+## 通过配置设置高级日志记录
 
-Configuring syslog and journald via `--logfile systemd` and `--logfile journald` respectively has been deprecated in 2025.3.
-Please use configuration based [log setup](advanced-setup.md#advanced-logging) instead.
+分别通过 `--logfile systemd` 和 `--logfile journald` 配置 syslog 和 journald 的功能已在 2025.3 版本中弃用。
+请改用基于配置的 [日志设置](advanced-setup.md#advanced-logging)。
 
-## Removal of the edge module
+## 移除 edge 模块
 
-The edge module has been deprecated in 2023.9 and removed in 2025.6.
-All functionalities of edge have been removed, and having edge configured will result in an error.
+edge 模块已于 2023.9 版本弃用，并已于 2025.6 版本移除。
+edge 的所有功能已被移除，配置 edge 将导致错误。

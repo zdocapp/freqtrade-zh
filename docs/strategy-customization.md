@@ -1,118 +1,112 @@
-# Strategy Customization
+# 策略自定义
 
-This page explains how to customize your strategies, add new indicators and set up trading rules.
+本页说明如何自定义策略、添加新指标并设置交易规则。
 
-If you haven't already, please familiarize yourself with:
+如果您尚未熟悉，请先了解：
 
-- the [Freqtrade strategy 101](strategy-101.md), which provides a quick start to strategy development
-- the [Freqtrade bot basics](bot-basics.md), which provides overall info on how the bot operates
+- [Freqtrade 策略入门指南](strategy-101.md)，提供策略开发的快速入门
+- [Freqtrade 机器人基础](bot-basics.md)，提供机器人运行方式的整体信息
 
-## Develop your own strategy
+## 开发自己的策略
 
-The bot includes a default strategy file.
+机器人包含一个默认策略文件。
 
-Also, several other strategies are available in the [strategy repository](https://github.com/freqtrade/freqtrade-strategies).
+此外，[策略库](https://github.com/freqtrade/freqtrade-strategies)中提供了其他几种策略。
 
-You will however most likely have your own idea for a strategy.
+但您很可能会有自己的策略想法。
 
-This document intends to help you convert your ideas into a working strategy.
+本文档旨在帮助您将想法转化为可运行的策略。
 
-### Generating a strategy template
+### 生成策略模板
 
-To get started, you can use the command:
+要开始使用，您可以运行以下命令：
 
 ```bash
 freqtrade new-strategy --strategy AwesomeStrategy
 ```
 
-This will create a new strategy called `AwesomeStrategy` from a template, which will be located using the filename `user_data/strategies/AwesomeStrategy.py`.
+这将从模板创建一个名为 `AwesomeStrategy` 的新策略，该策略将使用文件名 `user_data/strategies/AwesomeStrategy.py` 保存。
 
 !!! Note
-    There is a difference between the *name* of the strategy and the filename. In most commands, Freqtrade uses the *name* of the strategy, *not the filename*.
+    策略的*名称*与文件名存在区别。在大多数命令中，Freqtrade 使用策略的*名称*，*而非文件名*。
 
 !!! Note
-    The `new-strategy` command generates starting examples which will not be profitable out of the box.
+    `new-strategy` 命令生成的初始示例在开箱即用时不会立即产生盈利。
 
-??? Hint "Different template levels"
-    `freqtrade new-strategy` has an additional parameter, `--template`, which controls the amount of pre-build information you get in the created strategy. Use `--template minimal` to get an empty strategy without any indicator examples, or `--template advanced` to get a template with more complicated features defined.
+??? Hint "不同的模板层级"
+    `freqtrade new-strategy` 有一个额外参数 `--template`，用于控制创建策略时预置信息的多少。使用 `--template minimal` 可获得不含任何指标示例的空策略，或使用 `--template advanced` 获得定义了更复杂功能的模板。
 
-### Anatomy of a strategy
+### 策略结构解析
 
-A strategy file contains all the information needed to build the strategy logic:
+策略文件包含构建策略逻辑所需的全部信息：
 
-- Candle data in OHLCV format
-- Indicators
-- Entry logic
-  - Signals
-- Exit logic
-  - Signals
-  - Minimal ROI
-  - Callbacks ("custom functions")
-- Stoploss
-  - Fixed/absolute
-  - Trailing
-  - Callbacks ("custom functions")
-- Pricing [optional]
-- Position adjustment [optional]
+- OHLCV 格式的 K 线数据
+- 指标
+- 入场逻辑
+  - 信号
+- 离场逻辑
+  - 信号
+  - 最小 ROI
+  - 回调函数（"自定义功能"）
+- 止损设置
+  - 固定/绝对值
+  - 追踪止损
+  - 回调函数（"自定义功能"）
+- 定价 [可选]
+- 仓位调整 [可选]
 
-The bot includes a sample strategy called `SampleStrategy` that you can use as a basis: `user_data/strategies/sample_strategy.py`.
-You can test it with the parameter: `--strategy SampleStrategy`. Remember that you use the strategy class name, not the filename.
+机器人内置了一个名为 `SampleStrategy` 的示例策略，您可将其作为基础模板：`user_data/strategies/sample_strategy.py`。
+您可以使用参数进行测试：`--strategy SampleStrategy`。请注意此处使用的是策略类名，而非文件名。
 
-Additionally, there is an attribute called `INTERFACE_VERSION`, which defines the version of the strategy interface the bot should use.
-The current version is 3 - which is also the default when it's not set explicitly in the strategy.
+此外，还有一个名为 `INTERFACE_VERSION` 的属性，用于定义机器人应使用的策略接口版本。
+当前版本为 3——当策略中未显式设置时，该版本也是默认值。
 
-You may see older strategies set to interface version 2, and these will need to be updated to v3 terminology as future versions will require this to be set.
+您可能会看到设置为接口版本 2 的旧策略，这些策略需要更新至 v3 术语体系，因为未来版本将要求必须设置此属性。
 
-Starting the bot in dry or live mode is accomplished using the `trade` command:
+使用 `trade` 命令可以以模拟或实盘模式启动机器人：
 
 ```bash
 freqtrade trade --strategy AwesomeStrategy
 ```
 
-### Bot modes
+### 机器人模式
 
-Freqtrade strategies can be processed by the Freqtrade bot in 5 main modes:
+Freqtrade 策略可以通过 Freqtrade 机器人以 5 种主要模式进行处理：
 
-- backtesting
-- hyperopting
-- dry ("forward testing")
-- live
-- FreqAI (not covered here)
+- 回测
+- 超参数优化
+- 模拟（"前向测试"）
+- 实盘
+- FreqAI（此处不涉及）
 
-Check the [configuration documentation](configuration.md) about how to set the bot to dry or live mode.
+关于如何将机器人设置为模拟或实盘模式，请查阅[配置文档](configuration.md)。
 
-**Always use dry mode when testing as this gives you an idea of how your strategy will work in reality without risking capital.**
+**测试时请务必使用模拟模式，这能让您了解策略在实际中的表现，同时避免资金风险。**
 
-## Diving in deeper
+## 深入探索
 
-**For the following section we will use the [user_data/strategies/sample_strategy.py](https://github.com/freqtrade/freqtrade/blob/develop/freqtrade/templates/sample_strategy.py)
-file as reference.**
+**在接下来的章节中，我们将以 [user_data/strategies/sample_strategy.py](https://github.com/freqtrade/freqtrade/blob/develop/freqtrade/templates/sample_strategy.py) 文件作为参考。**
 
-!!! Note "Strategies and Backtesting"
-    To avoid problems and unexpected differences between backtesting and dry/live modes, please be aware
-    that during backtesting the full time range is passed to the `populate_*()` methods at once.
-    It is therefore best to use vectorized operations (across the whole dataframe, not loops) and
-    avoid index referencing (`df.iloc[-1]`), but instead use `df.shift()` to get to the previous candle.
+!!! Note "策略与回测"
+    为避免回测与模拟/实盘模式之间出现问题和意外差异，请注意在回测期间，完整的时间范围会一次性传递给 `populate_*()` 方法。
+    因此最佳实践是使用向量化操作（针对整个数据框，而非循环）并避免索引引用（`df.iloc[-1]`），而应使用 `df.shift()` 来获取前一根K线数据。
 
 !!! Warning "Warning: Using future data"
-    Since backtesting passes the full time range to the `populate_*()` methods, the strategy author
-    needs to take care to avoid having the strategy utilize data from the future.
-    Some common patterns for this are listed in the [Common Mistakes](#common-mistakes-when-developing-strategies) section of this document.
+    由于回测将完整时间范围传递给 `populate_*()` 方法，策略开发者需注意避免策略使用未来数据。
+    本文档的[常见错误](#common-mistakes-when-developing-strategies)章节列出了一些常见模式。
 
 ??? Hint "Lookahead and recursive analysis"
-    Freqtrade includes two helpful commands to help assess common lookahead (using future data) and
-    recursive bias (variance in indicator values) issues. Before running a strategy in dry or live more,
-    you should always use these commands first. Please check the relevant documentation for
-    [lookahead](lookahead-analysis.md) and [recursive](recursive-analysis.md) analysis.
+    Freqtrade 包含两个实用命令来帮助评估常见的前视偏差（使用未来数据）和递归偏差（指标值方差）问题。
+    在模拟或实盘运行策略前，应始终先使用这些命令。请查阅相关文档了解[前视分析](lookahead-analysis.md)和[递归分析](recursive-analysis.md)。
 
-### Dataframe
+### 数据框
 
-Freqtrade uses [pandas](https://pandas.pydata.org/) to store/provide the candlestick (OHLCV) data.
-Pandas is a great library developed for processing large amounts of data in tabular format.
+Freqtrade 使用 [pandas](https://pandas.pydata.org/) 存储/提供K线（OHLCV）数据。
+Pandas 是为处理表格形式大量数据而开发的优秀库。
 
-Each row in a dataframe corresponds to one candle on a chart, with the latest complete candle always being the last in the dataframe (sorted by date).
+数据框中的每一行对应图表上的一根K线，最新完成的K线始终位于数据框末尾（按日期排序）。
 
-If we were to look at the first few rows of the main dataframe using the pandas `head()` function, we would see:
+若使用 pandas 的 `head()` 函数查看主数据框的前几行，我们将看到：
 
 ```output
 > dataframe.head()
@@ -124,16 +118,16 @@ If we were to look at the first few rows of the main dataframe using the pandas 
 4 2021-11-09 23:45:00+00:00  67160.48  67160.48  66901.26  66943.37  111.39292
 ```
 
-A dataframe is a table where columns are not single values, but a series of data values. As such, simple python comparisons like the following will not work:
+数据框是一种表格，其列不是单个值，而是一系列数据值。因此，简单的 Python 比较如下所示将无法正常工作：
 
 ``` python
     if dataframe['rsi'] > 30:
         dataframe['enter_long'] = 1
 ```
 
-The above section will fail with `The truth value of a Series is ambiguous [...]`.
+上述部分将因 `Series 的真值不明确 [...]` 而失败。
 
-This must instead be written in a pandas-compatible way, so the operation is performed across the whole dataframe, i.e. `vectorisation`.
+必须改用与 pandas 兼容的方式编写，以便在整个数据框上执行操作，即 `向量化`。
 
 ``` python
     dataframe.loc[
@@ -141,42 +135,42 @@ This must instead be written in a pandas-compatible way, so the operation is per
     , 'enter_long'] = 1
 ```
 
-With this section, you have a new column in your dataframe, which has `1` assigned whenever RSI is above 30.
+通过此部分，您的数据框中将新增一列，当 RSI 高于 30 时该列会被赋值为 `1`。
 
-Freqtrade uses this new column as an entry signal, where it is assumed that a trade will subsequently open on the next open candle.
+Freqtrade 将此新列用作入场信号，并假设交易将在下一个开盘蜡烛上随后开启。
 
-Pandas provides fast ways to calculate metrics, i.e. "vectorisation". To benefit from this speed, it is advised to not use loops, but use vectorized methods instead.
+Pandas 提供了计算指标的快速方法，即"向量化"。为受益于此速度优势，建议不要使用循环，而应使用向量化方法。
 
-Vectorized operations perform calculations across the whole range of data and are therefore, compared to looping through each row, a lot faster when calculating indicators.
+向量化操作在整个数据范围内执行计算，因此在计算指标时，与逐行循环相比速度要快得多。
 
-??? Hint "Signals vs Trades"
-    - Signals are generated from indicators at candle close, and are intentions to enter a trade.
-    - Trades are orders that are executed (on the exchange in live mode) where a trade will then open as close to next candle open as possible.
+??? 提示 "信号与交易"
+    - 信号由指标在蜡烛收盘时生成，代表入场交易的意图。
+    - 交易是已执行的订单（实盘模式下在交易所执行），交易将尽可能在下一个蜡烛开盘时开启。
 
-!!! Warning "Trade order assumptions"
-    In backtesting, signals are generated on candle close. Trades are then initiated immeditely on next candle open.
+!!! 警告 "交易订单假设"
+    在回测中，信号在蜡烛收盘时生成。交易随后在下一个蜡烛开盘时立即启动。
 
     In dry and live, this may be delayed due to all pair dataframes needing to be analysed first, then trade processing 
     for each of those pairs happens. This means that in dry/live you need to be mindful of having as low a computation 
     delay as possible, usually by running a low number of pairs and having a CPU with a good clock speed.
 
-#### Why can't I see "real time" candle data?
+#### 为什么我看不到"实时"蜡烛数据？
 
-Freqtrade does not store incomplete/unfinished candles in the dataframe.
+Freqtrade 不会在数据框中存储不完整/未结束的蜡烛数据。
 
-The use of incomplete data for making strategy decisions is called "repainting" and you might see other platforms allow this.
+使用不完整数据制定策略决策的行为被称为"重绘"，您可能会在其他平台上看到允许此类操作的情况。
 
-Freqtrade does not. Only complete/finished candle data is available in the dataframe.
+Freqtrade 不允许这样做。数据帧中仅提供完整/已完成的K线数据。
 
-### Customize Indicators
+### 自定义指标
 
-Entry and exit signals need indicators. You can add more indicators by extending the list contained in the method `populate_indicators()` from your strategy file.
+入场和出场信号需要指标支持。您可以通过扩展策略文件中 `populate_indicators()` 方法包含的列表来添加更多指标。
 
-You should only add the indicators used in either `populate_entry_trend()`, `populate_exit_trend()`, or to populate another indicator, otherwise performance may suffer.
+您应该仅添加在 `populate_entry_trend()`、`populate_exit_trend()` 中使用的指标，或用于填充其他指标的指标，否则可能会影响性能。
 
-It's important to always return the dataframe from these three functions without removing/modifying the columns `"open", "high", "low", "close", "volume"`, otherwise these fields would contain something unexpected.
+务必始终从这三个函数返回数据帧，且不要删除/修改 `"open"`、`"high"`、`"low"`、`"close"`、`"volume"` 这些列，否则这些字段将包含意外内容。
 
-Sample:
+示例：
 
 ```python
 def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -221,73 +215,73 @@ def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame
     return dataframe
 ```
 
-!!! Note "Want more indicator examples?"
-    Look into the [user_data/strategies/sample_strategy.py](https://github.com/freqtrade/freqtrade/blob/develop/freqtrade/templates/sample_strategy.py).
-    Then uncomment indicators you need.
+!!! Note "需要更多指标示例？"
+    请查看 [user_data/strategies/sample_strategy.py](https://github.com/freqtrade/freqtrade/blob/develop/freqtrade/templates/sample_strategy.py)。
+    然后取消注释您需要的指标。
 
-#### Indicator libraries
+#### 指标库
 
-Out of the box, freqtrade installs the following technical libraries:
+Freqtrade 默认安装以下技术分析库：
 
 - [ta-lib](https://ta-lib.github.io/ta-lib-python/)
 - [pandas-ta](https://twopirllc.github.io/pandas-ta/)
 - [technical](https://technical.freqtrade.io)
 
-Additional technical libraries can be installed as necessary, or custom indicators may be written / invented by the strategy author.
+可根据需要安装额外的技术库，或者策略作者可以编写/自定义指标。
 
-### Strategy startup period
+### 策略启动期
 
-Some indicators have an unstable startup period in which there isn't enough candle data to calculate any values (NaN), or the calculation is incorrect. This can lead to inconsistencies, since Freqtrade does not know how long this unstable period is and uses whatever indicator values are in the dataframe.
+某些指标存在不稳定的启动期，此时没有足够的K线数据来计算任何值（NaN），或者计算不正确。这可能导致不一致性，因为Freqtrade不知道这个不稳定期的时长，会直接使用数据框中现有的指标值。
 
-To account for this, the strategy can be assigned the `startup_candle_count` attribute.
+为解决这个问题，可以为策略设置 `startup_candle_count` 属性。
 
-This should be set to the maximum number of candles that the strategy requires to calculate stable indicators. In the case where a user includes higher timeframes with informative pairs, the `startup_candle_count` does not necessarily change. The value is the maximum period (in candles) that any of the informatives timeframes need to compute stable indicators.
+该值应设置为策略计算稳定指标所需的最大K线数量。当用户包含带信息对的高时间框架时，`startup_candle_count` 不一定需要改变。该值是所有信息时间框架计算稳定指标所需的最大周期（以K线数为单位）。
 
-You can use [recursive-analysis](recursive-analysis.md) to check and find the correct `startup_candle_count` to be used. When recursive analysis shows a variance of 0%, then you can be sure that you have enough startup candle data.
+您可以使用[递归分析](recursive-analysis.md)来检查并找到正确的 `startup_candle_count` 值。当递归分析显示方差为0%时，您可以确信已获得足够的启动期K线数据。
 
-In this example strategy, this should be set to 400 (`startup_candle_count = 400`), since the minimum needed history for ema100 calculation to make sure the value is correct is 400 candles.
+在此示例策略中，该值应设置为400（`startup_candle_count = 400`），因为确保ema100计算值正确所需的最小历史数据是400根K线。
 
 ``` python
     dataframe['ema100'] = ta.EMA(dataframe, timeperiod=100)
 ```
 
-By letting the bot know how much history is needed, backtest trades can start at the specified timerange during backtesting and hyperopt.
+通过让机器人知道需要多少历史数据，回测交易可以在回测和超参数优化期间从指定的时间范围开始。
 
-!!! Warning "Using x calls to get OHLCV"
-    If you receive a warning like `WARNING - Using 3 calls to get OHLCV. This can result in slower operations for the bot. Please check if you really need 1500 candles for your strategy` - you should consider if you really need this much historic data for your signals.
-    Having this will cause Freqtrade to make multiple calls for the same pair, which will obviously be slower than one network request.
-    As a consequence, Freqtrade will take longer to refresh candles - and should therefore be avoided if possible.
-    This is capped to 5 total calls to avoid overloading the exchange, or make freqtrade too slow.
+!!! Warning "使用 x 次调用获取 OHLCV 数据"
+    如果收到类似 `WARNING - 使用 3 次调用获取 OHLCV 数据。这可能导致机器人操作变慢。请检查您的策略是否真的需要 1500 根 K 线` 的警告 - 您应该考虑是否真的需要这么多历史数据来生成信号。
+    设置过大的值将导致 Freqtrade 对同一交易对进行多次调用，这显然会比单次网络请求更慢。
+    因此，Freqtrade 刷新 K 线数据的时间会变长 - 所以应尽可能避免这种情况。
+    为避免对交易所造成过载或使 freqtrade 运行过慢，总调用次数被限制在 5 次以内。
 
 !!! Warning
-    `startup_candle_count` should be below `ohlcv_candle_limit * 5` (which is 500 * 5 for most exchanges) - since only this amount of candles will be available during Dry-Run/Live Trade operations.
+    `startup_candle_count` 应低于 `ohlcv_candle_limit * 5`（对于大多数交易所是 500 * 5） - 因为在模拟交易/实盘交易操作期间只有这个数量的 K 线数据可用。
 
-#### Example
+#### 示例
 
-Let's try to backtest 1 month (January 2019) of 5m candles using an example strategy with EMA100, as above.
+让我们尝试使用上面提到的带有 EMA100 的示例策略，回测 1 个月（2019 年 1 月）的 5 分钟 K 线数据。
 
 ``` bash
 freqtrade backtesting --timerange 20190101-20190201 --timeframe 5m
 ```
 
-Assuming `startup_candle_count` is set to 400, backtesting knows it needs 400 candles to generate valid entry signals. It will load data from `20190101 - (400 * 5m)` - which is ~2018-12-30 11:40:00.
+假设 `startup_candle_count` 设置为 400，回测系统知道需要 400 根 K 线来生成有效的入场信号。它将加载从 `20190101 - (400 * 5m)` 开始的数据 - 即约 2018-12-30 11:40:00。
 
-If this data is available, indicators will be calculated with this extended timerange. The unstable startup period (up to 2019-01-01 00:00:00) will then be removed before backtesting is carried out.
+如果该数据可用，指标将使用这个扩展的时间范围进行计算。在开始回测之前，不稳定的启动周期（截至 2019-01-01 00:00:00）将被移除。
 
-!!! Note "Unavailable startup candle data"
-    If data for the startup period is not available, then the timerange will be adjusted to account for this startup period. In our example, backtesting would then start from 2019-01-02 09:20:00.
+!!! Note "启动蜡烛数据不可用"
+    如果启动周期的数据不可用，时间范围将被调整以考虑这个启动周期。在我们的示例中，回测将从 2019-01-02 09:20:00 开始。
 
-### Entry signal rules
+### 入场信号规则
 
-Edit the method `populate_entry_trend()` in your strategy file to update your entry strategy.
+编辑策略文件中的 `populate_entry_trend()` 方法来更新您的入场策略。
 
-It's important to always return the dataframe without removing/modifying the columns `"open", "high", "low", "close", "volume"`, otherwise these fields would contain something unexpected. The strategy may then produce invalid values, or cease to work entirely.
+务必始终返回未删除/修改 `"open"`、`"high"`、`"low"`、`"close"`、`"volume"` 列的数据框，否则这些字段可能包含意外内容。策略可能会产生无效值，或完全停止工作。
 
-This method will also define a new column, `"enter_long"` (`"enter_short"` for shorts), which needs to contain `1` for entries, and `0` for "no action". `enter_long` is a mandatory column that must be set even if the strategy is shorting only.
+此方法还将定义一个新列 `"enter_long"`（对于空头策略为 `"enter_short"`），该列需要为入场信号包含 `1`，为"无操作"包含 `0`。`enter_long` 是一个必须设置的列，即使策略仅做空也是如此。
 
-You can name your entry signals by using the `"enter_tag"` column, which can help debug and assess your strategy later.
+您可以使用 `"enter_tag"` 列为入场信号命名，这有助于后续调试和评估策略。
 
-Sample from `user_data/strategies/sample_strategy.py`:
+来自 `user_data/strategies/sample_strategy.py` 的示例：
 
 ```python
 def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -309,11 +303,11 @@ def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFram
     return dataframe
 ```
 
-??? Note "Enter short trades"
-    Short entries can be created by setting `enter_short` (corresponds to `enter_long` for long trades).
-    The `enter_tag` column remains identical.
-    Shorting needs to be supported by your exchange and market configuration!
-    Also, make sure you set [`can_short`](#can-short) appropriately on your strategy if you intend to short.
+!!! Note "Enter short trades"
+    可以通过设置 `enter_short`（对应多头交易的 `enter_long`）来创建空头入场信号。
+    `enter_tag` 列保持不变。
+    做空需要您的交易所和市场配置支持！
+    此外，如果您打算做空，请确保在策略中正确设置 [`can_short`](#can-short)。
 
     ```python
     # allow both long and short trades
@@ -342,23 +336,23 @@ def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFram
     ```
 
 !!! Note
-    Buying requires sellers to buy from. Therefore volume needs to be > 0 (`dataframe['volume'] > 0`) to make sure that the bot does not buy/sell in no-activity periods.
+    买入需要有卖方才能成交。因此，成交量必须大于 0（`dataframe['volume'] > 0`），以确保机器人在无交易活动期间不会进行买入/卖出操作。
 
-### Exit signal rules
+### 出场信号规则
 
-Edit the method `populate_exit_trend()` into your strategy file to update your exit strategy.
+编辑策略文件中的 `populate_exit_trend()` 方法来更新您的出场策略。
 
-The exit-signal can be suppressed by setting `use_exit_signal` to false in the configuration or strategy.
+可以通过在配置或策略中将 `use_exit_signal` 设置为 false 来抑制出场信号。
 
-`use_exit_signal` will not influence [signal collision rules](#colliding-signals) - which will still apply and can prevent entries.
+`use_exit_signal` 不会影响[信号冲突规则](#colliding-signals) - 这些规则仍然适用，并可能阻止入场。
 
-It's important to always return the dataframe without removing/modifying the columns `"open", "high", "low", "close", "volume"`, otherwise these fields would contain something unexpected. The strategy may then produce invalid values, or cease to work entirely.
+务必始终返回不删除/修改 `"open"`、`"high"`、`"low"`、`"close"`、`"volume"` 列的数据框，否则这些字段将包含意外内容。策略可能会产生无效值，或完全停止工作。
 
-This method will also define a new column, `"exit_long"` (`"exit_short"` for shorts), which needs to contain `1` for exits, and `0` for "no action".
+此方法还将定义一个新列 `"exit_long"`（空头对应 `"exit_short"`），出场时需要包含 `1`，无操作时包含 `0`。
 
-You can name your exit signals by using the `"exit_tag"` column, which can help debug and assess your strategy later.
+您可以使用 `"exit_tag"` 列来命名您的退出信号，这有助于后续调试和评估策略。
 
-Sample from `user_data/strategies/sample_strategy.py`:
+示例来自 `user_data/strategies/sample_strategy.py`：
 
 ```python
 def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -379,11 +373,11 @@ def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame
     return dataframe
 ```
 
-??? Note "Exit short trades"
-    Short exits can be created by setting `exit_short` (corresponds to `exit_long`).
-    The `exit_tag` column remains identical.
-    Shorting needs to be supported by your exchange and market configuration!
-    Also, make sure you set [`can_short`](#can-short) appropriately on your strategy if you intend to short.
+??? Note "做空交易退出"
+    可以通过设置 `exit_short`（对应 `exit_long`）来创建做空退出。
+    `exit_tag` 列保持不变。
+    做空需要您的交易所和市场配置支持！
+    此外，如果您打算做空，请确保在策略中正确设置 [`can_short`](#can-short)。
 
     ```python
     # allow both long and short trades
@@ -409,11 +403,11 @@ def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame
         return dataframe
     ```
 
-### Minimal ROI
+### 最小投资回报率
 
-The `minimal_roi` strategy variable defines the minimal Return On Investment (ROI) a trade should reach before exiting, independent from the exit signal.
+`minimal_roi` 策略变量定义了交易在退出前应达到的最小投资回报率（ROI），与退出信号无关。
 
-It is of the following format, i.e. a python `dict`, with the dict key (left side of the colon) being the minutes passed since the trade opened, and the value (right side of the colon) being the percentage.
+其格式如下，即一个 Python `dict`，字典键（冒号左侧）为交易开仓后经过的分钟数，值（冒号右侧）为百分比。
 
 ```python
 minimal_roi = {
@@ -424,28 +418,28 @@ minimal_roi = {
 }
 ```
 
-The above configuration would therefore mean:
+因此，上述配置意味着：
 
-- Exit whenever 4% profit was reached
-- Exit when 2% profit was reached (in effect after 20 minutes)
-- Exit when 1% profit was reached (in effect after 30 minutes)
-- Exit when trade is non-loosing (in effect after 40 minutes)
+- 当达到 4% 利润时退出
+- 当达到 2% 利润时退出（20 分钟后生效）
+- 当达到 1% 利润时退出（30 分钟后生效）
+- 当交易不亏损时退出（40 分钟后生效）
 
-The calculation does include fees.
+计算包含手续费。
 
-#### Disabling minimal ROI
+#### 禁用最小投资回报率
 
-To disable ROI completely, set it to an empty dictionary:
+要完全禁用 ROI，请将其设置为空字典：
 
 ```python
 minimal_roi = {}
 ```
 
-#### Using calculations in minimal ROI
+#### 在最小投资回报率中使用计算
 
-To use times based on candle duration (timeframe), the following snippet can be handy.
+要使用基于蜡烛时长（时间框架）的时间，以下代码片段会很有用。
 
-This will allow you to change the timeframe for the strategy, but the minimal ROI times will still be set as candles, e.g. after 3 candles.
+这将允许您更改策略的时间框架，但最小投资回报率时间仍将设置为蜡烛数，例如3根蜡烛后。
 
 ``` python
 from freqtrade.exchange import timeframe_to_minutes
@@ -461,83 +455,83 @@ class AwesomeStrategy(IStrategy):
     }
 ```
 
-??? info "Orders that don't fill immediately"
-    `minimal_roi` will take the `trade.open_date` as reference, which is the time the trade was initialized, i.e. when the first order for this trade was placed.
-    This will also hold true for limit orders that don't fill immediately (usually in combination with "off-spot" prices through `custom_entry_price()`), as well as for cases where the initial order price is replaced through `adjust_entry_price()`.
-    The time used will still be from the initial `trade.open_date` (when the initial order was first placed), not from the newly placed or adjusted order date.
+??? info "未立即成交的订单"
+    `minimal_roi` 将以 `trade.open_date` 作为参考时间，即交易初始化的时间，也就是该交易的首个订单被下达的时间。
+    对于未立即成交的限价订单（通常与通过 `custom_entry_price()` 设置的"离场"价格结合使用），以及初始订单价格通过 `adjust_entry_price()` 被替换的情况，这也同样适用。
+    使用的时间仍将是最初的 `trade.open_date`（即初始订单首次下达的时间），而非新下达或调整后的订单日期。
 
-### Stoploss
+### 止损
 
-Setting a stoploss is highly recommended to protect your capital from strong moves against you.
+强烈建议设置止损，以保护您的资金免受对您不利的剧烈波动影响。
 
-Sample of setting a 10% stoploss:
+设置10%止损的示例：
 
 ``` python
 stoploss = -0.10
 ```
 
-For the full documentation on stoploss features, look at the dedicated [stoploss page](stoploss.md).
+有关止损功能的完整文档，请查阅专门的[止损页面](stoploss.md)。
 
-### Timeframe
+### 时间框架
 
-This is the periodicity of candles the bot should use in the strategy.
+这是机器人应在策略中使用的蜡烛周期。
 
-Common values are `"1m"`, `"5m"`, `"15m"`, `"1h"`, however all values supported by your exchange should work.
+常用值为 `"1m"`、`"5m"`、`"15m"`、`"1h"`，但您的交易所支持的所有值都应该有效。
 
-Please note that the same entry/exit signals may work well with one timeframe, but not with others.
+请注意，相同的入场/出场信号可能在某一个时间框架下表现良好，但在其他时间框架下则不然。
 
-This setting is accessible within the strategy methods as the `self.timeframe` attribute.
+此设置可在策略方法中作为 `self.timeframe` 属性访问。
 
-### Can short
+### 允许做空
 
-To use short signals in futures markets, you will have to set `can_short = True`.
+要在期货市场使用做空信号，您必须设置 `can_short = True`。
 
-Strategies which enable this will fail to load on spot markets.
+启用此功能的策略将无法在现货市场加载。
 
-If you have `1` values in the `enter_short` column to raise short signals, setting `can_short = False` (which is the default) will mean that these short signals are ignored, even if you have specified futures markets in your configuration.
+如果在 `enter_short` 列中有 `1` 值来触发做空信号，设置 `can_short = False`（默认值）将意味着这些做空信号被忽略，即使您在配置中指定了期货市场。
 
-### Metadata dict
+### 元数据字典
 
-The `metadata` dict (available for `populate_entry_trend`, `populate_exit_trend`, `populate_indicators`) contains additional information.
-Currently this is `pair`, which can be accessed using `metadata['pair']`, and will return a pair in the format `XRP/BTC` (or `XRP/BTC:BTC` for futures markets).
+`metadata` 字典（可用于 `populate_entry_trend`、`populate_exit_trend`、`populate_indicators`）包含附加信息。
+目前这是 `pair`，可以使用 `metadata['pair']` 访问，并将返回格式为 `XRP/BTC` 的交易对（对于期货市场为 `XRP/BTC:BTC`）。
 
-The metadata dict should not be modified and does not persist information across multiple functions in your strategy.
+元数据字典不应被修改，并且不会在策略的多个函数之间持久保存信息。
 
-Instead, please check the [Storing information](strategy-advanced.md#storing-information-persistent) section.
+请查阅[存储信息](strategy-advanced.md#storing-information-persistent)章节。
 
 --8<-- "includes/strategy-imports.md"
 
-## Strategy file loading
+## 策略文件加载
 
-By default, freqtrade will attempt to load strategies from all `.py` files within the `userdir` (default `user_data/strategies`).
+默认情况下，freqtrade 将尝试从 `userdir`（默认为 `user_data/strategies`）内的所有 `.py` 文件加载策略。
 
-Assuming your strategy is called `AwesomeStrategy`, stored in the file `user_data/strategies/AwesomeStrategy.py`, then you can start freqtrade in dry (or live, depending on your configuration) mode with:
+假设您的策略名为 `AwesomeStrategy`，存储在文件 `user_data/strategies/AwesomeStrategy.py` 中，那么您可以通过以下方式以模拟（或实盘，取决于您的配置）模式启动 freqtrade：
 
 ```bash
 freqtrade trade --strategy AwesomeStrategy
 ```
 
-Note that we're using the class name, not the file name.
+请注意，我们使用的是类名，而非文件名。
 
-You can use `freqtrade list-strategies` to see a list of all strategies Freqtrade is able to load (all strategies in the correct folder).
-It will also include a "status" field, highlighting potential problems.
+您可以使用 `freqtrade list-strategies` 查看 Freqtrade 能够加载的所有策略列表（正确文件夹中的所有策略）。
+该列表还会包含一个“状态”字段，用于突出显示潜在问题。
 
-??? Hint "Customize strategy directory"
-    You can use a different directory by using `--strategy-path user_data/otherPath`. This parameter is available to all commands that require a strategy.
+??? Hint "自定义策略目录"
+    您可以通过使用 `--strategy-path user_data/otherPath` 来指定不同的目录。此参数适用于所有需要策略的命令。
 
-## Informative Pairs
+## 信息对
 
-### Get data for non-tradeable pairs
+### 获取非交易对的数据
 
-Data for additional, informative pairs (reference pairs) can be beneficial for some strategies to see data on a wider timeframe.
+额外的信息对（参考对）数据对于某些策略查看更广泛时间框架的数据可能是有益的。
 
-OHLCV data for these pairs will be downloaded as part of the regular whitelist refresh process and is available via `DataProvider` just as other pairs (see below).
+这些对的 OHLCV 数据将作为常规白名单刷新过程的一部分进行下载，并通过 `DataProvider` 提供，与其他对相同（见下文）。
 
-These pairs will **not** be traded unless they are also specified in the pair whitelist, or have been selected by Dynamic Whitelisting, e.g. `VolumePairlist`.
+这些对**不会**被交易，除非它们也被指定在配对白名单中，或已被动态白名单（例如 `VolumePairlist`）选中。
 
-The pairs need to be specified as tuples in the format `("pair", "timeframe")`, with pair as the first and timeframe as the second argument.
+这些对需要以元组形式指定，格式为 `("pair", "timeframe")`，其中 pair 为第一个参数，timeframe 为第二个参数。
 
-Sample:
+示例：
 
 ``` python
 def informative_pairs(self):
@@ -546,19 +540,19 @@ def informative_pairs(self):
             ]
 ```
 
-A full sample can be found [in the DataProvider section](#complete-dataprovider-sample).
+完整示例可在 [DataProvider 部分](#complete-dataprovider-sample) 找到。
 
 !!! Warning
-    As these pairs will be refreshed as part of the regular whitelist refresh, it's best to keep this list short.
-    All timeframes and all pairs can be specified as long as they are available (and active) on the used exchange.
-    It is however better to use resampling to longer timeframes whenever possible
-    to avoid hammering the exchange with too many requests and risk being blocked.
+    由于这些交易对将作为常规白名单刷新的一部分进行更新，最好保持此列表简短。
+    只要使用的交易所提供（且活跃）的所有时间框架和所有交易对都可以指定。
+    但尽可能使用较长时间框架的重采样会更佳，
+    以避免向交易所发送过多请求导致被封锁的风险。
 
-??? Note "Alternative candle types"
-    Informative_pairs can also provide a 3rd tuple element defining the candle type explicitly.
-    Availability of alternative candle-types will depend on the trading-mode and the exchange.
-    In general, spot pairs cannot be used in futures markets, and futures candles can't be used as informative pairs for spot bots.
-    Details about this may vary, if they do, this can be found in the exchange documentation.
+??? Note "替代 K 线类型"
+    Informative_pairs 还可以提供第三个元组元素来明确定义 K 线类型。
+    替代 K 线类型的可用性取决于交易模式和交易所。
+    通常，现货交易对不能用于期货市场，而期货 K 线也不能作为现货机器人的信息对。
+    具体细节可能有所不同，如有变化可在交易所文档中找到相关信息。
 
     ``` python
     def informative_pairs(self):
@@ -569,19 +563,20 @@ A full sample can be found [in the DataProvider section](#complete-dataprovider-
             ("BTC/TUSD", "15m", "mark"),  # Uses mark candles (only bots with `trading_mode=futures`)
         ]
     ```
+
 ***
 
-### Informative pairs decorator (`@informative()`)
+### 信息对装饰器 (`@informative()`)
 
-To easily define informative pairs, use the `@informative` decorator. All decorated `populate_indicators_*` methods run in isolation,
-and do not have access to data from other informative pairs. However, all informative dataframes for each pair are merged and passed to main `populate_indicators()` method.
+为方便定义信息对，可使用 `@informative` 装饰器。所有被装饰的 `populate_indicators_*` 方法都独立运行，
+且无法访问其他信息对的数据。但每个交易对的所有信息数据框会被合并并传递给主 `populate_indicators()` 方法。
 
 !!! Note
-    Do not use the `@informative` decorator if you need to use data from one informative pair when generating another informative pair. Instead, define informative pairs manually as described [in the DataProvider section](#complete-dataprovider-sample).
+    如果需要在生成一个信息对时使用另一个信息对的数据，请不要使用 `@informative` 装饰器。而应按照 [DataProvider 章节](#complete-dataprovider-sample) 中所述手动定义信息对。
 
-When hyperopting, use of the hyperoptable parameter `.value` attribute is not supported. Please use the `.range` attribute. See [optimizing an indicator parameter](hyperopt.md#optimizing-an-indicator-parameter) for more information.
+进行超参数优化时，不支持使用可优化参数的 `.value` 属性。请使用 `.range` 属性。更多信息请参阅 [优化指标参数](hyperopt.md#optimizing-an-indicator-parameter)。
 
-??? info "Full documentation"
+??? info "完整文档"
     ``` python
     def informative(
         timeframe: str,
@@ -592,8 +587,7 @@ When hyperopting, use of the hyperoptable parameter `.value` attribute is not su
         ffill: bool = True,
     ) -> Callable[[PopulateIndicators], PopulateIndicators]:
         """
-        A decorator for populate_indicators_Nn(self, dataframe, metadata), allowing these functions to
-        define informative indicators.
+        用于 populate_indicators_Nn(self, dataframe, metadata) 的装饰器，允许这些函数定义信息指标。
 
         Example usage:
 
@@ -623,7 +617,7 @@ When hyperopting, use of the hyperoptable parameter `.value` attribute is not su
         """
     ```
 
-??? Example "Fast and easy way to define informative pairs"
+??? Example "定义信息对的快速简便方法"
 
     Most of the time we do not need power and flexibility offered by `merge_informative_pair()`, therefore we can use a decorator to quickly define informative pairs.
 
@@ -680,7 +674,7 @@ When hyperopting, use of the hyperoptable parameter `.value` attribute is not su
     ```
 
 !!! Note
-    Use string formatting when accessing informative dataframes of other pairs. This will allow easily changing stake currency in config without having to adjust strategy code.
+    访问其他交易对的信息数据框时请使用字符串格式化。这样可以在不调整策略代码的情况下轻松更改配置中的计价货币。
 
     ``` python
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -698,41 +692,41 @@ When hyperopting, use of the hyperoptable parameter `.value` attribute is not su
 
     Alternatively column renaming may be used to remove stake currency from column names: `@informative('1h', 'BTC/{stake}', fmt='{base}_{column}_{timeframe}')`.
 
-!!! Warning "Duplicate method names"
-    Methods tagged with the `@informative()` decorator must always have unique names! Reusing the same name (for example when copy-pasting already defined informative methods) will overwrite previously defined methods and not produce any errors due to limitations of Python programming language. In such cases you will find that indicators created in methods higher up in the strategy file are not available in the dataframe. Carefully review method names and make sure they are unique!
+!!! Warning "重复的方法名称"
+    使用 `@informative()` 装饰器标记的方法必须始终具有唯一名称！重复使用相同名称（例如复制粘贴已定义的信息方法时）将覆盖先前定义的方法，并且由于 Python 编程语言的限制不会产生任何错误。在这种情况下，您会发现策略文件中较早创建的方法指标在数据框中不可用。请仔细检查方法名称并确保它们是唯一的！
 
 ### *merge_informative_pair()*
 
-This method helps you merge an informative pair to the regular main dataframe safely and consistently, without lookahead bias.
+此方法帮助您安全且一致地将信息对合并到常规主数据框中，避免前视偏差。
 
-Options:
+选项：
 
-- Rename the columns to create unique columns
-- Merge the dataframe without lookahead bias
-- Forward-fill (optional)
+- 重命名列以创建唯一列
+- 无前视偏差地合并数据框
+- 前向填充（可选）
 
-For a full sample, please refer to the [complete data provider example](#complete-dataprovider-sample) below.
+完整示例请参考下方的[完整数据提供者示例](#complete-dataprovider-sample)。
 
-All columns of the informative dataframe will be available on the returning dataframe in a renamed fashion:
+信息数据框的所有列将以重命名的方式在返回的数据框中可用：
 
-!!! Example "Column renaming"
-    Assuming `inf_tf = '1d'` the resulting columns will be:
+!!! Example "列重命名"
+    假设 `inf_tf = '1d'`，生成的列将为：
 
     ``` python
     'date', 'open', 'high', 'low', 'close', 'rsi'                     # from the original dataframe
     'date_1d', 'open_1d', 'high_1d', 'low_1d', 'close_1d', 'rsi_1d'   # from the informative dataframe
     ```
 
-??? Example "Column renaming - 1h"
-    Assuming `inf_tf = '1h'` the resulting columns will be:
+??? Example "列重命名 - 1小时"
+    假设 `inf_tf = '1h'`，生成的列将为：
 
     ``` python
     'date', 'open', 'high', 'low', 'close', 'rsi'                     # from the original dataframe
     'date_1h', 'open_1h', 'high_1h', 'low_1h', 'close_1h', 'rsi_1h'   # from the informative dataframe
     ```
 
-??? Example "Custom implementation"
-    A custom implementation for this is possible, and can be done as follows:
+??? Example "自定义实现"
+    可以对此进行自定义实现，操作如下：
 
     ``` python
 
@@ -757,38 +751,38 @@ All columns of the informative dataframe will be available on the returning data
 
     ```
 
-!!! Warning "Informative timeframe < timeframe"
-    Using informative timeframes smaller than the main dataframe timeframe is not recommended with this method, as it will not use any of the additional information this would provide.
-    To use the more detailed information properly, more advanced methods should be applied (which are out of scope for this documentation).
+!!! Warning "信息时间框架 < 时间框架"
+    不建议在此方法中使用比主数据框架时间框架更小的信息时间框架，因为它不会利用这种设置可能提供的任何额外信息。
+    要正确使用更详细的信息，应采用更高级的方法（这超出了本文档的范围）。
 
-## Additional data (DataProvider)
+## 附加数据（DataProvider）
 
-The strategy provides access to the `DataProvider`. This allows you to get additional data to use in your strategy.
+策略提供对 `DataProvider` 的访问权限。这允许您获取在策略中使用的附加数据。
 
-All methods return `None` in case of failure, i.e. failures do not raise an exception.
+所有方法在失败时都会返回 `None`，即失败不会引发异常。
 
-Please always check the mode of operation to select the correct method to get data (see below for examples).
+请务必检查操作模式以选择正确的数据获取方法（参见以下示例）。
 
-!!! Warning "Hyperopt Limitations"
-    The DataProvider is available during hyperopt, however it can only be used in `populate_indicators()` **within a strategy**, not within a hyperopt class file.
-    It is also not available in `populate_entry_trend()` and `populate_exit_trend()` methods.
+!!! Warning "Hyperopt 限制"
+    DataProvider 在 hyperopt 期间可用，但只能在**策略内部**的 `populate_indicators()` 中使用，不能在 hyperopt 类文件中使用。
+    它在 `populate_entry_trend()` 和 `populate_exit_trend()` 方法中也不可用。
 
-### Possible options for DataProvider
+### DataProvider 的可能选项
 
-- [`available_pairs`](#available_pairs) - Property with tuples listing cached pairs with their timeframe (pair, timeframe).
-- [`current_whitelist()`](#current_whitelist) - Returns a current list of whitelisted pairs. Useful for accessing dynamic whitelists (i.e. VolumePairlist)
-- [`get_pair_dataframe(pair, timeframe)`](#get_pair_dataframepair-timeframe) - This is a universal method, which returns either historical data (for backtesting) or cached live data (for the Dry-Run and Live-Run modes).
-- [`get_analyzed_dataframe(pair, timeframe)`](#get_analyzed_dataframepair-timeframe) - Returns the analyzed dataframe (after calling `populate_indicators()`, `populate_buy()`, `populate_sell()`) and the time of the latest analysis.
-- `historic_ohlcv(pair, timeframe)` - Returns historical data stored on disk.
-- `market(pair)` - Returns market data for the pair: fees, limits, precisions, activity flag, etc. See [ccxt documentation](https://github.com/ccxt/ccxt/wiki/Manual#markets) for more details on the Market data structure.
-- `ohlcv(pair, timeframe)` - Currently cached candle (OHLCV) data for the pair, returns DataFrame or empty DataFrame.
-- [`orderbook(pair, maximum)`](#orderbookpair-maximum) - Returns latest orderbook data for the pair, a dict with bids/asks with a total of `maximum` entries.
-- [`ticker(pair)`](#tickerpair) - Returns current ticker data for the pair. See [ccxt documentation](https://github.com/ccxt/ccxt/wiki/Manual#price-tickers) for more details on the Ticker data structure.
-- [`check_delisting(pair)`](#check_delistingpair) - Return Datetime of the pair delisting schedule if any, otherwise return None
-- [`funding_rate(pair)`](#funding_ratepair) - Returns current funding rate data for the pair.
-- `runmode` - Property containing the current runmode.
+- [`available_pairs`](#available_pairs) - 包含缓存交易对及其时间框架元组列表的属性（交易对，时间框架）。
+- [`current_whitelist()`](#current_whitelist) - 返回当前白名单交易对列表。适用于访问动态白名单（如 VolumePairlist）。
+- [`get_pair_dataframe(pair, timeframe)`](#get_pair_dataframepair-timeframe) - 通用方法，返回历史数据（用于回测）或缓存的实时数据（用于模拟交易和实盘交易模式）。
+- [`get_analyzed_dataframe(pair, timeframe)`](#get_analyzed_dataframepair-timeframe) - 返回已分析的数据框（在调用 `populate_indicators()`、`populate_buy()`、`populate_sell()` 之后）及最新分析时间。
+- `historic_ohlcv(pair, timeframe)` - 返回存储在磁盘上的历史数据。
+- `market(pair)` - 返回交易对的市场数据：费用、限制、精度、活跃标志等。有关市场数据结构的更多详情，请参阅 [ccxt 文档](https://github.com/ccxt/ccxt/wiki/Manual#markets)。
+- `ohlcv(pair, timeframe)` - 返回交易对当前缓存的蜡烛图（OHLCV）数据，返回 DataFrame 或空 DataFrame。
+- [`orderbook(pair, maximum)`](#orderbookpair-maximum) - 返回交易对的最新订单簿数据，包含总共 `maximum` 个条目的买入/卖出字典。
+- [`ticker(pair)`](#tickerpair) - 返回交易对的当前行情数据。有关 Ticker 数据结构的更多详情，请参阅 [ccxt 文档](https://github.com/ccxt/ccxt/wiki/Manual#price-tickers)。
+- [`check_delisting(pair)`](#check_delistingpair) - 如果存在交易对下架计划，则返回其日期时间，否则返回 None。
+- [`funding_rate(pair)`](#funding_ratepair) - 返回交易对的当前资金费率数据。
+- `runmode` - 包含当前运行模式的属性。
 
-### Example Usages
+### 示例用法
 
 ### *available_pairs*
 
@@ -799,17 +793,17 @@ for pair, timeframe in self.dp.available_pairs:
 
 ### *current_whitelist()*
 
-Imagine you've developed a strategy that trades the `5m` timeframe using signals generated from a `1d` timeframe on the top 10 exchange pairs by volume.
+假设您开发了一个策略，该策略使用交易量排名前10的交易对在`1d`时间框架上生成的信号，在`5m`时间框架上进行交易。
 
-The strategy logic might look something like this:
+策略逻辑可能如下所示：
 
-*Scan through the top 10 pairs by volume using the `VolumePairList` every 5 minutes and use a 14 day RSI to enter and exit.*
+*每5分钟使用`VolumePairList`扫描交易量前10的交易对，并使用14日RSI指标进行入场和出场。*
 
-Due to the limited available data, it's very difficult to resample `5m` candles into daily candles for use in a 14 day RSI. Most exchanges limit users to just 500-1000 candles which effectively gives us around 1.74 daily candles. We need 14 days at least!
+由于可用数据有限，将`5m`K线重采样为日线以用于14日RSI计算非常困难。大多数交易所将用户限制在仅500-1000根K线，这实际上只给我们提供了大约1.74根日线。而我们至少需要14天的数据！
 
-Since we can't resample the data we will have to use an informative pair, and since the whitelist will be dynamic we don't know which pair(s) to use! We have a problem!
+既然无法重采样数据，我们将不得不使用信息交易对，而且由于白名单是动态的，我们不知道要使用哪个（些）交易对！我们遇到了问题！
 
-This is where calling `self.dp.current_whitelist()` comes in handy to retrieve only those pairs in the whitelist.
+这时调用`self.dp.current_whitelist()`就派上用场了，它可以仅检索白名单中的那些交易对。
 
 ```python
     def informative_pairs(self):
@@ -821,9 +815,9 @@ This is where calling `self.dp.current_whitelist()` comes in handy to retrieve o
         return informative_pairs
 ```
 
-??? Note "Plotting with current_whitelist"
-    Current whitelist is not supported for `plot-dataframe`, as this command is usually used by providing an explicit pairlist and would therefore make the return values of this method misleading.
-    It's also not supported for FreqUI visualization in [webserver mode](utils.md#webserver-mode), as the configuration for webserver mode doesn't require a pairlist to be set.
+!!! Note "使用current_whitelist绘图"
+    `plot-dataframe`不支持当前白名单功能，因为该命令通常通过提供显式交易对列表来使用，因此会使此方法的返回值产生误导。
+    在[网络服务器模式](utils.md#webserver-mode)下的FreqUI可视化中也不支持该功能，因为网络服务器模式的配置不需要设置交易对列表。
 
 ### *get_pair_dataframe(pair, timeframe)*
 
@@ -834,15 +828,15 @@ informative = self.dp.get_pair_dataframe(pair=inf_pair,
                                          timeframe=inf_timeframe)
 ```
 
-!!! Warning "Warning about backtesting"
-    In backtesting, `dp.get_pair_dataframe()` behavior differs depending on where it's called.
-    Within `populate_*()` methods, `dp.get_pair_dataframe()` returns the full timerange. Please make sure to not "look into the future" to avoid surprises when running in dry/live mode.
-    Within [callbacks](strategy-callbacks.md), you'll get the full timerange up to the current (simulated) candle.
+!!! Warning "关于回测的警告"
+    在回测中，`dp.get_pair_dataframe()` 的行为会根据调用位置而有所不同。
+    在 `populate_*()` 方法内部，`dp.get_pair_dataframe()` 返回完整的时间范围。请确保不要"预见未来"，以避免在干运行/实盘模式下出现意外情况。
+    在[回调函数](strategy-callbacks.md)内部，您将获得截至当前（模拟）蜡烛线的完整时间范围。
 
 ### *get_analyzed_dataframe(pair, timeframe)*
 
-This method is used by freqtrade internally to determine the last signal.
-It can also be used in specific callbacks to get the signal that caused the action (see [Advanced Strategy Documentation](strategy-advanced.md) for more details on available callbacks).
+此方法由 freqtrade 内部用于确定最后的信号。
+它也可以在特定的回调函数中使用，以获取触发操作的信号（有关可用回调的更多详细信息，请参阅[高级策略文档](strategy-advanced.md)）。
 
 ``` python
 # fetch current dataframe
@@ -850,14 +844,14 @@ dataframe, last_updated = self.dp.get_analyzed_dataframe(pair=metadata['pair'],
                                                          timeframe=self.timeframe)
 ```
 
-!!! Note "No data available"
-    Returns an empty dataframe if the requested pair was not cached.
-    You can check for this with `if dataframe.empty:` and handle this case accordingly.
-    This should not happen when using whitelisted pairs.
+!!! Note "无可用数据"
+    如果请求的交易对未被缓存，则返回一个空的数据框。
+    您可以使用 `if dataframe.empty:` 来检查这种情况并进行相应处理。
+    在使用白名单交易对时，这种情况不应发生。
 
 ### *orderbook(pair, maximum)*
 
-Retrieve the current order book for a pair.
+获取指定交易对的当前订单簿。
 
 ``` python
 if self.dp.runmode.value in ('live', 'dry_run'):
@@ -866,7 +860,7 @@ if self.dp.runmode.value in ('live', 'dry_run'):
     dataframe['best_ask'] = ob['asks'][0][0]
 ```
 
-The orderbook structure is aligned with the order structure from [ccxt](https://github.com/ccxt/ccxt/wiki/Manual#order-book-structure), so the result will be formatted as follows:
+订单簿结构与 [ccxt](https://github.com/ccxt/ccxt/wiki/Manual#order-book-structure) 的订单结构保持一致，因此结果将按以下格式呈现：
 
 ``` js
 {
@@ -884,10 +878,10 @@ The orderbook structure is aligned with the order structure from [ccxt](https://
 }
 ```
 
-Therefore, using `ob['bids'][0][0]` as demonstrated above will use the best bid price. `ob['bids'][0][1]` would look at the amount at this orderbook position.
+因此，如上所示使用 `ob['bids'][0][0]` 将使用最佳买价。`ob['bids'][0][1]` 将查看该订单簿位置的数量。
 
-!!! Warning "Warning about backtesting"
-    The order book is not part of the historic data which means backtesting and hyperopt will not work correctly if this method is used, as the method will return up-to-date values.
+!!! Warning "关于回测的警告"
+    订单簿不是历史数据的一部分，这意味着如果使用此方法，回测和超参数优化将无法正常工作，因为该方法将返回最新的值。
 
 ### *ticker(pair)*
 
@@ -900,13 +894,10 @@ if self.dp.runmode.value in ('live', 'dry_run'):
 ```
 
 !!! Warning
-    Although the ticker data structure is a part of the ccxt Unified Interface, the values returned by this method can
-    vary for different exchanges. For instance, many exchanges do not return `vwap` values, and some exchanges
-    do not always fill in the `last` field (so it can be None), etc. So you need to carefully verify the ticker
-    data returned from the exchange and add appropriate error handling / defaults.
+    尽管行情数据结构是 ccxt 统一接口的一部分，但此方法返回的值可能因不同交易所而异。例如，许多交易所不返回 `vwap` 值，有些交易所并不总是填写 `last` 字段（因此它可能为 None），等等。因此，您需要仔细验证从交易所返回的行情数据，并添加适当的错误处理/默认值。
 
-!!! Warning "Warning about backtesting"
-    This method will always return up-to-date / real-time values. As such, usage during backtesting / hyperopt without runmode checks will lead to wrong results, e.g. your whole dataframe will contain the same single value in all rows.
+!!! Warning "关于回测的警告"
+    此方法将始终返回最新的/实时值。因此，在回测/超参数优化期间使用而不进行运行模式检查将导致错误的结果，例如，您的整个数据框将在所有行中包含相同的单个值。
 
 ### *check_delisting(pair)*
 
@@ -918,15 +909,15 @@ def custom_exit(self, pair: str, trade: Trade, current_time: datetime, current_r
             return "delist"
 ```
 
-!!! Note "Availabiity of delisting information"
-    This method is only available for certain exchanges and will return `None` in cases this is not available or if the pair is not scheduled for delisting.
+!!! Note "退市信息的可用性"
+    此方法仅适用于某些交易所，并且在不可用或该交易对未计划退市的情况下将返回 `None`。
 
-!!! Warning "Warning about backtesting"
-    This method will always return up-to-date / real-time values. As such, usage during backtesting / hyperopt without runmode checks will lead to wrong results, e.g. your whole dataframe will contain the same single value in all rows.
+!!! Warning "关于回测的警告"
+    此方法将始终返回最新/实时值。因此，在回测/超参数优化期间使用而不进行运行模式检查将导致错误结果，例如您的整个数据框将在所有行中包含相同的单个值。
 
 ### *funding_rate(pair)*
 
-Retrieves the current funding rate for the pair and only works for futures pairs in the format of `base/quote:settle` (e.g. `ETH/USDT:USDT`).
+获取交易对的当前资金费率，仅适用于格式为 `base/quote:settle` 的永续合约交易对（例如 `ETH/USDT:USDT`）。
 
 ``` python
 if self.dp.runmode.value in ('live', 'dry_run'):
@@ -936,7 +927,7 @@ if self.dp.runmode.value in ('live', 'dry_run'):
     dataframe['next_funding_datetime'] = funding_rate['fundingDatetime']
 ```
 
-The funding rate structure is aligned with the funding rate structure from [ccxt](https://github.com/ccxt/ccxt/wiki/Manual#funding-rate-structure), so the result will be formatted as follows:
+资金费率结构与 [ccxt](https://github.com/ccxt/ccxt/wiki/Manual#funding-rate-structure) 的资金费率结构保持一致，因此结果将按以下格式返回：
 
 ``` python
 {
@@ -963,18 +954,18 @@ The funding rate structure is aligned with the funding rate structure from [ccxt
 }
 ```
 
-Therefore, using `funding_rate['fundingRate']` as demonstrated above will use the current funding rate.
-Actually available data will vary between exchanges, so this code may not work as expected across exchanges.
+因此，如上所示使用 `funding_rate['fundingRate']` 将使用当前资金费率。
+实际可用数据因交易所而异，因此此代码在不同交易所之间可能无法按预期工作。
 
-!!! Warning "Warning about backtesting"
-    Current funding-rate is not part of the historic data which means backtesting and hyperopt will not work correctly if this method is used, as the method will return up-to-date values.
-    We recommend to use the historically available funding rate for backtesting (which is automatically downloaded, and is at the frequency of what the exchange provides, usually 4h or 8h).
+!!! Warning "关于回测的警告"
+    当前资金费率不是历史数据的一部分，这意味着如果使用此方法，回测和超参数优化将无法正确工作，因为该方法将返回最新值。
+    我们建议使用历史上可用的资金费率进行回测（该数据会自动下载，频率与交易所提供的频率一致，通常为4小时或8小时）。
     `self.dp.get_pair_dataframe(pair=metadata['pair'], timeframe='8h', candle_type="funding_rate")`
 
-### Send Notification
+### 发送通知
 
-The dataprovider `.send_msg()` function allows you to send custom notifications from your strategy.
-Identical notifications will only be sent once per candle, unless the 2nd argument (`always_send`) is set to True.
+数据提供者的 `.send_msg()` 函数允许您从策略发送自定义通知。
+相同的通知在每个蜡烛图周期内只会发送一次，除非第二个参数 (`always_send`) 设置为 True。
 
 ``` python
     self.dp.send_msg(f"{metadata['pair']} just got hot!")
@@ -983,12 +974,12 @@ Identical notifications will only be sent once per candle, unless the 2nd argume
     self.dp.send_msg(f"{metadata['pair']} just got hot!", always_send=True)
 ```
 
-Notifications will only be sent in trading modes (Live/Dry-run) - so this method can be called without conditions for backtesting.
+通知仅在交易模式（实盘/模拟运行）下发送 - 因此该方法可以在无需考虑回测条件的情况下调用。
 
-!!! Warning "Spamming"
-    You can spam yourself pretty good by setting `always_send=True` in this method. Use this with great care and only in conditions you know will not happen throughout a candle to avoid a message every 5 seconds.
+!!! Warning "消息轰炸"
+    通过在此方法中设置 `always_send=True`，您可能会遭受严重的消息轰炸。请极其谨慎地使用此功能，并仅在您确认整个蜡烛图周期内不会重复触发的条件下使用，以避免每5秒收到一条消息。
 
-### Complete DataProvider sample
+### 完整的数据提供者示例
 
 ```python
 from freqtrade.strategy import IStrategy, merge_informative_pair
@@ -1053,16 +1044,16 @@ class SampleStrategy(IStrategy):
 
 ***
 
-## Additional data (Wallets)
+## 附加数据（钱包）
 
-The strategy provides access to the `wallets` object. This contains the current balances of your wallets/accounts on the exchange.
+策略提供对 `wallets` 对象的访问。该对象包含您在交易所的钱包/账户当前余额。
 
-!!! Note "Backtesting / Hyperopt"
-    Wallets behaves differently depending on the function from which it is called.
-    Within `populate_*()` methods, it'll return the full wallet as configured.
-    Within [callbacks](strategy-callbacks.md), you'll get the wallet state corresponding to the actual simulated wallet at that point in the simulation process.
+!!! Note "回测 / 超参数优化"
+    钱包的行为根据调用它的函数而有所不同。
+    在 `populate_*()` 方法内，它将返回配置的完整钱包。
+    在[回调函数](strategy-callbacks.md)内，您将获得模拟过程中对应时间点的实际模拟钱包状态。
 
-Always check if `wallets` is available to avoid failures during backtesting.
+请始终检查 `wallets` 是否可用，以避免在回测期间出现故障。
 
 ``` python
 if self.wallets:
@@ -1071,25 +1062,25 @@ if self.wallets:
     total_eth = self.wallets.get_total('ETH')
 ```
 
-### Possible options for Wallets
+### 钱包的可能选项
 
-- `get_free(asset)` - currently available balance to trade
-- `get_used(asset)` - currently tied up balance (open orders)
-- `get_total(asset)` - total available balance - sum of the 2 above
+- `get_free(asset)` - 当前可用于交易的余额
+- `get_used(asset)` - 当前被占用的余额（未成交订单）
+- `get_total(asset)` - 总可用余额 - 上述两项之和
 
 ***
 
-## Additional data (Trades)
+## 附加数据（交易记录）
 
-A history of trades can be retrieved in the strategy by querying the database.
+策略中可以通过查询数据库获取交易历史记录。
 
-At the top of the file, import the required object:
+在文件顶部导入所需对象：
 
 ```python
 from freqtrade.persistence import Trade
 ```
 
-The following example queries trades from today for the current pair (`metadata['pair']`). Other filters can easily be added.
+以下示例查询当前交易对（`metadata['pair']`）今日的交易记录。其他筛选条件可以轻松添加。
 
 ``` python
 trades = Trade.get_trades_proxy(pair=metadata['pair'],
@@ -1100,38 +1091,38 @@ trades = Trade.get_trades_proxy(pair=metadata['pair'],
 curdayprofit = sum(trade.close_profit for trade in trades)
 ```
 
-For a full list of available methods, please consult the [Trade object](trade-object.md) documentation.
+完整可用方法列表请查阅[交易对象](trade-object.md)文档。
 
 !!! Warning
-    Trade history is not available in `populate_*` methods during backtesting or hyperopt, and will result in empty results.
+    在回测或超参优化期间，`populate_*` 方法中无法获取交易历史记录，查询将返回空结果。
 
-## Prevent trades from happening for a specific pair
+## 阻止特定交易对的交易
 
-Freqtrade locks pairs automatically for the current candle (until that candle is over) when a pair exits, preventing an immediate re-entry of that pair.
+当交易对平仓时，Freqtrade 会自动锁定当前K线周期内的该交易对（直到该K线结束），防止立即重新入场。
 
-This is to prevent "waterfalls" of many and frequent trades within a single candle.
+此举旨在避免单根K线内出现大量频繁交易的"瀑布式"操作。
 
-Locked pairs will show the message `Pair <pair> is currently locked.`.
+被锁定的交易对将显示消息 `交易对 <pair> 当前已被锁定。`。
 
-### Locking pairs from within the strategy
+### 在策略中锁定交易对
 
-Sometimes it may be desired to lock a pair after certain events happen (e.g. multiple losing trades in a row).
+有时可能需要在特定事件发生后锁定交易对（例如连续多次亏损交易）。
 
-Freqtrade has an easy method to do this from within the strategy, by calling `self.lock_pair(pair, until, [reason])`.
-`until` must be a datetime object in the future, after which trading will be re-enabled for that pair, while `reason` is an optional string detailing why the pair was locked.
+Freqtrade 提供了一种在策略中轻松实现此功能的方法，只需调用 `self.lock_pair(pair, until, [reason])`。
+`until` 必须是一个未来的 datetime 对象，在此时间之后该交易对的交易将重新启用；而 `reason` 是一个可选字符串，用于详细说明锁定该交易对的原因。
 
-Locks can also be lifted manually, by calling `self.unlock_pair(pair)` or `self.unlock_reason(<reason>)`, providing the reason the pair was unlocked.
-`self.unlock_reason(<reason>)` will unlock all pairs currently locked with the provided reason.
+锁定也可以手动解除，通过调用 `self.unlock_pair(pair)` 或 `self.unlock_reason(<reason>)` 并提供解锁原因。
+`self.unlock_reason(<reason>)` 将解锁当前所有使用指定原因锁定的交易对。
 
-To verify if a pair is currently locked, use `self.is_pair_locked(pair)`.
+要验证某个交易对当前是否被锁定，请使用 `self.is_pair_locked(pair)`。
 
 !!! Note
-    Locked pairs will always be rounded up to the next candle. So assuming a `5m` timeframe, a lock with `until` set to 10:18 will lock the pair until the candle from 10:15-10:20 will be finished.
+    被锁定的交易对将始终向上取整到下一个蜡烛图。因此，假设使用 `5m` 时间框架，将 `until` 设置为 10:18 的锁定会将交易对锁定到 10:15-10:20 的蜡烛图结束。
 
 !!! Warning
-    Manually locking pairs is not available during backtesting. Only locks via Protections are allowed.
+    手动锁定交易对在回测期间不可用。仅允许通过保护机制（Protections）进行锁定。
 
-#### Pair locking example
+#### 交易对锁定示例
 
 ``` python
 from freqtrade.persistence import Trade
@@ -1152,10 +1143,10 @@ if self.config['runmode'].value in ('live', 'dry_run'):
         self.lock_pair(metadata['pair'], until=datetime.now(timezone.utc) + timedelta(hours=12))
 ```
 
-## Print the main dataframe
+## 打印主数据框
 
-To inspect the current main dataframe, you can issue a print-statement in either `populate_entry_trend()` or `populate_exit_trend()`.
-You may also want to print the pair so it's clear what data is currently shown.
+要检查当前的主数据框，您可以在 `populate_entry_trend()` 或 `populate_exit_trend()` 中添加打印语句。
+您可能还想打印交易对信息，以便清楚显示当前展示的是哪些数据。
 
 ``` python
 def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -1174,44 +1165,44 @@ def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFram
     return dataframe
 ```
 
-Printing more than a few rows is also possible by using `print(dataframe)` instead of `print(dataframe.tail())`. However this is not recommended, as can results in a lot of output (~500 lines per pair every 5 seconds).
+通过使用 `print(dataframe)` 而非 `print(dataframe.tail())`，也可以打印多行数据。但不推荐这样做，因为这可能导致大量输出（每个交易对每 5 秒约 500 行）。
 
-## Common mistakes when developing strategies
+## 开发策略时的常见错误
 
-### Looking into the future while backtesting
+### 回测时窥探未来数据
 
-Backtesting analyzes the whole dataframe timerange at once for performance reasons. Because of this, strategy authors need to make sure that strategies do not lookahead into the future, i.e. using data that would not be available in dry or live mode.
+出于性能考虑，回测会一次性分析整个数据框的时间范围。因此，策略作者需要确保策略不会窥探未来数据，即使用在模拟或实盘模式下不可用的数据。
 
-This is a common pain-point, which can cause huge differences between backtesting and dry/live run methods. Strategies that look into the future will perform well during backtesting, often with incredible profits or winrates, but will fail or perform badly in real conditions.
+这是一个常见的痛点，可能导致回测与模拟/实盘运行方法之间产生巨大差异。窥探未来数据的策略在回测期间表现良好，通常会有惊人的利润或胜率，但在实际条件下会失败或表现不佳。
 
-The following list contains some common patterns which should be avoided to prevent frustration:
+以下列表包含了一些应避免的常见模式，以防止挫败感：
 
-- don't use `shift(-1)` or other negative values. This uses data from the future in backtesting, which is not available in dry or live modes.
-- don't use `.iloc[-1]` or any other absolute position in the dataframe within `populate_` functions, as this will be different between dry-run and backtesting. Absolute `iloc` indexing is safe to use in callbacks however - see [Strategy Callbacks](strategy-callbacks.md).
-- don't use functions that use all dataframe or column values, e.g. `dataframe['mean_volume'] = dataframe['volume'].mean()`. As backtesting uses the full dataframe, at any point in the dataframe, the `'mean_volume'` series would include data from the future. Use rolling() calculations instead, e.g. `dataframe['volume'].rolling(<window>).mean()`.
-- don't use `.resample('1h')`. This uses the left border of the period interval, so moves data from an hour boundary to the start of the hour. Use `.resample('1h', label='right')` instead.
-- don't use `.merge()` to combine longer timeframes onto shorter ones. Instead, use the [informative pair](#informative-pairs) helpers. (A plain merge can implicitly cause a lookahead bias as date refers to open date, not close date).
+- 不要在回测中使用 `shift(-1)` 或其他负值。这会在回测中使用未来的数据，而这些数据在模拟或实盘模式下是不可用的。
+- 不要在 `populate_` 函数中使用 `.iloc[-1]` 或任何其他在数据框中的绝对位置，因为这在模拟运行和回测之间会有所不同。然而，在回调函数中使用绝对的 `iloc` 索引是安全的 - 请参阅 [策略回调](strategy-callbacks.md)。
+- 不要使用涉及所有数据框或列值的函数，例如 `dataframe['mean_volume'] = dataframe['volume'].mean()`。由于回测使用完整的数据框，在数据框的任何一点，`'mean_volume'` 序列都将包含未来的数据。请改用滚动计算，例如 `dataframe['volume'].rolling(<窗口>).mean()`。
+- 不要使用 `.resample('1h')`。这会使用周期间隔的左边界，从而将小时边界的数据移动到小时的开始。请改用 `.resample('1h', label='right')`。
+- 不要使用 `.merge()` 将较长时间框架的数据合并到较短时间框架上。请改用 [信息对](#informative-pairs) 辅助工具。（普通的合并可能会隐式导致前视偏差，因为日期指的是开盘日期，而不是收盘日期）。
 
-!!! Tip "Identifying problems"
-    You should always use the two helper commands [lookahead-analysis](lookahead-analysis.md) and [recursive-analysis](recursive-analysis.md), which can each help you figure out problems with your strategy in different ways.
-    Please treat them as what they are - helpers to identify most common problems. A negative result of each does not guarantee that there are none of the above errors included.
+!!! Tip "识别问题"
+    您应始终使用两个辅助命令 [lookahead-analysis](lookahead-analysis.md) 和 [recursive-analysis](recursive-analysis.md)，它们能以不同方式帮助您发现策略中的问题。
+    请将它们视为识别最常见问题的辅助工具。每个命令的阴性结果并不能保证不存在上述错误。
 
-### Colliding signals
+### 信号冲突
 
-When conflicting signals collide (e.g. both `'enter_long'` and `'exit_long'` are set to `1`), freqtrade will do nothing and ignore the entry signal. This will avoid trades that enter, and exit immediately. Obviously, this can potentially lead to missed entries.
+当冲突信号同时出现时（例如 `'enter_long'` 和 `'exit_long'` 同时设置为 `1`），freqtrade 将不执行任何操作并忽略入场信号。这将避免交易入场后立即离场的情况。显然，这可能导致错过入场机会。
 
-The following rules apply, and entry signals will be ignored if more than one of the 3 signals is set:
+以下规则适用，如果3个信号中有超过一个被设置，入场信号将被忽略：
 
 - `enter_long` -> `exit_long`, `enter_short`
 - `enter_short` -> `exit_short`, `enter_long`
 
-## Further strategy ideas
+## 更多策略思路
 
-To get additional ideas for strategies, head over to the [strategy repository](https://github.com/freqtrade/freqtrade-strategies). Feel free to use them as examples, but results will depend on the current market situation, pairs used, etc. Therefore, these strategies should be considered only for learning purposes, not real world trading. Please backtest the strategy for your exchange/desired pairs first, then dry run to evaluate carefully, and use at your own risk.
+要获取更多策略思路，请访问 [策略库](https://github.com/freqtrade/freqtrade-strategies)。可将其作为示例使用，但实际效果取决于当前市场状况、使用的交易对等因素。因此，这些策略应仅用于学习目的，不应用于实盘交易。请先针对您的交易所/目标交易对进行策略回测，然后通过模拟交易仔细评估，使用时风险自负。
 
-Feel free to use any of them as inspiration for your own strategies. We're happy to accept Pull Requests containing new strategies to the repository.
+欢迎使用它们作为您自己策略的灵感来源。我们很乐意接受包含新策略的 Pull Request 到代码库中。
 
-## Next steps
+## 后续步骤
 
-Now you have a perfect strategy you probably want to backtest it.
-Your next step is to learn [how to use backtesting](backtesting.md).
+现在您已经有了一个完美的策略，可能想要进行回测。
+下一步是学习[如何使用回测功能](backtesting.md)。

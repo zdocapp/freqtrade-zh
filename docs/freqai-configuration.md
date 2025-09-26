@@ -1,10 +1,10 @@
-# Configuration
+# 配置
 
-FreqAI is configured through the typical [Freqtrade config file](configuration.md) and the standard [Freqtrade strategy](strategy-customization.md). Examples of FreqAI config and strategy files can be found in `config_examples/config_freqai.example.json` and `freqtrade/templates/FreqaiExampleStrategy.py`, respectively.
+FreqAI 通过标准的 [Freqtrade 配置文件](configuration.md) 和常规的 [Freqtrade 策略](strategy-customization.md) 进行配置。FreqAI 配置文件和策略文件的示例可分别在 `config_examples/config_freqai.example.json` 和 `freqtrade/templates/FreqaiExampleStrategy.py` 中找到。
 
-## Setting up the configuration file
+## 配置文件设置
 
- Although there are plenty of additional parameters to choose from, as highlighted in the [parameter table](freqai-parameter-table.md#parameter-table), a FreqAI config must at minimum include the following parameters (the parameter values are only examples):
+尽管如[参数表](freqai-parameter-table.md#parameter-table)中强调的，有大量额外参数可供选择，但 FreqAI 配置至少必须包含以下参数（参数值仅为示例）：
 
 ```json
     "freqai": {
@@ -30,14 +30,14 @@ FreqAI is configured through the typical [Freqtrade config file](configuration.m
     }
 ```
 
-A full example config is available in `config_examples/config_freqai.example.json`.
+完整配置示例可在 `config_examples/config_freqai.example.json` 中获取。
 
 !!! Note
-    The `identifier` is commonly overlooked by newcomers, however, this value plays an important role in your configuration. This value is a unique ID that you choose to describe one of your runs. Keeping it the same allows you to maintain crash resilience as well as faster backtesting. As soon as you want to try a new run (new features, new model, etc.), you should change this value (or delete the `user_data/models/unique-id` folder. More details available in the [parameter table](freqai-parameter-table.md#feature-parameters).
+    新手常会忽略 `identifier`，但该值在配置中起着重要作用。这是您选择用于描述某次运行的唯一 ID。保持其不变可使您维持故障恢复能力以及更快的回测速度。当您想尝试新运行（新特征、新模型等）时，应更改此值（或删除 `user_data/models/unique-id` 文件夹）。更多细节详见[参数表](freqai-parameter-table.md#feature-parameters)。
 
-## Building a FreqAI strategy
+## 构建 FreqAI 策略
 
-The FreqAI strategy requires including the following lines of code in the standard [Freqtrade strategy](strategy-customization.md):
+FreqAI 策略要求在标准 [Freqtrade 策略](strategy-customization.md) 中包含以下代码行：
 
 ```python
     # user should define the maximum startup candle count (the largest number of candles
@@ -145,50 +145,49 @@ The FreqAI strategy requires including the following lines of code in the standa
         return dataframe
 ```
 
-Notice how the `feature_engineering_*()` is where [features](freqai-feature-engineering.md#feature-engineering) are added. Meanwhile `set_freqai_targets()` adds the labels/targets. A full example strategy is available in `templates/FreqaiExampleStrategy.py`.
+请注意，`feature_engineering_*()` 是添加[特征](freqai-feature-engineering.md#feature-engineering)的地方，而 `set_freqai_targets()` 则添加标签/目标。完整示例策略可在 `templates/FreqaiExampleStrategy.py` 中找到。
 
 !!! Note
-    The `self.freqai.start()` function cannot be called outside the `populate_indicators()`.
+    `self.freqai.start()` 函数不能在 `populate_indicators()` 之外调用。
 
 !!! Note
-    Features **must** be defined in `feature_engineering_*()`. Defining FreqAI features in `populate_indicators()`
-    will cause the algorithm to fail in live/dry mode. In order to add generalized features that are not associated with a specific pair or timeframe, you should use `feature_engineering_standard()`
-    (as exemplified in `freqtrade/templates/FreqaiExampleStrategy.py`).
+    特征**必须**在 `feature_engineering_*()` 中定义。在 `populate_indicators()` 中定义 FreqAI 特征将导致算法在实盘/模拟模式下失败。若要添加与特定交易对或时间框架无关的通用特征，应使用 `feature_engineering_standard()`
+    （如 `freqtrade/templates/FreqaiExampleStrategy.py` 中的示例所示）。
 
-## Important dataframe key patterns
+## 重要数据框键模式
 
-Below are the values you can expect to include/use inside a typical strategy dataframe (`df[]`):
+以下是典型策略数据框（`df[]`）中可包含/使用的值：
 
-|  DataFrame Key | Description |
+|  DataFrame 键 | 描述 |
 |------------|-------------|
-| `df['&*']` | Any dataframe column prepended with `&` in `set_freqai_targets()` is treated as a training target (label) inside FreqAI (typically following the naming convention `&-s*`). For example, to predict the close price 40 candles into the future, you would set `df['&-s_close'] = df['close'].shift(-self.freqai_info["feature_parameters"]["label_period_candles"])` with `"label_period_candles": 40` in the config. FreqAI makes the predictions and gives them back under the same key (`df['&-s_close']`) to be used in `populate_entry/exit_trend()`. <br> **Datatype:** Depends on the output of the model.
-| `df['&*_std/mean']` | Standard deviation and mean values of the defined labels during training (or live tracking with `fit_live_predictions_candles`). Commonly used to understand the rarity of a prediction (use the z-score as shown in `templates/FreqaiExampleStrategy.py` and explained [here](#creating-a-dynamic-target-threshold) to evaluate how often a particular prediction was observed during training or historically with `fit_live_predictions_candles`). <br> **Datatype:** Float.
-| `df['do_predict']` | Indication of an outlier data point. The return value is integer between -2 and 2, which lets you know if the prediction is trustworthy or not. `do_predict==1` means that the prediction is trustworthy. If the Dissimilarity Index (DI, see details [here](freqai-feature-engineering.md#identifying-outliers-with-the-dissimilarity-index-di)) of the input data point is above the threshold defined in the config, FreqAI will subtract 1 from `do_predict`, resulting in `do_predict==0`. If `use_SVM_to_remove_outliers` is active, the Support Vector Machine (SVM, see details [here](freqai-feature-engineering.md#identifying-outliers-using-a-support-vector-machine-svm)) may also detect outliers in training and prediction data. In this case, the SVM will also subtract 1 from `do_predict`. If the input data point was considered an outlier by the SVM but not by the DI, or vice versa, the result will be `do_predict==0`. If both the DI and the SVM considers the input data point to be an outlier, the result will be `do_predict==-1`. As with the SVM, if `use_DBSCAN_to_remove_outliers` is active, DBSCAN (see details [here](freqai-feature-engineering.md#identifying-outliers-with-dbscan)) may also detect outliers and subtract 1 from `do_predict`. Hence, if both the SVM and DBSCAN are active and identify a datapoint that was above the DI threshold as an outlier, the result will be `do_predict==-2`. A particular case is when `do_predict == 2`, which means that the model has expired due to exceeding `expired_hours`. <br> **Datatype:** Integer between -2 and 2.
-| `df['DI_values']` | Dissimilarity Index (DI) values are proxies for the level of confidence FreqAI has in the prediction. A lower DI means the prediction is close to the training data, i.e., higher prediction confidence. See details about the DI [here](freqai-feature-engineering.md#identifying-outliers-with-the-dissimilarity-index-di). <br> **Datatype:** Float.
-| `df['%*']` | Any dataframe column prepended with `%` in `feature_engineering_*()` is treated as a training feature. For example, you can include the RSI in the training feature set (similar to in `templates/FreqaiExampleStrategy.py`) by setting `df['%-rsi']`. See more details on how this is done [here](freqai-feature-engineering.md). <br> **Note:** Since the number of features prepended with `%` can multiply very quickly (10s of thousands of features are easily engineered using the multiplictative functionality of, e.g., `include_shifted_candles` and `include_timeframes` as described in the [parameter table](freqai-parameter-table.md)), these features are removed from the dataframe that is returned from FreqAI to the strategy. To keep a particular type of feature for plotting purposes, you would prepend it with `%%` (see details below). <br> **Datatype:** Depends on the feature created by the user.
-| `df['%%*']` | Any dataframe column prepended with `%%` in `feature_engineering_*()` is treated as a training feature, just the same as the above `%` prepend. However, in this case, the features are returned back to the strategy for FreqUI/plot-dataframe plotting and monitoring in Dry/Live/Backtesting <br> **Datatype:** Depends on the feature created by the user. Please note that features created in `feature_engineering_expand()` will have automatic FreqAI naming schemas depending on the expansions that you configured (i.e. `include_timeframes`, `include_corr_pairlist`, `indicators_periods_candles`, `include_shifted_candles`). So if you want to plot `%%-rsi` from `feature_engineering_expand_all()`, the final naming scheme for your plotting config would be: `%%-rsi-period_10_ETH/USDT:USDT_1h` for the `rsi` feature with `period=10`, `timeframe=1h`, and `pair=ETH/USDT:USDT` (the `:USDT` is added if you are using futures pairs). It is useful to simply add `print(dataframe.columns)` in your `populate_indicators()` after `self.freqai.start()` to see the full list of available features that are returned to the strategy for plotting purposes.
+| `df['&*']` | 在 `set_freqai_targets()` 中以 `&` 开头的任何 dataframe 列在 FreqAI 内部被视为训练目标（标签）（通常遵循命名约定 `&-s*`）。例如，要预测未来 40 根 K 线的收盘价，您需要设置 `df['&-s_close'] = df['close'].shift(-self.freqai_info["feature_parameters"]["label_period_candles"])`，并在配置中设置 `"label_period_candles": 40`。FreqAI 进行预测并将预测结果以相同的键（`df['&-s_close']`）返回，以便在 `populate_entry/exit_trend()` 中使用。<br> **数据类型：** 取决于模型的输出。
+| `df['&*_std/mean']` | 训练期间（或使用 `fit_live_predictions_candles` 进行实时跟踪）定义的标签的标准差和平均值。通常用于理解预测的稀有性（使用 `templates/FreqaiExampleStrategy.py` 中所示的 z 分数以及[此处](#creating-a-dynamic-target-threshold)的解释来评估特定预测在训练期间或使用 `fit_live_predictions_candles` 进行历史跟踪时出现的频率）。<br> **数据类型：** 浮点数。
+| `df['do_predict']` | 异常数据点的指示。返回值是介于 -2 和 2 之间的整数，让您知道预测是否可信。`do_predict==1` 表示预测可信。如果输入数据点的相异性指数（DI，详见[此处](freqai-feature-engineering.md#identifying-outliers-with-the-dissimilarity-index-di)）超过配置中定义的阈值，FreqAI 将从 `do_predict` 中减去 1，导致 `do_predict==0`。如果 `use_SVM_to_remove_outliers` 处于活动状态，支持向量机（SVM，详见[此处](freqai-feature-engineering.md#identifying-outliers-using-a-support-vector-machine-svm)）也可能在训练和预测数据中检测到异常值。在这种情况下，SVM 也会从 `do_predict` 中减去 1。如果输入数据点被 SVM 视为异常值但未被 DI 视为异常值，或者反之，结果将是 `do_predict==0`。如果 DI 和 SVM 都认为输入数据点是异常值，结果将是 `do_predict==-1`。与 SVM 类似，如果 `use_DBSCAN_to_remove_outliers` 处于活动状态，DBSCAN（详见[此处](freqai-feature-engineering.md#identifying-outliers-with-dbscan)）也可能检测到异常值并从 `do_predict` 中减去 1。因此，如果 SVM 和 DBSCAN 都处于活动状态，并且将一个超过 DI 阈值的数据点识别为异常值，结果将是 `do_predict==-2`。一个特殊情况是当 `do_predict == 2` 时，这意味着模型因超过 `expired_hours` 而已过期。<br> **数据类型：** 介于 -2 和 2 之间的整数。
+| `df['DI_values']` | 相异性指数（DI）值是 FreqAI 对预测置信水平的代理指标。较低的 DI 意味着预测接近训练数据，即预测置信度较高。有关 DI 的详细信息请参见[此处](freqai-feature-engineering.md#identifying-outliers-with-the-dissimilarity-index-di)。<br> **数据类型：** 浮点数。
+| `df['%*']` | 在 `feature_engineering_*()` 中以 `%` 开头的任何 dataframe 列被视为训练特征。例如，您可以通过设置 `df['%-rsi']` 将 RSI 包含在训练特征集中（类似于 `templates/FreqaiExampleStrategy.py` 中的做法）。有关如何实现这一点的更多详细信息，请参见[此处](freqai-feature-engineering.md)。<br> **注意：** 由于以 `%` 开头的特征数量可能非常快速地倍增（例如，使用 `include_shifted_candles` 和 `include_timeframes` 的乘法功能，如[参数表](freqai-parameter-table.md)中所述，很容易构建出数万个特征），这些特征会从 FreqAI 返回到策略的 dataframe 中移除。为了保留特定类型的特征用于绘图目的，您需要在其前面加上 `%%`（详见下文）。<br> **数据类型：** 取决于用户创建的特征。
+| `df['%%*']` | 在 `feature_engineering_*()` 中以 `%%` 开头的任何 dataframe 列被视为训练特征，与上述的 `%` 前缀完全相同。然而，在这种情况下，这些特征会被返回给策略，用于 FreqUI/绘图-dataframe 绘图以及在模拟/实盘/回测中进行监控。<br> **数据类型：** 取决于用户创建的特征。请注意，在 `feature_engineering_expand()` 中创建的特征将具有自动的 FreqAI 命名模式，具体取决于您配置的扩展（即 `include_timeframes`、`include_corr_pairlist`、`indicators_periods_candles`、`include_shifted_candles`）。因此，如果您想从 `feature_engineering_expand_all()` 中绘制 `%%-rsi`，您的绘图配置的最终命名模式将是：`%%-rsi-period_10_ETH/USDT:USDT_1h`，对应 `period=10`、`timeframe=1h` 和 `pair=ETH/USDT:USDT` 的 `rsi` 特征（如果您使用期货交易对，则会添加 `:USDT`）。在 `self.freqai.start()` 之后，在您的 `populate_indicators()` 中添加 `print(dataframe.columns)` 来查看返回给策略用于绘图目的的全部可用特征列表是很有用的。
 
-## Setting the `startup_candle_count`
+## 设置 `startup_candle_count`
 
-The `startup_candle_count` in the FreqAI strategy needs to be set up in the same way as in the standard Freqtrade strategy (see details [here](strategy-customization.md#strategy-startup-period)). This value is used by Freqtrade to ensure that a sufficient amount of data is provided when calling the `dataprovider`, to avoid any NaNs at the beginning of the first training. You can easily set this value by identifying the longest period (in candle units) which is passed to the indicator creation functions (e.g., TA-Lib functions). In the presented example, `startup_candle_count` is 20 since this is the maximum value in `indicators_periods_candles`.
+FreqAI 策略中的 `startup_candle_count` 需要以与标准 Freqtrade 策略相同的方式进行设置（详见[此处](strategy-customization.md#strategy-startup-period)）。Freqtrade 使用此值来确保在调用 `dataprovider` 时提供足够的数据量，以避免首次训练开始时出现任何 NaN 值。您可以通过识别传递给指标创建函数（例如 TA-Lib 函数）的最长周期（以蜡烛单位）来轻松设置此值。在给出的示例中，`startup_candle_count` 为 20，因为这是 `indicators_periods_candles` 中的最大值。
 
 !!! Note
-    There are instances where the TA-Lib functions actually require more data than just the passed `period` or else the feature dataset gets populated with NaNs. Anecdotally, multiplying the `startup_candle_count` by 2 always leads to a fully NaN free training dataset. Hence, it is typically safest to multiply the expected `startup_candle_count` by 2. Look out for this log message to confirm that the data is clean:
+    在某些情况下，TA-Lib 函数实际需要的数据量可能超过传入的 `period` 值，否则特征数据集中会填充 NaN 值。经验表明，将 `startup_candle_count` 乘以 2 总能得到完全无 NaN 的训练数据集。因此，最安全的做法通常是将预期的 `startup_candle_count` 乘以 2。请注意查看以下日志信息以确认数据清洗完成：
 
     ```
     2022-08-31 15:14:04 - freqtrade.freqai.data_kitchen - INFO - dropped 0 training points due to NaNs in populated dataset 4319.
     ```
 
-## Creating a dynamic target threshold
+## 创建动态目标阈值
 
-Deciding when to enter or exit a trade can be done in a dynamic way to reflect current market conditions. FreqAI allows you to return additional information from the training of a model (more info [here](freqai-feature-engineering.md#returning-additional-info-from-training)). For example, the `&*_std/mean` return values describe the statistical distribution of the target/label *during the most recent training*. Comparing a given prediction to these values allows you to know the rarity of the prediction. In `templates/FreqaiExampleStrategy.py`, the `target_roi` and  `sell_roi` are defined to be 1.25 z-scores away from the mean which causes predictions that are closer to the mean to be filtered out.
+决定何时进入或退出交易可以采用动态方式，以反映当前市场状况。FreqAI 允许您从模型训练中返回额外信息（更多信息请参见[此处](freqai-feature-engineering.md#returning-additional-info-from-training)）。例如，`&*_std/mean` 返回值描述了*最近一次训练期间*目标/标签的统计分布。将给定预测值与这些值进行比较，可以了解预测的稀有性。在 `templates/FreqaiExampleStrategy.py` 中，`target_roi` 和 `sell_roi` 被定义为距离均值 1.25 个标准差，这会导致更接近均值的预测被过滤掉。
 
 ```python
 dataframe["target_roi"] = dataframe["&-s_close_mean"] + dataframe["&-s_close_std"] * 1.25
 dataframe["sell_roi"] = dataframe["&-s_close_mean"] - dataframe["&-s_close_std"] * 1.25
 ```
 
-To consider the population of *historical predictions* for creating the dynamic target instead of information from the training as discussed above, you would set `fit_live_predictions_candles` in the config to the number of historical prediction candles you wish to use to generate target statistics.
+若希望基于*历史预测*的总体数据来创建动态目标，而非使用上述训练信息，您需要在配置中将 `fit_live_predictions_candles` 设置为要用于生成目标统计的历史预测蜡烛数量。
 
 ```json
     "freqai": {
@@ -196,75 +195,75 @@ To consider the population of *historical predictions* for creating the dynamic 
     }
 ```
 
-If this value is set, FreqAI will initially use the predictions from the training data and subsequently begin introducing real prediction data as it is generated. FreqAI will save this historical data to be reloaded if you stop and restart a model with the same `identifier`.
+如果设置了该值，FreqAI 将首先使用训练数据中的预测，随后逐步引入实时生成的预测数据。如果您停止并重启具有相同 `identifier` 的模型，FreqAI 会保存这些历史数据以便重新加载。
 
-## Using different prediction models
+## 使用不同的预测模型
 
-FreqAI has multiple example prediction model libraries that are ready to be used as is via the flag `--freqaimodel`. These libraries include `CatBoost`, `LightGBM`, and `XGBoost` regression, classification, and multi-target models, and can be found in `freqai/prediction_models/`.
+FreqAI 提供了多个示例预测模型库，可通过 `--freqaimodel` 标志直接使用。这些库包括 `CatBoost`、`LightGBM` 和 `XGBoost` 的回归、分类及多目标模型，可在 `freqai/prediction_models/` 目录中找到。
 
-Regression and classification models differ in what targets they predict - a regression model will predict a target of continuous values, for example what price BTC will be at tomorrow, whilst a classifier will predict a target of discrete values, for example if the price of BTC will go up tomorrow or not. This means that you have to specify your targets differently depending on which model type you are using (see details [below](#setting-model-targets)).
+回归模型与分类模型的区别在于预测的目标类型：回归模型预测连续值目标，例如比特币明天的价格；而分类模型预测离散值目标，例如判断比特币价格明天是否会上涨。这意味着您需要根据所用模型类型以不同方式指定目标（详见[下文](#setting-model-targets)）。
 
-All of the aforementioned model libraries implement gradient boosted decision tree algorithms. They all work on the principle of ensemble learning, where predictions from multiple simple learners are combined to get a final prediction that is more stable and generalized. The simple learners in this case are decision trees. Gradient boosting refers to the method of learning, where each simple learner is built in sequence - the subsequent learner is used to improve on the error from the previous learner. If you want to learn more about the different model libraries you can find the information in their respective docs:
+上述所有模型库均采用梯度提升决策树算法。它们基于集成学习原理，通过组合多个简单学习器的预测结果，获得更稳定且泛化能力更强的最终预测。这里的简单学习器即决策树。梯度提升是指一种序列化学习方式，每个后续学习器用于改进前一个学习器的误差。若需深入了解不同模型库，可查阅其官方文档：
 
 * CatBoost: https://catboost.ai/en/docs/
 * LightGBM: https://lightgbm.readthedocs.io/en/v3.3.2/#
 * XGBoost: https://xgboost.readthedocs.io/en/stable/#
 
-There are also numerous online articles describing and comparing the algorithms. Some relatively lightweight examples would be [CatBoost vs. LightGBM vs. XGBoost — Which is the best algorithm?](https://towardsdatascience.com/catboost-vs-lightgbm-vs-xgboost-c80f40662924#:~:text=In%20CatBoost%2C%20symmetric%20trees%2C%20or,the%20same%20depth%20can%20differ.) and [XGBoost, LightGBM or CatBoost — which boosting algorithm should I use?](https://medium.com/riskified-technology/xgboost-lightgbm-or-catboost-which-boosting-algorithm-should-i-use-e7fda7bb36bc). Keep in mind that the performance of each model is highly dependent on the application and so any reported metrics might not be true for your particular use of the model.
+此外，还有大量在线文章描述和比较这些算法。一些相对轻量级的例子包括 [CatBoost vs. LightGBM vs. XGBoost — Which is the best algorithm?](https://towardsdatascience.com/catboost-vs-lightgbm-vs-xgboost-c80f40662924#:~:text=In%20CatBoost%2C%20symmetric%20trees%2C%20or,the%20same%20depth%20can%20differ.) 和 [XGBoost, LightGBM or CatBoost — which boosting algorithm should I use?](https://medium.com/riskified-technology/xgboost-lightgbm-or-catboost-which-boosting-algorithm-should-i-use-e7fda7bb36bc)。请注意，每个模型的性能高度依赖于具体应用，因此任何报告的指标可能并不适用于您的特定使用场景。
 
-Apart from the models already available in FreqAI, it is also possible to customize and create your own prediction models using the `IFreqaiModel` class. You are encouraged to inherit `fit()`, `train()`, and `predict()` to customize various aspects of the training procedures. You can place custom FreqAI models in `user_data/freqaimodels` - and freqtrade will pick them up from there based on the provided `--freqaimodel` name - which has to correspond to the class name of your custom model.
-Make sure to use unique names to avoid overriding built-in models.
+除了 FreqAI 中已有的模型外，还可以使用 `IFreqaiModel` 类来自定义和创建您自己的预测模型。建议您继承 `fit()`、`train()` 和 `predict()` 方法来自定义训练过程的各个方面。您可以将自定义的 FreqAI 模型放置在 `user_data/freqaimodels` 目录中 - freqtrade 将根据提供的 `--freqaimodel` 名称从那里加载它们 - 该名称必须与您的自定义模型类名相对应。
+请确保使用唯一的名称，以避免覆盖内置模型。
 
-### Setting model targets
+### 设置模型目标
 
-#### Regressors
+#### 回归器
 
-If you are using a regressor, you need to specify a target that has continuous values. FreqAI includes a variety of regressors, such as the `CatboostRegressor`via the flag `--freqaimodel CatboostRegressor`. An example of how you could set a regression target for predicting the price 100 candles into the future would be
+如果使用回归器，需要指定具有连续值的目标变量。FreqAI 包含多种回归器，例如通过标志 `--freqaimodel CatboostRegressor` 使用的 `CatboostRegressor`。设置回归目标预测未来100根K线价格的示例如下：
 
 ```python
 df['&s-close_price'] = df['close'].shift(-100)
 ```
 
-If you want to predict multiple targets, you need to define multiple labels using the same syntax as shown above.
+如需预测多个目标变量，需使用与上述相同的语法定义多个标签。
 
-#### Classifiers
+#### 分类器
 
-If you are using a classifier, you need to specify a target that has discrete values. FreqAI includes a variety of classifiers, such as the `CatboostClassifier` via the flag `--freqaimodel CatboostClassifier`. If you elects to use a classifier, the classes need to be set using strings. For example, if you want to predict if the price 100 candles into the future goes up or down you would set
+如果使用分类器，需要指定具有离散值的目标变量。FreqAI 包含多种分类器，例如通过标志 `--freqaimodel CatboostClassifier` 使用的 `CatboostClassifier`。若选择使用分类器，需使用字符串设置类别标签。例如，要预测未来100根K线价格涨跌情况，可设置：
 
 ```python
 df['&s-up_or_down'] = np.where( df["close"].shift(-100) > df["close"], 'up', 'down')
 ```
 
-If you want to predict multiple targets you must specify all labels in the same label column. You could, for example, add the label `same` to define where the price was unchanged by setting
+如需预测多个目标变量，必须在同一标签列中指定所有标签。例如，可通过设置 `same` 标签来定义价格未发生变化的区间：
 
 ```python
 df['&s-up_or_down'] = np.where( df["close"].shift(-100) > df["close"], 'up', 'down')
 df['&s-up_or_down'] = np.where( df["close"].shift(-100) == df["close"], 'same', df['&s-up_or_down'])
 ```
 
-## PyTorch Module
+## PyTorch 模块
 
-### Quick start
+### 快速开始
 
-The easiest way to quickly run a pytorch model is with the following command (for regression task):
+运行 PyTorch 模型最快捷的方式是使用以下命令（适用于回归任务）：
 
 ```bash
 freqtrade trade --config config_examples/config_freqai.example.json --strategy FreqaiExampleStrategy --freqaimodel PyTorchMLPRegressor --strategy-path freqtrade/templates 
 ```
 
 !!! Note "Installation/docker"
-    The PyTorch module requires large packages such as `torch`, which should be explicitly requested during `./setup.sh -i` by answering "y" to the question "Do you also want dependencies for freqai-rl or PyTorch (~700mb additional space required) [y/N]?".
-    Users who prefer docker should ensure they use the docker image appended with `_freqaitorch`.
-    We do provide an explicit docker-compose file for this in `docker/docker-compose-freqai.yml` - which can be used via `docker compose -f docker/docker-compose-freqai.yml run ...` - or can be copied to replace the original docker file.
-    This docker-compose file also contains a (disabled) section to enable GPU resources within docker containers. This obviously assumes the system has GPU resources available.
+    PyTorch 模块需要安装 `torch` 等大型软件包，用户必须在运行 `./setup.sh -i` 时对提示问题 "Do you also want dependencies for freqai-rl or PyTorch (~700mb additional space required) [y/N]?" 回答 "y" 来显式请求安装。
+    偏好使用 docker 的用户应确保使用带有 `_freqaitorch` 后缀的 docker 镜像。
+    我们在 `docker/docker-compose-freqai.yml` 中专门提供了对应的 docker-compose 文件 - 可通过 `docker compose -f docker/docker-compose-freqai.yml run ...` 命令使用 - 或可复制该文件来替换原始 docker 文件。
+    此 docker-compose 文件还包含一个（默认禁用的）配置段，用于在 docker 容器内启用 GPU 资源。这显然要求系统本身具备可用的 GPU 资源。
 
     PyTorch dropped support for macOS x64 (intel based Apple devices) in version 2.3. Subsequently, freqtrade also dropped support for PyTorch on this platform.
 
-### Structure
+### 结构
 
-#### Model
+#### 模型
 
-You can construct your own Neural Network architecture in PyTorch by simply defining your `nn.Module` class inside your custom [`IFreqaiModel` file](#using-different-prediction-models) and then using that class in your `def train()` function. Here is an example of logistic regression model implementation using PyTorch (should be used with nn.BCELoss criterion) for classification tasks.
+您可以在 PyTorch 中构建自己的神经网络架构，只需在自定义的 [`IFreqaiModel` 文件](#using-different-prediction-models) 内定义 `nn.Module` 类，然后在 `def train()` 函数中使用该类。以下是一个使用 PyTorch 实现逻辑回归模型（应与 nn.BCELoss 准则配合使用）用于分类任务的示例。
 
 ```python
 
@@ -331,29 +330,30 @@ class MyCoolPyTorchClassifier(BasePyTorchClassifier):
 
 ```
 
-#### Trainer
+#### 训练器
 
-The `PyTorchModelTrainer` performs the idiomatic PyTorch train loop:
-Define our model, loss function, and optimizer, and then move them to the appropriate device (GPU or CPU). Inside the loop, we iterate through the batches in the dataloader, move the data to the device, compute the prediction and loss, backpropagate, and update the model parameters using the optimizer. 
+`PyTorchModelTrainer` 执行符合 PyTorch 惯例的训练循环：
+定义我们的模型、损失函数和优化器，然后将它们移动到适当的设备（GPU 或 CPU）。在循环内部，我们遍历数据加载器中的批次，将数据移动到设备，计算预测和损失，反向传播，并使用优化器更新模型参数。
 
-In addition, the trainer is responsible for the following:
- - saving and loading the model
- - converting the data from `pandas.DataFrame` to `torch.Tensor`. 
+此外，训练器还负责以下任务：
 
-#### Integration with Freqai module 
+- 保存和加载模型
+- 将数据从 `pandas.DataFrame` 转换为 `torch.Tensor`。
 
-Like all freqai models, PyTorch models inherit `IFreqaiModel`. `IFreqaiModel` declares three abstract methods: `train`, `fit`, and `predict`. we implement these methods in three levels of hierarchy.
-From top to bottom:
+#### 与 Freqai 模块的集成
 
-1. `BasePyTorchModel` - Implements the `train` method. all `BasePyTorch*` inherit it. responsible for general data preparation (e.g., data normalization) and calling the `fit` method. Sets `device` attribute used by children classes. Sets `model_type` attribute used by the parent class.
-2. `BasePyTorch*` -  Implements the `predict` method. Here, the `*` represents a group of algorithms, such as classifiers or regressors. responsible for data preprocessing, predicting, and postprocessing if needed.
-3. `PyTorch*Classifier` / `PyTorch*Regressor` - implements the `fit` method. responsible for the main train flaw, where we initialize the trainer and model objects.
+与所有 freqai 模型一样，PyTorch 模型继承自 `IFreqaiModel`。`IFreqaiModel` 声明了三个抽象方法：`train`、`fit` 和 `predict`。我们在三个层次结构中实现这些方法。
+从上到下：
+
+1. `BasePyTorchModel` - 实现 `train` 方法。所有 `BasePyTorch*` 类都继承它。负责通用数据准备（例如，数据标准化）并调用 `fit` 方法。设置子类使用的 `device` 属性。设置父类使用的 `model_type` 属性。
+2. `BasePyTorch*` - 实现 `predict` 方法。这里的 `*` 代表一组算法，例如分类器或回归器。负责数据预处理、预测以及必要的后处理。
+3. `PyTorch*Classifier` / `PyTorch*Regressor` - 实现 `fit` 方法。负责主要的训练流程，在此我们初始化训练器和模型对象。
 
 ![image](assets/freqai_pytorch-diagram.png)
 
-#### Full example
+#### 完整示例
 
-Building a PyTorch regressor using MLP (multilayer perceptron) model, MSELoss criterion, and AdamW optimizer.
+使用 MLP（多层感知机）模型、MSELoss 损失函数和 AdamW 优化器构建 PyTorch 回归器。
 
 ```python
 class PyTorchMLPRegressor(BasePyTorchRegressor):
@@ -388,11 +388,11 @@ class PyTorchMLPRegressor(BasePyTorchRegressor):
         return trainer
 ```
 
-Here we create a `PyTorchMLPRegressor` class that implements the `fit` method. The `fit` method specifies the training building blocks: model, optimizer, criterion, and trainer. We inherit both `BasePyTorchRegressor` and `BasePyTorchModel`, where the former implements the `predict` method that is suitable for our regression task, and the latter implements the train method.
+这里我们创建一个实现了 `fit` 方法的 `PyTorchMLPRegressor` 类。`fit` 方法指定了训练构建模块：模型、优化器、损失函数和训练器。我们同时继承了 `BasePyTorchRegressor` 和 `BasePyTorchModel`，前者实现了适用于回归任务的 `predict` 方法，后者实现了训练方法。
 
-??? Note "Setting Class Names for Classifiers"
-    When using classifiers, the user must declare the class names (or targets) by overriding the `IFreqaiModel.class_names` attribute. This is achieved by setting `self.freqai.class_names` in the FreqAI strategy inside the `set_freqai_targets` method.
-    
+??? Note "分类器的类别名称设置"
+    使用分类器时，用户必须通过重写 `IFreqaiModel.class_names` 属性来声明类别名称（或目标）。这可以通过在 FreqAI 策略的 `set_freqai_targets` 方法中设置 `self.freqai.class_names` 来实现。
+
     For example, if you are using a binary classifier to predict price movements as up or down, you can set the class names as follows:
     ```python
     def set_freqai_targets(self, dataframe: DataFrame, metadata: dict, **kwargs) -> DataFrame:
@@ -404,11 +404,9 @@ Here we create a `PyTorchMLPRegressor` class that implements the `fit` method. T
     ```
     To see a full example, you can refer to the [classifier test strategy class](https://github.com/freqtrade/freqtrade/blob/develop/tests/strategy/strats/freqai_test_classifier.py).
 
+#### 使用 `torch.compile()` 提升性能
 
-#### Improving performance with `torch.compile()`
-
-Torch provides a `torch.compile()` method that can be used to improve performance for specific GPU hardware. More details can be found [here](https://pytorch.org/tutorials/intermediate/torch_compile_tutorial.html). In brief, you simply wrap your `model` in `torch.compile()`:
-
+Torch 提供了 `torch.compile()` 方法，可用于提升特定 GPU 硬件的性能。更多详细信息请参阅[此处](https://pytorch.org/tutorials/intermediate/torch_compile_tutorial.html)。简而言之，您只需将 `model` 包装在 `torch.compile()` 中：
 
 ```python
         model = PyTorchMLPModel(
@@ -420,4 +418,4 @@ Torch provides a `torch.compile()` method that can be used to improve performanc
         model = torch.compile(model)
 ```
 
-Then proceed to use the model as normal. Keep in mind that doing this will remove eager execution, which means errors and tracebacks will not be informative.
+然后照常使用模型。请注意，这样做将移除即时执行模式，这意味着错误信息和堆栈跟踪将不再具有参考价值。

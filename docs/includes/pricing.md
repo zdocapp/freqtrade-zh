@@ -1,21 +1,21 @@
-## Prices used for orders
+## 订单使用的价格
 
-Prices for regular orders can be controlled via the parameter structures `entry_pricing` for trade entries and `exit_pricing` for trade exits.
-Prices are always retrieved right before an order is placed, either by querying the exchange tickers or by using the orderbook data.
+常规订单的价格可通过参数结构 `entry_pricing`（交易入场）和 `exit_pricing`（交易出场）进行控制。
+价格总是在下单前即时获取，可通过查询交易所行情或使用订单簿数据实现。
 
 !!! Note
-    Orderbook data used by Freqtrade are the data retrieved from exchange by the ccxt's function `fetch_order_book()`, i.e. are usually data from the L2-aggregated orderbook, while the ticker data are the structures returned by the ccxt's `fetch_ticker()`/`fetch_tickers()` functions. Refer to the ccxt library [documentation](https://github.com/ccxt/ccxt/wiki/Manual#market-data) for more details.
+    Freqtrade 使用的订单簿数据是通过 ccxt 的 `fetch_order_book()` 函数从交易所获取的数据，通常来自 L2 聚合订单簿；而行情数据则是 ccxt 的 `fetch_ticker()`/`fetch_tickers()` 函数返回的结构。更多详情请参阅 ccxt 库的[文档](https://github.com/ccxt/ccxt/wiki/Manual#market-data)。
 
-!!! Warning "Using market orders"
-    Please read the section [Market order pricing](#market-order-pricing) section when using market orders.
+!!! Warning "使用市价单"
+    使用市价单时请阅读[市价单定价](#market-order-pricing)章节。
 
-### Entry price
+### 入场价格
 
-#### Enter price side
+#### 入场价格侧
 
-The configuration setting `entry_pricing.price_side` defines the side of the orderbook the bot looks for when buying.
+配置项 `entry_pricing.price_side` 定义了机器人买入时查询订单簿的侧向。
 
-The following displays an orderbook.
+下图展示了一个订单簿示例。
 
 ``` explanation
 ...
@@ -29,55 +29,55 @@ The following displays an orderbook.
 ...
 ```
 
-If `entry_pricing.price_side` is set to `"bid"`, then the bot will use 99 as entry price.  
-In line with that, if `entry_pricing.price_side` is set to `"ask"`, then the bot will use 101 as entry price.
+若 `entry_pricing.price_side` 设置为 `"bid"`，则机器人将使用 99 作为入场价格。  
+同理，若设置为 `"ask"`，则机器人将使用 101 作为入场价格。
 
-Depending on the order direction (_long_/_short_), this will lead to different results. Therefore we recommend to use `"same"` or `"other"` for this configuration instead.
-This would result in the following pricing matrix:
+根据订单方向（_做多_/_做空_），这将导致不同的结果。因此我们建议在此配置中使用 `"same"` 或 `"other"`。
+这将产生以下定价矩阵：
 
-| direction | Order | setting | price | crosses spread |
+| 方向 | 订单 | 设置 | 价格 | 是否跨越价差 |
 |------ |--------|-----|-----|-----|
-| long  | buy  | ask   | 101 | yes |
-| long  | buy  | bid   | 99  | no  |
-| long  | buy  | same  | 99  | no  |
-| long  | buy  | other | 101 | yes |
-| short | sell | ask   | 101 | no  |
-| short | sell | bid   | 99  | yes |
-| short | sell | same  | 101 | no  |
-| short | sell | other | 99  | yes |
+| 做多  | 买入  | 卖出价   | 101 | 是 |
+| 做多  | 买入  | 买入价   | 99  | 否  |
+| 做多  | 买入  | 同侧  | 99  | 否  |
+| 做多  | 买入  | 对侧 | 101 | 是 |
+| 做空 | 卖出 | 卖出价   | 101 | 否  |
+| 做空 | 卖出 | 买入价   | 99  | 是 |
+| 做空 | 卖出 | 同侧  | 101 | 否  |
+| 做空 | 卖出 | 对侧 | 99  | 是 |
 
-Using the other side of the orderbook often guarantees quicker filled orders, but the bot can also end up paying more than what would have been necessary.
-Taker fees instead of maker fees will most likely apply even when using limit buy orders.
-Also, prices at the "other" side of the spread are higher than prices at the "bid" side in the orderbook, so the order behaves similar to a market order (however with a maximum price).
+使用订单簿的另一侧通常能保证更快的成交速度，但机器人最终也可能支付比必要金额更高的价格。
+即使使用限价买单，也很可能适用吃单费而非挂单费。
+此外，价差"对侧"的价格高于订单簿中"买入价"侧的价格，因此该订单的行为类似于市价单（但带有最高价格限制）。
 
-#### Entry price with Orderbook enabled
+#### 启用订单簿时的入场价格
 
-When entering a trade with the orderbook enabled (`entry_pricing.use_order_book=True`), Freqtrade fetches the `entry_pricing.order_book_top` entries from the orderbook and uses the entry specified as `entry_pricing.order_book_top` on the configured side (`entry_pricing.price_side`) of the orderbook. 1 specifies the topmost entry in the orderbook, while 2 would use the 2nd entry in the orderbook, and so on.
+当启用订单簿进行交易时（`entry_pricing.use_order_book=True`），Freqtrade 会从订单簿中获取 `entry_pricing.order_book_top` 条记录，并使用配置侧（`entry_pricing.price_side`）上指定为 `entry_pricing.order_book_top` 的条目。1 表示订单簿中最顶部的条目，而 2 将使用订单簿中的第二个条目，依此类推。
 
-#### Entry price without Orderbook enabled
+#### 未启用订单簿时的入场价格
 
-The following section uses `side` as the configured `entry_pricing.price_side` (defaults to `"same"`).
+以下部分使用 `side` 作为配置的 `entry_pricing.price_side`（默认为 `"same"`）。
 
-When not using orderbook (`entry_pricing.use_order_book=False`), Freqtrade uses the best `side` price from the ticker if it's below the `last` traded price from the ticker. Otherwise (when the `side` price is above the `last` price), it calculates a rate between `side` and `last` price based on `entry_pricing.price_last_balance`.
+当不使用订单簿时（`entry_pricing.use_order_book=False`），如果报价器的最佳 `side` 价格低于报价器的最后交易价格，Freqtrade 将使用该价格。否则（当 `side` 价格高于 `last` 价格时），它会根据 `entry_pricing.price_last_balance` 计算 `side` 和 `last` 价格之间的比率。
 
-The `entry_pricing.price_last_balance` configuration parameter controls this. A value of `0.0` will use `side` price, while `1.0` will use the `last` price and values between those interpolate between ask and last price.
+配置参数 `entry_pricing.price_last_balance` 控制此行为。值为 `0.0` 时将使用 `side` 价格，而 `1.0` 将使用 `last` 价格，介于两者之间的值则在卖价和最后价格之间进行插值。
 
-#### Check depth of market
+#### 检查市场深度
 
-When check depth of market is enabled (`entry_pricing.check_depth_of_market.enabled=True`), the entry signals are filtered based on the orderbook depth (sum of all amounts) for each orderbook side.
+当启用检查市场深度时（`entry_pricing.check_depth_of_market.enabled=True`），入场信号会根据订单簿每侧的深度（所有数量的总和）进行过滤。
 
-Orderbook `bid` (buy) side depth is then divided by the orderbook `ask` (sell) side depth and the resulting delta is compared to the value of the `entry_pricing.check_depth_of_market.bids_to_ask_delta` parameter. The entry order is only executed if the orderbook delta is greater than or equal to the configured delta value.
+订单簿的 `bid`（买入）侧深度随后除以订单簿的 `ask`（卖出）侧深度，并将得到的 delta 与 `entry_pricing.check_depth_of_market.bids_to_ask_delta` 参数的值进行比较。只有当订单簿 delta 大于或等于配置的 delta 值时，入场订单才会被执行。
 
 !!! Note
-    A delta value below 1 means that `ask` (sell) orderbook side depth is greater than the depth of the `bid` (buy) orderbook side, while a value greater than 1 means opposite (depth of the buy side is higher than the depth of the sell side).
+    低于 1 的 delta 值表示 `ask`（卖出）订单簿侧深度大于 `bid`（买入）订单簿侧深度，而大于 1 的值则表示相反情况（买入侧深度高于卖出侧深度）。
 
-### Exit price
+### 出场价格
 
-#### Exit price side
+#### 出场价格侧
 
-The configuration setting `exit_pricing.price_side` defines the side of the spread the bot looks for when exiting a trade.
+配置项 `exit_pricing.price_side` 定义了机器人平仓时寻找的价差侧。
 
-The following displays an orderbook:
+以下展示一个订单簿：
 
 ``` explanation
 ...
@@ -91,41 +91,41 @@ The following displays an orderbook:
 ...
 ```
 
-If `exit_pricing.price_side` is set to `"ask"`, then the bot will use 101 as exiting price.  
-In line with that, if `exit_pricing.price_side` is set to `"bid"`, then the bot will use 99 as exiting price.
+如果 `exit_pricing.price_side` 设置为 `"ask"`，那么机器人将使用 101 作为出场价格。  
+相应地，如果 `exit_pricing.price_side` 设置为 `"bid"`，那么机器人将使用 99 作为出场价格。
 
-Depending on the order direction (_long_/_short_), this will lead to different results. Therefore we recommend to use `"same"` or `"other"` for this configuration instead.
-This would result in the following pricing matrix:
+根据订单方向（_做多_/_做空_），这会导致不同的结果。因此，我们建议在此配置中使用 `"same"` 或 `"other"`。
+这将产生以下价格矩阵：
 
-| Direction | Order | setting | price | crosses spread |
+| 方向 | 订单 | 设置 | 价格 | 是否跨越价差 |
 |------ |--------|-----|-----|-----|
-| long  | sell | ask   | 101 | no  |
-| long  | sell | bid   | 99  | yes |
-| long  | sell | same  | 101 | no  |
-| long  | sell | other | 99  | yes |
-| short | buy  | ask   | 101 | yes |
-| short | buy  | bid   | 99  | no  |
-| short | buy  | same  | 99  | no  |
-| short | buy  | other | 101 | yes |
+| 做多  | 卖出 | 卖一价   | 101 | 否  |
+| 做多  | 卖出 | 买一价   | 99  | 是 |
+| 做多  | 卖出 | 同边   | 101 | 否  |
+| 做多  | 卖出 | 对边 | 99  | 是 |
+| 做空 | 买入  | 卖一价   | 101 | 是 |
+| 做空 | 买入  | 买一价   | 99  | 否  |
+| 做空 | 买入  | 同边  | 99  | 否  |
+| 做空 | 买入  | 对边 | 101 | 是 |
 
-#### Exit price with Orderbook enabled
+#### 启用订单簿时的退出价格
 
-When exiting with the orderbook enabled (`exit_pricing.use_order_book=True`), Freqtrade fetches the `exit_pricing.order_book_top` entries in the orderbook and uses the entry specified as `exit_pricing.order_book_top` from the configured side (`exit_pricing.price_side`) as trade exit price.
+当启用订单簿退出时（`exit_pricing.use_order_book=True`），Freqtrade 会获取订单簿中的 `exit_pricing.order_book_top` 条目，并使用配置侧（`exit_pricing.price_side`）指定的 `exit_pricing.order_book_top` 条目作为交易退出价格。
 
-1 specifies the topmost entry in the orderbook, while 2 would use the 2nd entry in the orderbook, and so on.
+1 表示订单簿中最顶层的条目，而 2 将使用订单簿中的第二个条目，依此类推。
 
-#### Exit price without Orderbook enabled
+#### 未启用订单簿时的退出价格
 
-The following section uses `side` as the configured `exit_pricing.price_side` (defaults to `"ask"`).
+以下部分使用 `side` 作为配置的 `exit_pricing.price_side`（默认为 `"ask"`）。
 
-When not using orderbook (`exit_pricing.use_order_book=False`), Freqtrade uses the best `side` price from the ticker if it's above the `last` traded price from the ticker. Otherwise (when the `side` price is below the `last` price), it calculates a rate between `side` and `last` price based on `exit_pricing.price_last_balance`.
+当不使用订单簿时（`exit_pricing.use_order_book=False`），如果行情中的最佳 `side` 价格高于行情中的最后成交价（`last`），Freqtrade 将使用该价格。否则（当 `side` 价格低于 `last` 价格时），它会根据 `exit_pricing.price_last_balance` 计算 `side` 和 `last` 价格之间的比率。
 
-The `exit_pricing.price_last_balance` configuration parameter controls this. A value of `0.0` will use `side` price, while `1.0` will use the last price and values between those interpolate between `side` and last price.
+`exit_pricing.price_last_balance` 配置参数控制此行为。值为 `0.0` 时将使用 `side` 价格，值为 `1.0` 时将使用最新价格，介于两者之间的值将在 `side` 价格和最新价格之间进行插值计算。
 
-### Market order pricing
+### 市价单定价
 
-When using market orders, prices should be configured to use the "correct" side of the orderbook to allow realistic pricing detection.
-Assuming both entry and exits are using market orders, a configuration similar to the following must be used
+使用市价单时，应配置价格使用订单簿的"正确"方向，以实现真实的定价检测。
+假设入场和离场均使用市价单，则必须使用类似以下的配置：
 
 ``` jsonc
   "order_types": {
@@ -143,4 +143,4 @@ Assuming both entry and exits are using market orders, a configuration similar t
   },
 ```
 
-Obviously, if only one side is using limit orders, different pricing combinations can be used.
+显然，如果只有一方使用限价单，则可以采用不同的定价组合。

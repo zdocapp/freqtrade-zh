@@ -1,62 +1,62 @@
-# Installation
+# 安装
 
-This page explains how to prepare your environment for running the bot.
+本页说明如何准备运行机器人的环境。
 
-The freqtrade documentation describes various ways to install freqtrade
+freqtrade 文档介绍了多种安装 freqtrade 的方式
 
-* [Docker images](docker_quickstart.md) (separate page)
-* [Script Installation](#script-installation)
-* [Manual Installation](#manual-installation)
-* [Installation with Conda](#installation-with-conda)
+* [Docker 镜像](docker_quickstart.md)（单独页面）
+* [脚本安装](#script-installation)
+* [手动安装](#manual-installation)
+* [使用 Conda 安装](#installation-with-conda)
 
-Please consider using the prebuilt [docker images](docker_quickstart.md) to get started quickly while evaluating how freqtrade works.
+在评估 freqtrade 工作原理时，建议使用预构建的 [docker 镜像](docker_quickstart.md)来快速入门。
 
 ------
 
-## Information
+## 信息说明
 
-For Windows installation, please use the [windows installation guide](windows_installation.md).
+Windows 系统安装请参考 [Windows 安装指南](windows_installation.md)。
 
-The easiest way to install and run Freqtrade is to clone the bot Github repository and then run the `./setup.sh` script, if it's available for your platform.
+安装和运行 Freqtrade 最简单的方法是克隆机器人 Github 仓库，然后运行 `./setup.sh` 脚本（如果该脚本适用于您的平台）。
 
-!!! Note "Version considerations"
-    When cloning the repository the default working branch has the name `develop`. This branch contains all last features (can be considered as relatively stable, thanks to automated tests).
-    The `stable` branch contains the code of the last release (done usually once per month on an approximately one week old snapshot of the `develop` branch to prevent packaging bugs, so potentially it's more stable).
+!!! Note "版本注意事项"
+    克隆仓库时，默认工作分支名为 `develop`。该分支包含所有最新功能（由于自动化测试，可视为相对稳定）。
+    `stable` 分支包含最新发布的代码（通常每月发布一次，基于约一周前的 `develop` 分支快照，以防止打包错误，因此可能更稳定）。
 
 !!! Note
-    Python3.11 or higher and the corresponding `pip` are assumed to be available. The install-script will warn you and stop if that's not the case. `git` is also needed to clone the Freqtrade repository.  
-    Also, python headers (`python<yourversion>-dev` / `python<yourversion>-devel`) must be available for the installation to complete successfully.
+    假定已安装 Python 3.11 或更高版本及对应的 `pip`。若未满足条件，安装脚本将发出警告并停止运行。同时需要 `git` 来克隆 Freqtrade 代码库。  
+    此外，必须安装 Python 头文件（`python<你的版本号>-dev` / `python<你的版本号>-devel`）才能顺利完成安装。
 
-!!! Warning "Up-to-date clock"
-    The clock on the system running the bot must be accurate, synchronized to a NTP server frequently enough to avoid problems with communication to the exchanges.
+!!! Warning "系统时钟同步"
+    运行机器人的系统时钟必须准确，需频繁与 NTP 服务器同步以避免与交易所通信出现问题。
 
 ------
 
-## Requirements
+## 系统要求
 
-These requirements apply to both [Script Installation](#script-installation) and [Manual Installation](#manual-installation).
+这些要求同时适用于[脚本安装](#script-installation)和[手动安装](#manual-installation)。
 
-!!! Note "ARM64 systems"
-    If you are running an ARM64 system (like a MacOS M1 or an Oracle VM), please use [docker](docker_quickstart.md) to run freqtrade.
-    While native installation is possible with some manual effort, this is not supported at the moment.
+!!! Note "ARM64 系统"
+    若您运行的是 ARM64 系统（如 MacOS M1 或 Oracle VM），请使用 [docker](docker_quickstart.md) 运行 freqtrade。
+    虽然通过手动操作可实现原生安装，但目前暂不支持该方式。
 
-### Install guide
+### 安装指南
 
 * [Python >= 3.11](http://docs.python-guide.org/en/latest/starting/installation/)
 * [pip](https://pip.pypa.io/en/stable/installing/)
 * [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* [virtualenv](https://virtualenv.pypa.io/en/stable/installation.html) (Recommended)
+* [virtualenv](https://virtualenv.pypa.io/en/stable/installation.html)（推荐）
 
-### Install code
+### 安装代码
 
-We've included/collected install instructions for Ubuntu, MacOS, and Windows. These are guidelines and your success may vary with other distros.
-OS Specific steps are listed first, the common section below is necessary for all systems.
+我们已收录针对 Ubuntu、MacOS 和 Windows 的安装说明。这些仅为指导方针，在其他发行版上的成功率可能有所不同。
+操作系统特定步骤列于首位，下文通用章节是所有系统必需的。
 
 !!! Note
-    Python3.11 or higher and the corresponding pip are assumed to be available.
+    假定已安装 Python 3.11 或更高版本及对应的 pip。
 
 === "Debian/Ubuntu"
-    #### Install necessary dependencies
+    #### 安装必要依赖项
 
     ```bash
     # update repository
@@ -67,7 +67,7 @@ OS Specific steps are listed first, the common section below is necessary for al
     ```
 
 === "MacOS"
-    #### Install necessary dependencies
+    #### 安装必要依赖项
 
     Install [Homebrew](https://brew.sh/) if you don't have it already.
 
@@ -79,8 +79,8 @@ OS Specific steps are listed first, the common section below is necessary for al
         The `setup.sh` script will install these dependencies for you - assuming brew is installed on your system.
 
 === "RaspberryPi/Raspbian"
-    The following assumes the latest [Raspbian Buster lite image](https://www.raspberrypi.org/downloads/raspbian/).
-    This image comes with python3.11 preinstalled, making it easy to get freqtrade up and running.
+    以下假设使用最新的 [Raspbian Buster 精简版镜像](https://www.raspberrypi.org/downloads/raspbian/)。
+    该镜像预装了 python3.11，使得 freqtrade 能够轻松安装运行。
 
     Tested using a Raspberry Pi 3 with the Raspbian Buster lite image, all updates applied.
 
@@ -106,9 +106,9 @@ OS Specific steps are listed first, the common section below is necessary for al
 
 ------
 
-## Freqtrade repository
+## Freqtrade 代码库
 
-Freqtrade is an open source crypto-currency trading bot, whose code is hosted on `github.com`
+Freqtrade 是一个开源加密货币交易机器人，其代码托管在 `github.com`
 
 ```bash
 # Download `develop` branch of freqtrade repository
@@ -124,12 +124,12 @@ git checkout stable
 git checkout develop
 ```
 
-(1) This command switches the cloned repository to the use of the `stable` branch. It's not needed, if you wish to stay on the (2) `develop` branch.
+(1) 此命令将克隆的代码库切换到使用 `stable` 分支。如果您希望停留在 (2) `develop` 分支，则无需执行此操作。
 
-You may later switch between branches at any time with the `git checkout stable`/`git checkout develop` commands.
+您之后可以随时使用 `git checkout stable`/`git checkout develop` 命令在分支之间切换。
 
-??? Note "Install from pypi"
-    An alternative way to install Freqtrade is from [pypi](https://pypi.org/project/freqtrade/). The downside is that this method requires ta-lib to be correctly installed beforehand, and is therefore currently not the recommended way to install Freqtrade.
+??? Note "从 pypi 安装"
+    安装 Freqtrade 的另一种方式是从 [pypi](https://pypi.org/project/freqtrade/) 安装。这种方法的缺点是需要事先正确安装 ta-lib，因此目前不是推荐的 Freqtrade 安装方式。
 
     ``` bash
     pip install freqtrade
@@ -137,35 +137,35 @@ You may later switch between branches at any time with the `git checkout stable`
 
 ------
 
-## Script Installation
+## 脚本安装
 
-First of the ways to install Freqtrade, is to use provided the Linux/MacOS `./setup.sh` script, which install all dependencies and help you configure the bot.
+安装 Freqtrade 的首选方法是使用提供的 Linux/MacOS `./setup.sh` 脚本，该脚本将安装所有依赖项并帮助您配置机器人。
 
-Make sure you fulfill the [Requirements](#requirements) and have downloaded the [Freqtrade repository](#freqtrade-repository).
+请确保您已满足 [要求](#requirements) 并下载了 [Freqtrade 代码库](#freqtrade-repository)。
 
-### Use /setup.sh -install (Linux/MacOS)
+### 使用 /setup.sh -install (Linux/MacOS)
 
-If you are on Debian, Ubuntu or MacOS, freqtrade provides the script to install freqtrade.
+如果您使用的是 Debian、Ubuntu 或 MacOS，freqtrade 提供了安装脚本。
 
 ```bash
 # --install, Install freqtrade from scratch
 ./setup.sh -i
 ```
 
-### Activate your virtual environment
+### 激活虚拟环境
 
-Each time you open a new terminal, you must run `source .venv/bin/activate` to activate your virtual environment.
+每次打开新终端时，您必须运行 `source .venv/bin/activate` 来激活虚拟环境。
 
 ```bash
 # activate virtual environment
 source ./.venv/bin/activate
 ```
 
-[You are now ready](#you-are-ready) to run the bot.
+[您现在已准备就绪](#you-are-ready) 可以运行机器人了。
 
-### Other options of /setup.sh script
+### /setup.sh 脚本的其他选项
 
-You can as well update, configure and reset the codebase of your bot with `./script.sh`
+您也可以使用 `./script.sh` 来更新、配置和重置机器人的代码库。
 
 ```bash
 # --update, Command git pull to update.
@@ -196,13 +196,13 @@ This option will hard reset your branch (only if you are on either `stable` or `
 
 -----
 
-## Manual Installation
+## 手动安装
 
-Make sure you fulfill the [Requirements](#requirements) and have downloaded the [Freqtrade repository](#freqtrade-repository).
+请确保您已满足 [要求](#requirements) 并已下载 [Freqtrade 代码库](#freqtrade-repository)。
 
-### Setup Python virtual environment (virtualenv)
+### 设置 Python 虚拟环境 (virtualenv)
 
-You will run freqtrade in separated `virtual environment`
+您将在独立的 `虚拟环境` 中运行 freqtrade。
 
 ```bash
 # create virtualenv in directory /freqtrade/.venv
@@ -212,7 +212,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-### Install python dependencies
+### 安装 Python 依赖
 
 ```bash
 python3 -m pip install --upgrade pip
@@ -221,38 +221,38 @@ python3 -m pip install -r requirements.txt
 python3 -m pip install -e .
 ```
 
-[You are now ready](#you-are-ready) to run the bot.
+[您现在已准备就绪](#you-are-ready) 可以运行机器人了。
 
-### (Optional) Post-installation Tasks
+### （可选）安装后任务
 
 !!! Note 
-    If you run the bot on a server, you should consider using [Docker](docker_quickstart.md) or a terminal multiplexer like `screen` or [`tmux`](https://en.wikipedia.org/wiki/Tmux) to avoid that the bot is stopped on logout.
+    如果您在服务器上运行机器人，应考虑使用 [Docker](docker_quickstart.md) 或终端多路复用器（如 `screen` 或 [`tmux`](https://en.wikipedia.org/wiki/Tmux)），以避免注销时机器人停止运行。
 
-On Linux with software suite `systemd`, as an optional post-installation task, you may wish to setup the bot to run as a `systemd service` or configure it to send the log messages to the `syslog`/`rsyslog` or `journald` daemons. See [Advanced Logging](advanced-setup.md#advanced-logging) for details.
+在使用 `systemd` 软件套件的 Linux 系统上，作为可选的安装后任务，您可能希望将机器人设置为 `systemd 服务` 运行，或将其配置为将日志消息发送到 `syslog`/`rsyslog` 或 `journald` 守护进程。有关详细信息，请参阅 [高级日志记录](advanced-setup.md#advanced-logging)。
 
 ------
 
-## Installation with Conda
+## 使用 Conda 安装
 
-Freqtrade can also be installed with Miniconda or Anaconda. We recommend using Miniconda as it's installation footprint is smaller. Conda will automatically prepare and manage the extensive library-dependencies of the Freqtrade program.
+Freqtrade 也可以使用 Miniconda 或 Anaconda 进行安装。我们推荐使用 Miniconda，因为它的安装占用空间更小。Conda 会自动准备和管理 Freqtrade 程序庞大的库依赖。
 
-### What is Conda?
+### 什么是 Conda？
 
-Conda is a package, dependency and environment manager for multiple programming languages: [conda docs](https://docs.conda.io/projects/conda/en/latest/index.html)
+Conda 是一个支持多种编程语言的包、依赖和环境管理器：[conda 文档](https://docs.conda.io/projects/conda/en/latest/index.html)
 
-### Installation with conda
+### 使用 conda 安装
 
-#### Install Conda
+#### 安装 Conda
 
-[Installing on linux](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html#install-linux-silent)
+[在 Linux 上安装](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html#install-linux-silent)
 
-[Installing on windows](https://conda.io/projects/conda/en/latest/user-guide/install/windows.html)
+[在 Windows 上安装](https://conda.io/projects/conda/en/latest/user-guide/install/windows.html)
 
-Answer all questions. After installation, it is mandatory to turn your terminal OFF and ON again.
+回答所有问题。安装后，必须关闭并重新打开终端。
 
-#### Freqtrade download
+#### 下载 Freqtrade
 
-Download and install freqtrade.
+下载并安装 freqtrade。
 
 ```bash
 # download freqtrade
@@ -262,29 +262,29 @@ git clone https://github.com/freqtrade/freqtrade.git
 cd freqtrade      
 ```
 
-#### Freqtrade install: Conda Environment
+#### Freqtrade 安装：Conda 环境
 
 ```bash
 conda create --name freqtrade python=3.12
 ```
 
-!!! Note "Creating Conda Environment"
-    The conda command `create -n` automatically installs all nested dependencies for the selected libraries, general structure of installation command is:
+!!! Note "创建 Conda 环境"
+    conda 命令 `create -n` 会自动为选定的库安装所有嵌套依赖项，安装命令的一般结构为：
 
     ```bash
     # choose your own packages
     conda env create -n [name of the environment] [python version] [packages]
     ```
 
-#### Enter/exit freqtrade environment
+#### 进入/退出 freqtrade 环境
 
-To check available environments, type
+要检查可用环境，请输入
 
 ```bash
 conda env list
 ```
 
-Enter installed environment
+进入已安装的环境
 
 ```bash
 # enter conda environment
@@ -294,7 +294,7 @@ conda activate freqtrade
 conda deactivate
 ```
 
-Install last python dependencies with pip
+使用 pip 安装最新的 python 依赖项
 
 ```bash
 python3 -m pip install --upgrade pip
@@ -302,9 +302,9 @@ python3 -m pip install -r requirements.txt
 python3 -m pip install -e .
 ```
 
-[You are now ready](#you-are-ready) to run the bot.
+[您现在已准备就绪](#you-are-ready)，可以运行机器人了。
 
-### Important shortcuts
+### 重要快捷键
 
 ```bash
 # list installed conda environments
@@ -320,14 +320,14 @@ conda activate freqtrade
 conda deactivate                              
 ```
 
-### Further info on anaconda
+### 关于 anaconda 的更多信息
 
-!!! Info "New heavy packages"
-    It may happen that creating a new Conda environment, populated with selected packages at the moment of creation takes less time than installing a large, heavy library or application, into previously set environment.
+!!! Info "新的大型软件包"
+    可能会出现这样的情况：创建一个新的 Conda 环境，并在创建时安装选定的软件包，比在先前设置的环境中安装一个大型、资源密集的库或应用程序所需的时间更短。
 
-!!! Warning "pip install within conda"
-    The documentation of conda says that pip should NOT be used within conda, because internal problems can occur.
-    However, they are rare. [Anaconda Blogpost](https://www.anaconda.com/blog/using-pip-in-a-conda-environment)
+!!! Warning "在 conda 环境中使用 pip"
+    conda 的文档指出，不应在 conda 环境中使用 pip，因为可能会发生内部问题。
+    然而，这种情况很少见。[Anaconda 博客文章](https://www.anaconda.com/blog/using-pip-in-a-conda-environment)
 
     Nevertheless, that is why, the `conda-forge` channel is preferred:
 
@@ -335,15 +335,15 @@ conda deactivate
     * `conda-forge` works better with `pip`
     * the libraries are newer
 
-Happy trading!
+祝交易愉快！
 
 -----
 
-## You are ready
+## 准备就绪
 
-You've made it this far, so you have successfully installed freqtrade.
+您已经成功走到这一步，说明您已成功安装了 freqtrade。
 
-### Initialize the configuration
+### 初始化配置
 
 ```bash
 # Step 1 - Initialize user folder
@@ -353,26 +353,26 @@ freqtrade create-userdir --userdir user_data
 freqtrade new-config --config user_data/config.json
 ```
 
-You are ready to run, read [Bot Configuration](configuration.md), remember to start with `dry_run: True` and verify that everything is working.
+您已准备就绪可以运行，请阅读 [机器人配置](configuration.md)，记得从 `dry_run: True` 开始，并验证一切是否正常工作。
 
-To learn how to setup your configuration, please refer to the [Bot Configuration](configuration.md) documentation page.
+要了解如何设置配置，请参阅 [机器人配置](configuration.md) 文档页面。
 
-### Start the Bot
+### 启动机器人
 
 ```bash
 freqtrade trade --config user_data/config.json --strategy SampleStrategy
 ```
 
 !!! Warning
-    You should read through the rest of the documentation, backtest the strategy you're going to use, and use dry-run before enabling trading with real money.
+    在启用真实货币交易之前，您应该通读其余文档，对将要使用的策略进行回测，并使用模拟交易模式。
 
 -----
 
-## Troubleshooting
+## 故障排除
 
-### Common problem: "command not found"
+### 常见问题："command not found"
 
-If you used (1)`Script` or (2)`Manual` installation, you need to run the bot in virtual environment. If you get error as below, make sure venv is active.
+如果您使用 (1)`脚本` 或 (2)`手动` 安装方式，则需要在虚拟环境中运行机器人。如果出现如下错误，请确保虚拟环境已激活。
 
 ```bash
 # if:
@@ -382,15 +382,15 @@ bash: freqtrade: command not found
 source ./.venv/bin/activate
 ```
 
-### MacOS installation error
+### MacOS 安装错误
 
-Newer versions of MacOS may have installation failed with errors like `error: command 'g++' failed with exit status 1`.
+较新版本的 MacOS 在安装时可能会失败，并出现类似 `error: command 'g++' failed with exit status 1` 的错误。
 
-This error will require explicit installation of the SDK Headers, which are not installed by default in this version of MacOS.
-For MacOS 10.14, this can be accomplished with the below command.
+此错误需要显式安装 SDK 头文件，这些文件在该版本的 MacOS 中默认未安装。
+对于 MacOS 10.14，可以通过以下命令完成安装。
 
 ```bash
 open /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg
 ```
 
-If this file is inexistent, then you're probably on a different version of MacOS, so you may need to consult the internet for specific resolution details.
+如果该文件不存在，那么您可能使用的是其他版本的 MacOS，因此可能需要查阅互联网以获取具体的解决方案细节。

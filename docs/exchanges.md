@@ -1,22 +1,18 @@
-# Exchange-specific Notes
+# 交易所特定说明
 
-This page combines common gotchas and Information which are exchange-specific and most likely don't apply to other exchanges.
+本页面汇总了特定于交易所的常见注意事项和信息，这些内容很可能不适用于其他交易所。
 
-## Exchange configuration
+## 交易所配置
 
-Freqtrade is based on [CCXT library](https://github.com/ccxt/ccxt) that supports over 100 cryptocurrency
-exchange markets and trading APIs. The complete up-to-date list can be found in the
-[CCXT repo homepage](https://github.com/ccxt/ccxt/tree/master/python).
-However, the bot was tested by the development team with only a few exchanges.
-A current list of these can be found in the "Home" section of this documentation.
+Freqtrade 基于 [CCXT 库](https://github.com/ccxt/ccxt) 构建，该库支持超过 100 个加密货币交易所市场和交易 API。完整的最新列表可在 [CCXT 代码库主页](https://github.com/ccxt/ccxt/tree/master/python) 找到。但开发团队仅对少数交易所进行了测试，当前列表可在本文档的"首页"部分查看。
 
-Feel free to test other exchanges and submit your feedback or PR to improve the bot or confirm exchanges that work flawlessly..
+欢迎测试其他交易所并提交反馈或 PR 来改进机器人，或确认运行完美的交易所。
 
-Some exchanges require special configuration, which can be found below.
+部分交易所需要特殊配置，具体如下所示。
 
-### Sample exchange configuration
+### 交易所配置示例
 
-A exchange configuration for "binance" would look as follows:
+"binance"交易所的配置示例如下：
 
 ```json
 "exchange": {
@@ -28,10 +24,9 @@ A exchange configuration for "binance" would look as follows:
     // ... 
 ```
 
-### Setting rate limits
+### 设置速率限制
 
-Usually, rate limits set by CCXT are reliable and work well.
-In case of problems related to rate-limits (usually DDOS Exceptions in your logs), it's easy to change rateLimit settings to other values.
+通常 CCXT 设置的速率限制是可靠且有效的。若遇到与速率限制相关的问题（通常是日志中的 DDOS 异常），可轻松将 rateLimit 设置更改为其他值。
 
 ```json
 "exchange": {
@@ -45,49 +40,48 @@ In case of problems related to rate-limits (usually DDOS Exceptions in your logs
     },
 ```
 
-This configuration enables kraken, as well as rate-limiting to avoid bans from the exchange.
-`"rateLimit": 3100` defines a wait-event of 3.1s between each call. This can also be completely disabled by setting `"enableRateLimit"` to false.
+以下配置启用 kraken 交易所，并通过速率限制避免被交易所封禁。`"rateLimit": 3100` 定义了每次调用间隔 3.1 秒的等待事件。通过将 `"enableRateLimit"` 设置为 false 也可完全禁用此功能。
 
 !!! Note
-    Optimal settings for rate-limiting depend on the exchange and the size of the whitelist, so an ideal parameter will vary on many other settings.
-    We try to provide sensible defaults per exchange where possible, if you encounter bans please make sure that `"enableRateLimit"` is enabled and increase the `"rateLimit"` parameter step by step.
+    限流的最佳设置取决于交易所和白名单的大小，因此理想的参数会因许多其他设置而异。
+    我们尽可能为每个交易所提供合理的默认值，如果您遇到封禁，请确保已启用 `"enableRateLimit"` 并逐步增加 `"rateLimit"` 参数。
 
 ## Binance
 
-!!! Warning "Server location and geo-ip restrictions"
-    Please be aware that Binance restricts API access regarding the server country. The current and non-exhaustive countries blocked are Canada, Malaysia, Netherlands and United States. Please go to [binance terms > b. Eligibility](https://www.binance.com/en/terms) to find up to date list.
+!!! Warning "服务器位置与地理IP限制"
+    请注意，Binance 会根据服务器所在国家限制 API 访问。当前被封锁的国家（非详尽列表）包括加拿大、马来西亚、荷兰和美国。请访问 [Binance 条款 > b. 资格](https://www.binance.com/en/terms) 查看最新列表。
 
-Binance supports [time_in_force](configuration.md#understand-order_time_in_force).
+Binance 支持 [time_in_force](configuration.md#understand-order_time_in_force)。
 
-!!! Tip "Stoploss on Exchange"
-    Binance supports `stoploss_on_exchange` and uses `stop-loss-limit` orders. It provides great advantages, so we recommend to benefit from it by enabling stoploss on exchange.
-    On futures, Binance supports both `stop-limit` as well as `stop-market` orders. You can use either `"limit"` or `"market"` in the `order_types.stoploss` configuration setting to decide which type to use.
+!!! Tip "交易所止损"
+    Binance 支持 `stoploss_on_exchange` 并使用 `stop-loss-limit` 订单。这提供了巨大优势，因此我们建议通过启用交易所止损来利用此功能。
+    在期货交易中，Binance 同时支持 `stop-limit` 和 `stop-market` 订单。您可以在 `order_types.stoploss` 配置设置中使用 `"limit"` 或 `"market"` 来决定使用哪种类型。
 
-### Binance Blacklist recommendation
+### Binance 黑名单建议
 
-For Binance, it is suggested to add `"BNB/<STAKE>"` to your blacklist to avoid issues, unless you are willing to maintain enough extra `BNB` on the account or unless you're willing to disable using `BNB` for fees.
-Binance accounts may use `BNB` for fees, and if a trade happens to be on `BNB`, further trades may consume this position and make the initial BNB trade unsellable as the expected amount is not there anymore.
+对于币安（Binance），建议将 `"BNB/<STAKE>"` 添加到您的黑名单中以避免问题，除非您愿意在账户中维持足够的额外 `BNB`，或者您愿意禁用使用 `BNB` 支付费用。
+币安账户可以使用 `BNB` 支付费用，如果交易恰好涉及 `BNB`，后续交易可能会消耗该持仓，导致初始的 BNB 交易因预期数量不足而无法卖出。
 
-If not enough `BNB` is available to cover transaction fees, then fees will not be covered by `BNB` and no fee reduction will occur. Freqtrade will never buy BNB to cover for fees. BNB needs to be bought and monitored manually to this end.
+如果没有足够的 `BNB` 来支付交易费用，那么费用将不会由 `BNB` 承担，也不会发生费用减免。Freqtrade 永远不会购买 BNB 来支付费用。为此，需要手动购买并监控 BNB。
 
-### Binance sites
+### 币安站点
 
-Binance has been split into 2, and users must use the correct ccxt exchange ID for their exchange, otherwise API keys are not recognized.
+币安已拆分为两个部分，用户必须为其交易所使用正确的 ccxt 交易所 ID，否则 API 密钥将无法被识别。
 
-* [binance.com](https://www.binance.com/) - International users. Use exchange id: `binance`.
-* [binance.us](https://www.binance.us/) - US based users. Use exchange id: `binanceus`.
+* [binance.com](https://www.binance.com/) - 国际用户。使用交易所 ID：`binance`。
+* [binance.us](https://www.binance.us/) - 美国用户。使用交易所 ID：`binanceus`。
 
-### Binance RSA keys
+### 币安 RSA 密钥
 
-Freqtrade supports binance RSA API keys.
+Freqtrade 支持币安 RSA API 密钥。
 
-We recommend to use them as environment variable.
+我们建议将它们作为环境变量使用。
 
 ``` bash
 export FREQTRADE__EXCHANGE__SECRET="$(cat ./rsa_binance.private)"
 ```
 
-They can however also be configured via configuration file. Since json doesn't support multi-line strings, you'll have to replace all newlines with `\n` to have a valid json file.
+然而，它们也可以通过配置文件进行配置。由于 json 不支持多行字符串，您必须将所有换行符替换为 `\n` 以生成有效的 json 文件。
 
 ``` json
 // ...
@@ -96,12 +90,12 @@ They can however also be configured via configuration file. Since json doesn't s
 // ...
 ```
 
-### Binance Futures
+### 币安期货
 
-Binance has specific (unfortunately complex) [Futures Trading Quantitative Rules](https://www.binance.com/en/support/faq/4f462ebe6ff445d4a170be7d9e897272) which need to be followed, and which prohibit a too low stake-amount (among others) for too many orders.
-Violating these rules will result in a trading restriction.
+币安有特定的（不幸的是复杂的）[期货交易量化规则](https://www.binance.com/en/support/faq/4f462ebe6ff445d4a170be7d9e897272)需要遵守，其中包括禁止过多订单的单笔金额过低。
+违反这些规则将导致交易限制。
 
-When trading on Binance Futures market, orderbook must be used because there is no price ticker data for futures.
+在币安期货市场交易时，必须使用订单簿，因为期货没有价格行情数据。
 
 ``` jsonc
   "entry_pricing": {
@@ -118,19 +112,19 @@ When trading on Binance Futures market, orderbook must be used because there is 
   },
 ```
 
-#### Binance isolated futures settings
+#### 币安逐仓期货设置
 
-Users will also have to have the futures-setting "Position Mode" set to "One-way Mode", and "Asset Mode" set to "Single-Asset Mode".
-These settings will be checked on startup, and freqtrade will show an error if this setting is wrong.
+用户还必须将期货设置中的"持仓模式"设置为"单向持仓模式"，并将"资产模式"设置为"单一资产模式"。
+这些设置将在启动时检查，如果设置错误，freqtrade 将显示错误。
 
-![Binance futures settings](assets/binance_futures_settings.png)
+![币安期货设置](assets/binance_futures_settings.png)
 
-Freqtrade will not attempt to change these settings.
+Freqtrade 不会尝试更改这些设置。
 
-#### Binance BNFCR futures
+#### 币安 BNFCR 期货
 
-BNFCR mode are a special type of futures mode on Binance to work around regulatory issues in Europe.  
-To use BNFCR futures, you will have to have the following combination of settings:
+BNFCR 模式是币安上一种特殊的期货模式，用于规避欧洲的监管问题。
+要使用 BNFCR 期货，您必须使用以下设置组合：
 
 ``` jsonc
 {
@@ -143,40 +137,40 @@ To use BNFCR futures, you will have to have the following combination of setting
 }
 ```
 
-The `stake_currency` setting defines the markets the bot will be operating in. This choice is really arbitrary.
+`stake_currency` 设置定义了机器人将操作的市场。这个选择实际上是任意的。
 
-On the exchange, you'll have to use "Multi-asset Mode" - and "Position Mode set to "One-way Mode".  
-Freqtrade will check these settings on startup, but won't attempt to change them.
+在交易所上，您必须使用"多资产模式" - 并且"持仓模式"设置为"单向持仓模式"。
+Freqtrade 将在启动时检查这些设置，但不会尝试更改它们。
 
 ## Bingx
 
-BingX supports [time_in_force](configuration.md#understand-order_time_in_force) with settings "GTC" (good till cancelled), "IOC" (immediate-or-cancel) and "PO" (Post only) settings.
+BingX 支持 [time_in_force](configuration.md#understand-order_time_in_force) 设置，可选 "GTC"（取消前有效）、"IOC"（立即或取消）和 "PO"（仅限挂单）设置。
 
-!!! Tip "Stoploss on Exchange"
-    Bingx supports `stoploss_on_exchange` and can use both stop-limit and stop-market orders. It provides great advantages, so we recommend to benefit from it by enabling stoploss on exchange.
+!!! Tip "交易所止损"
+    Bingx 支持 `stoploss_on_exchange`，并可同时使用限价止损和市价止损订单。这提供了巨大优势，因此我们建议通过启用交易所止损来从中受益。
 
 ## Kraken
 
-Kraken supports [time_in_force](configuration.md#understand-order_time_in_force) with settings "GTC" (good till cancelled), "IOC" (immediate-or-cancel) and "PO" (Post only) settings.
+Kraken 支持 [time_in_force](configuration.md#understand-order_time_in_force) 设置，可选 "GTC"（取消前有效）、"IOC"（立即或取消）和 "PO"（仅限挂单）设置。
 
-!!! Tip "Stoploss on Exchange"
-    Kraken supports `stoploss_on_exchange` and can use both stop-loss-market and stop-loss-limit orders. It provides great advantages, so we recommend to benefit from it.
-    You can use either `"limit"` or `"market"` in the `order_types.stoploss` configuration setting to decide which type to use.
+!!! Tip "交易所止损"
+    Kraken 支持 `stoploss_on_exchange`，并可同时使用市价止损和限价止损订单。这提供了巨大优势，因此我们建议通过启用交易所止损来从中受益。
+    您可以在 `order_types.stoploss` 配置设置中使用 `"limit"` 或 `"market"` 来决定使用哪种类型。
 
-### Historic Kraken data
+### Kraken 历史数据
 
-The Kraken API does only provide 720 historic candles, which is sufficient for Freqtrade dry-run and live trade modes, but is a problem for backtesting.
-To download data for the Kraken exchange, using `--dl-trades` is mandatory, otherwise the bot will download the same 720 candles over and over, and you'll not have enough backtest data.
+Kraken API 仅提供 720 根历史 K 线数据，这对于 Freqtrade 的模拟交易和实盘交易模式足够，但对于回测则存在问题。
+要为 Kraken 交易所下载数据，必须使用 `--dl-trades` 参数，否则机器人将反复下载相同的 720 根 K 线，您将没有足够的回测数据。
 
-To speed up downloading, you can download the [trades zip files](https://support.kraken.com/hc/en-us/articles/360047543791-Downloadable-historical-market-data-time-and-sales-) kraken provides.
-These are usually updated once per quarter. Freqtrade expects these files to be placed in `user_data/data/kraken/trades_csv`.
+为加速下载，您可下载 Kraken 提供的[交易记录压缩包](https://support.kraken.com/hc/en-us/articles/360047543791-Downloadable-historical-market-data-time-and-sales-)。
+这些文件通常每季度更新一次。Freqtrade 要求将这些文件放置在 `user_data/data/kraken/trades_csv` 目录下。
 
-A structure as follows can make sense if using incremental files, with the "full" history in one directory, and incremental files in different directories.
-The assumption for this mode is that the data is downloaded and unzipped keeping filenames as they are.
-Duplicate content will be ignored (based on timestamp) - though the assumption is that there is no gap in the data.
+若使用增量文件，采用以下结构较为合理：将"完整"历史数据存放于一个目录，增量文件分置于不同目录。
+此模式的前提是数据下载解压后保持原始文件名不变。
+重复内容（基于时间戳判断）将被忽略——但前提是数据不存在断档。
 
-This means, if your "full" history ends in Q4 2022 - then both incremental updates Q1 2023 and Q2 2023 are available.
-Not having this will lead to incomplete data, and therefore invalid results while using the data.
+这意味着，如果您的"完整"历史数据截止到2022年第四季度，那么2023年第一季度和第二季度的增量更新需同时就位。
+若缺少增量文件将导致数据不完整，进而使使用该数据得出的结果无效。
 
 ```
 └── trades_csv
@@ -191,7 +185,7 @@ Not having this will lead to incomplete data, and therefore invalid results whil
         └── XBTEUR.csv
 ```
 
-You can convert these files into freqtrade files:
+您可将这些文件转换为 freqtrade 格式：
 
 ``` bash
 freqtrade convert-trade-data --exchange kraken --format-from kraken_csv --format-to feather
@@ -199,23 +193,23 @@ freqtrade convert-trade-data --exchange kraken --format-from kraken_csv --format
 freqtrade trades-to-ohlcv -p BTC/EUR BCH/EUR --exchange kraken -t 1m 5m 15m 1h
 ```
 
-The converted data also makes downloading data possible, and will start the download after the latest loaded trade.
+转换后的数据还支持增量下载功能，系统将从已载入的最新交易记录之后开始下载。
 
 ``` bash
 freqtrade download-data --exchange kraken --dl-trades -p BTC/EUR BCH/EUR 
 ```
 
-!!! Warning "Downloading data from kraken"
-    Downloading kraken data will require significantly more memory (RAM) than any other exchange, as the trades-data needs to be converted into candles on your machine.
-    It will also take a long time, as freqtrade will need to download every single trade that happened on the exchange for the pair / timerange combination, therefore please be patient.
+!!! Warning "从 Kraken 下载数据"
+    下载 Kraken 数据将需要比任何其他交易所显著更多的内存（RAM），因为交易数据需要在您的机器上转换为 K 线数据。
+    这也会花费很长时间，因为 freqtrade 需要下载该交易对/时间范围组合在交易所发生的每一笔交易，因此请耐心等待。
 
-!!! Warning "rateLimit tuning"
-    Please pay attention that rateLimit configuration entry holds delay in milliseconds between requests, NOT requests/sec rate.
-    So, in order to mitigate Kraken API "Rate limit exceeded" exception, this configuration should be increased, NOT decreased.
+!!! Warning "rateLimit 调优"
+    请注意，rateLimit 配置项表示请求之间的延迟时间（以毫秒为单位），而不是每秒请求速率。
+    因此，为了避免 Kraken API 的"超出速率限制"异常，此配置值应该增加，而不是减少。
 
 ## Kucoin
 
-Kucoin requires a passphrase for each api key, you will therefore need to add this key into the configuration so your exchange section looks as follows:
+Kucoin 要求每个 API 密钥都附带一个密码短语，因此您需要将此密钥添加到配置中，使您的交易所配置部分如下所示：
 
 ```json
 "exchange": {
@@ -227,25 +221,25 @@ Kucoin requires a passphrase for each api key, you will therefore need to add th
 }
 ```
 
-Kucoin supports [time_in_force](configuration.md#understand-order_time_in_force) with settings "GTC" (good till cancelled), "FOK" (full-or-cancel) and "IOC" (immediate-or-cancel) settings.
+Kucoin 支持 [time_in_force](configuration.md#understand-order_time_in_force)，可设置"GTC"（取消前有效）、"FOK"（全部成交或取消）和"IOC"（立即成交或取消）选项。
 
-!!! Tip "Stoploss on Exchange"
-    Kucoin supports `stoploss_on_exchange` and can use both stop-loss-market and stop-loss-limit orders. It provides great advantages, so we recommend to benefit from it.
-    You can use either `"limit"` or `"market"` in the `order_types.stoploss` configuration setting to decide which type of stoploss shall be used.
+!!! Tip "交易所止损"
+    Kucoin 支持 `stoploss_on_exchange`，并且可以使用止损市价单和止损限价单。这提供了巨大优势，因此我们建议充分利用此功能。
+    您可以在 `order_types.stoploss` 配置设置中使用 `"limit"` 或 `"market"` 来决定使用哪种类型的止损单。
 
-### Kucoin Blacklists
+### Kucoin 黑名单
 
-For Kucoin, it is suggested to add `"KCS/<STAKE>"` to your blacklist to avoid issues, unless you are willing to maintain enough extra `KCS` on the account or unless you're willing to disable using `KCS` for fees. 
-Kucoin accounts may use `KCS` for fees, and if a trade happens to be on `KCS`, further trades may consume this position and make the initial `KCS` trade unsellable as the expected amount is not there anymore.
+对于 Kucoin，建议将 `"KCS/<STAKE>"` 添加到您的黑名单中以避免问题，除非您愿意在账户中维持足够的额外 `KCS`，或者除非您愿意禁用使用 `KCS` 支付费用。
+Kucoin 账户可能使用 `KCS` 支付费用，如果交易恰好涉及 `KCS`，后续交易可能会消耗该头寸，导致初始的 `KCS` 交易无法卖出，因为预期的数量已不存在。
 
 ## HTX
 
-!!! Tip "Stoploss on Exchange"
-    HTX supports `stoploss_on_exchange` and uses `stop-limit` orders. It provides great advantages, so we recommend to benefit from it by enabling stoploss on exchange.
+!!! Tip "交易所止损"
+    HTX 支持 `stoploss_on_exchange` 并使用 `stop-limit` 订单。这提供了巨大优势，因此我们建议通过启用交易所止损来利用这一功能。
 
 ## OKX
 
-OKX requires a passphrase for each api key, you will therefore need to add this key into the configuration so your exchange section looks as follows:
+OKX 要求每个 API 密钥都设置密码，因此您需要将此密钥添加到配置中，使您的交易所配置部分如下所示：
 
 ```json
 "exchange": {
@@ -257,66 +251,66 @@ OKX requires a passphrase for each api key, you will therefore need to add this 
 }
 ```
 
-If you've registered with OKX on the host my.okx.com (OKX EAA)- you will need to use `"myokx"` as the exchange name.
-Using the wrong exchange will result in the error "OKX Error 50119: API key doesn't exist" - as the 2 are separate entities.
+如果您在主机 my.okx.com（OKX EAA）上注册了 OKX - 您需要使用 `"myokx"` 作为交易所名称。
+使用错误的交易所将导致错误 "OKX Error 50119: API key doesn't exist" - 因为这两个是独立的实体。
 
 !!! Warning
-    OKX only provides 100 candles per api call. Therefore, the strategy will only have a pretty low amount of data available in backtesting mode.
+    OKX 每次 API 调用仅提供 100 根 K 线。因此，在回测模式下，策略可用的数据量将相当有限。
 
 !!! Warning "Futures"
-    OKX Futures has the concept of "position mode" - which can be "Buy/Sell" or long/short (hedge mode).
-    Freqtrade supports both modes (we recommend to use Buy/Sell mode) - but changing the mode mid-trading is not supported and will lead to exceptions and failures to place trades.
-    OKX also only provides MARK candles for the past ~3 months. Backtesting futures prior to that date will therefore lead to slight deviations, as funding-fees cannot be calculated correctly without this data.
+    OKX 期货交易存在"持仓模式"概念——可以是"买入/卖出"模式或多空(对冲模式)。
+    Freqtrade 同时支持这两种模式（我们推荐使用买入/卖出模式）——但不支持在交易中途切换模式，否则将导致异常和下单失败。
+    OKX 仅提供过去约3个月的标记价格K线数据。因此对该日期之前的期货数据进行回测会产生轻微偏差，因为缺少这些数据将无法准确计算资金费率。
 
 ## Gate.io
 
 !!! Tip "Stoploss on Exchange"
-    Gate.io supports `stoploss_on_exchange` and uses `stop-loss-limit` orders. It provides great advantages, so we recommend to benefit from it by enabling stoploss on exchange.
+    Gate.io 支持 `stoploss_on_exchange` 并使用`止损限价`订单。该功能优势显著，因此我们建议通过启用交易所止损来利用这一优势。
 
-Gate.io supports [time_in_force](configuration.md#understand-order_time_in_force) with settings "GTC" (good till cancelled), and "IOC" (immediate-or-cancel) settings.
+Gate.io 支持 [time_in_force](configuration.md#understand-order_time_in_force) 参数，可设置为"GTC"(取消前有效)和"IOC"(立即成交或取消)模式。
 
-Gate.io allows the use of `POINT` to pay for fees. As this is not a tradable currency (no regular market available), automatic fee calculations will fail (and default to a fee of 0).
-The configuration parameter `exchange.unknown_fee_rate` can be used to specify the exchange rate between Point and the stake currency. Obviously, changing the stake-currency will also require changes to this value.
+Gate.io 允许使用 `POINT` 支付手续费。由于这不是可交易货币（无常规市场），自动手续费计算将失败（并默认手续费为0）。
+可通过配置参数 `exchange.unknown_fee_rate` 指定 Point 与交易货币之间的汇率。显然，更改交易货币也需要同步调整此数值。
 
-Gate API keys require the following permissions on top of the market type you want to trade:
+Gate.io API密钥除所需交易的市场类型外，还需具备以下权限：
 
-* "Spot Trade" _or_ "Perpetual Futures" (Read and Write) (either select both, or the one matching the market you want to trade)
-* "Wallet" (read only)
-* "Account" (read only)
+* "现货交易" _或_ "永续合约" (读写权限) (可同时选择两者，或选择与您要交易的市场匹配的选项)
+* "钱包" (只读权限)
+* "账户" (只读权限)
 
-Without these permissions, the bot will not start correctly and show errors like "permission missing".
+若缺少这些权限，机器人将无法正常启动并显示"权限缺失"等错误信息。
 
 ## Bybit
 
-!!! Tip "Stoploss on Exchange"
-    Bybit (futures only) supports `stoploss_on_exchange` and uses `stop-loss-limit` orders. It provides great advantages, so we recommend to benefit from it by enabling stoploss on exchange.
-    On futures, Bybit supports both `stop-limit` as well as `stop-market` orders. You can use either `"limit"` or `"market"` in the `order_types.stoploss` configuration setting to decide which type to use.
+!!! Tip "交易所止损功能"
+    Bybit (仅限合约) 支持 `stoploss_on_exchange` 并使用 `止损限价` 订单。这具有显著优势，因此我们建议通过启用交易所止损功能来利用此优势。
+    在合约交易中，Bybit 同时支持 `止损限价` 和 `止损市价` 订单。您可以在 `order_types.stoploss` 配置设置中使用 `"limit"` 或 `"market"` 来决定使用哪种类型。
 
-Bybit supports [time_in_force](configuration.md#understand-order_time_in_force) with settings "GTC" (good till cancelled), "FOK" (full-or-cancel), "IOC" (immediate-or-cancel) and "PO" (Post only) settings.
+Bybit 支持 [订单时效](configuration.md#understand-order_time_in_force) 设置，包括 "GTC"（取消前有效）、"FOK"（全部成交或取消）、"IOC"（立即成交或取消）和 "PO"（仅限挂单）设置。
 
-Futures trading on bybit is currently supported for isolated futures mode.
+Bybit 的合约交易目前支持隔离保证金模式。
 
-On startup, freqtrade will set the position mode to "One-way Mode" for the whole (sub)account. This avoids making this call over and over again (slowing down bot operations), but means that manual changes to this setting may result in exceptions and errors.
+启动时，freqtrade 将为整个（子）账户设置持仓模式为"单向持仓模式"。这避免了重复进行此调用（减缓机器人运行速度），但意味着手动更改此设置可能导致异常和错误。
 
-As bybit doesn't provide funding rate history, the dry-run calculation is used for live trades as well.
+由于 Bybit 不提供资金费率历史数据，实盘交易同样使用模拟计算方式。
 
-API Keys for live futures trading must have the following permissions:
+用于实盘期货交易的API密钥必须具备以下权限：
 
-* Read-write
-* Contract - Orders
-* Contract - Positions
+* 读写权限
+* 合约 - 订单
+* 合约 - 持仓
 
-We do strongly recommend to limit all API keys to the IP you're going to use it from.
+我们强烈建议将所有API密钥限制在您将要使用的IP地址范围内。
 
-!!! Warning "Unified accounts"
-    Freqtrade assumes accounts to be dedicated to the bot.
-    We therefore recommend the usage of one subaccount per bot. This is especially important when using unified accounts.  
-    Other configurations (multiple bots on one account, manual non-bot trades on the bot account) are not supported and may lead to unexpected behavior.
+!!! Warning "统一账户"
+    Freqtrade假定账户专用于机器人交易。
+    因此我们建议每个机器人使用一个子账户。在使用统一账户时这一点尤为重要。  
+    其他配置（一个账户上运行多个机器人、在机器人账户上进行非机器人手动交易）不受支持，并可能导致意外行为。
 
 ## Bitmart
 
-Bitmart requires the API key Memo (the name you give the API key) to go along with the exchange key and secret.
-It's therefore required to pass the UID as well.
+Bitmart要求API密钥备注（您为API密钥设置的名称）与交易所密钥和密钥一起使用。
+因此还需要传递UID。
 
 ```json
 "exchange": {
@@ -328,12 +322,12 @@ It's therefore required to pass the UID as well.
 }
 ```
 
-!!! Warning "Necessary Verification"
-    Bitmart requires Verification Lvl2 to successfully trade on the spot market through the API - even though trading via UI works just fine with just Lvl1 verification.
+!!! Warning "必要验证"
+    Bitmart要求通过Lvl2验证才能通过API在现货市场成功交易——即使仅通过Lvl1验证在UI界面交易也能正常工作。
 
 ## Bitget
 
-Bitget requires a passphrase for each api key, you will therefore need to add this key into the configuration so your exchange section looks as follows:
+Bitget要求每个API密钥设置密码，因此您需要将此密钥添加到配置中，使您的交易所配置部分如下所示：
 
 ```json
 "exchange": {
@@ -345,19 +339,19 @@ Bitget requires a passphrase for each api key, you will therefore need to add th
 }
 ```
 
-Bitget supports [time_in_force](configuration.md#understand-order_time_in_force) with settings "GTC" (good till cancelled), "FOK" (full-or-cancel), "IOC" (immediate-or-cancel) and "PO" (Post only) settings.
+Bitget支持[time_in_force](configuration.md#understand-order_time_in_force)设置，包括"GTC"（取消前有效）、"FOK"（全部成交或取消）、"IOC"（立即成交或取消）和"PO"（仅限挂单）设置。
 
 !!! Tip "Stoploss on Exchange"
-    Bitget supports `stoploss_on_exchange` and can use both stop-loss-market and stop-loss-limit orders. It provides great advantages, so we recommend to benefit from it.
-    You can use either `"limit"` or `"market"` in the `order_types.stoploss` configuration setting to decide which type of stoploss shall be used.
+    Bitget 支持 `stoploss_on_exchange` 功能，并能同时使用止损市价单和止损限价单。这提供了巨大优势，因此我们建议充分利用该功能。
+    您可以在 `order_types.stoploss` 配置设置中使用 `"limit"` 或 `"market"` 来决定使用哪种类型的止损单。
 
 ## Hyperliquid
 
 !!! Tip "Stoploss on Exchange"
-    Hyperliquid supports `stoploss_on_exchange` and uses `stop-loss-limit` orders. It provides great advantages, so we recommend to benefit from it.
+    Hyperliquid 支持 `stoploss_on_exchange` 功能并使用 `stop-loss-limit` 订单。这提供了巨大优势，因此我们建议充分利用该功能。
 
-Hyperliquid is a Decentralized Exchange (DEX). Decentralized exchanges work a bit different compared to normal exchanges. Instead of authenticating private API calls using an API key, private API calls need to be signed with the private key of your wallet (We recommend using an api Wallet for this, generated either on Hyperliquid or in your wallet of choice).
-This needs to be configured like this:
+Hyperliquid 是一个去中心化交易所（DEX）。去中心化交易所与常规交易所的运作方式略有不同。私有 API 调用无需使用 API 密钥进行身份验证，而是需要使用您钱包的私钥进行签名（我们建议为此使用在 Hyperliquid 或您选择的钱包中生成的 API 钱包）。
+需要按如下方式配置：
 
 ```json
 "exchange": {
@@ -368,28 +362,28 @@ This needs to be configured like this:
 }
 ```
 
-* walletAddress in hex format: `0x<40 hex characters>` - Can be easily copied from your wallet - and should be your main wallet address, not your API Wallet Address.
-* privateKey in hex format: `0x<64 hex characters>` - Use the key the API Wallet shows on creation.
+* 十六进制格式的钱包地址：`0x<40 位十六进制字符>` - 可从您的钱包轻松复制 - 且应是您的主钱包地址，而非 API 钱包地址。
+* 十六进制格式的私钥：`0x<64 位十六进制字符>` - 使用 API 钱包创建时显示的密钥。
 
-Hyperliquid handles deposits and withdrawals on the Arbitrum One chain, a Layer 2 scaling solution built on top of Ethereum. Hyperliquid uses USDC as quote / collateral. The process of depositing USDC on Hyperliquid requires a couple of steps, see [how to start trading](https://hyperliquid.gitbook.io/hyperliquid-docs/onboarding/how-to-start-trading) for details on what steps are needed.
+Hyperliquid 在 Arbitrum One 链上处理存款和提现，这是一个构建在以太坊之上的 Layer 2 扩容解决方案。Hyperliquid 使用 USDC 作为报价/抵押品。在 Hyperliquid 上存入 USDC 的过程需要几个步骤，有关所需步骤的详细信息，请参阅 [如何开始交易](https://hyperliquid.gitbook.io/hyperliquid-docs/onboarding/how-to-start-trading)。
 
-!!! Note "Hyperliquid general usage Notes"
-    Hyperliquid does not support market orders, however ccxt will simulate market orders by placing limit orders with a maximum slippage of 5%.  
-    Unfortunately, hyperliquid only offers 5000 historic candles, so backtesting will either need to build candles historically (by waiting and downloading the data incrementally over time) - or will be limited to the last 5000 candles.
+!!! Note "Hyperliquid 通用使用说明"
+    Hyperliquid 不支持市价单，但 ccxt 将通过下止损限价单来模拟市价单，最大滑点率为 5%。
+    遗憾的是，hyperliquid 仅提供 5000 根历史 K 线，因此回测要么需要历史性地构建 K 线（通过等待并随时间推移逐步下载数据），要么将限于最近 5000 根 K 线。
 
-!!! Info "Some general best practices (non exhaustive)"
-    * Beware of supply chain attacks, like pip package poisoning etcetera. Whenever you use your private key, make sure your environment is safe.
-    * Don't use your actual wallet private key for trading. Use the Hyperliquid [API generator](https://app.hyperliquid.xyz/API) to create a separate API wallet.
-    * Don't store your actual wallet private key on the server you use for freqtrade. Use the API wallet private key instead. This key won't allow withdrawals, only trading.
-    * Always keep your mnemonic phrase and private key private.
-    * Don't use the same mnemonic as the one you had to backup when initializing a hardware wallet, using the same mnemonic basically deletes the security of your hardware wallet.
-    * Create a different software wallet, only transfer the funds you want to trade with to that wallet, and use that wallet to trade on Hyperliquid.
-    * If you have funds you don't want to use for trading (after making a profit for example), transfer them back to your hardware wallet.
+!!! Info "一些通用最佳实践（非详尽列表）"
+    * 警惕供应链攻击，例如 pip 包投毒等。每当使用私钥时，请确保环境安全。
+    * 不要使用实际钱包私钥进行交易。使用 Hyperliquid [API 生成器](https://app.hyperliquid.xyz/API)创建独立的 API 钱包。
+    * 不要将实际钱包私钥存储在用于 freqtrade 的服务器上。请改用 API 钱包私钥。该密钥不允许提现，仅用于交易。
+    * 始终保管好你的助记词和私钥。
+    * 不要使用初始化硬件钱包时需要备份的相同助记词，使用相同助记词基本上会消除硬件钱包的安全性。
+    * 创建不同的软件钱包，仅将想要用于交易的资金转入该钱包，并使用该钱包在 Hyperliquid 上进行交易。
+    * 如果有不想用于交易的资金（例如获利后），请将其转回硬件钱包。
 
-### Hyperliquid Vault / Subaccount
+### Hyperliquid 金库 / 子账户
 
-Hyperliquid allows you to create either a vault or a subaccount.  
-To use these with Freqtrade, you will need to use the following configuration pattern:
+Hyperliquid 允许你创建金库或子账户。  
+要在 Freqtrade 中使用这些功能，你需要使用以下配置模式：
 
 ``` json
 "exchange": {
@@ -405,15 +399,15 @@ To use these with Freqtrade, you will need to use the following configuration pa
 }
 ```
 
-Your balance and trades will now be used from your vault / subaccount - and no longer from your main account.
+现在将从你的金库/子账户使用余额和进行交易，而不再从主账户使用。
 
-### Historic Hyperliquid data
+### Hyperliquid 历史数据
 
-The Hyperliquid API does not provide historic data beyond the single call to fetch current data, so downloading data is not possible, as the downloaded data would not constitute proper historic data.
+Hyperliquid API 不提供单次获取当前数据之外的历史数据，因此无法下载数据，因为下载的数据无法构成完整的历史数据。
 
 ## Bitvavo
 
-If your account is required to use an operatorId, you can set it in the configuration file as follows:
+如果您的账户需要使用 operatorId，可以在配置文件中按如下方式设置：
 
 ``` json
 "exchange": {
@@ -428,38 +422,38 @@ If your account is required to use an operatorId, you can set it in the configur
    }
 ```
 
-Bitvavo expects the `operatorId` to be an integer.
+Bitvavo 要求 `operatorId` 为整数类型。
 
-## All exchanges
+## 所有交易所
 
-Should you experience constant errors with Nonce (like `InvalidNonce`), it is best to regenerate the API keys. Resetting Nonce is difficult and it's usually easier to regenerate the API keys.
+若持续遇到 Nonce 相关错误（例如 `InvalidNonce`），最佳解决方案是重新生成 API 密钥。重置 Nonce 较为困难，通常重新生成 API 密钥更为便捷。
 
-## Random notes for other exchanges
+## 其他交易所的随机备注
 
-* The Ocean (exchange id: `theocean`) exchange uses Web3 functionality and requires `web3` python package to be installed:
+* The Ocean（交易所 ID：`theocean`）使用 Web3 功能，需要安装 `web3` Python 包：
 
 ```shell
 pip3 install web3
 ```
 
-### Getting latest price / Incomplete candles
+### 获取最新价格 / 不完整的 K 线
 
-Most exchanges return current incomplete candle via their OHLCV/klines API interface.
-By default, Freqtrade assumes that incomplete candle is fetched from the exchange and removes the last candle assuming it's the incomplete candle.
+大多数交易所通过其 OHLCV/K 线 API 接口返回当前未完成的 K 线。
+默认情况下，Freqtrade 假定从交易所获取的是不完整的 K 线，并会移除最后一根 K 线（假定其为未完成状态）。
 
-Whether your exchange returns incomplete candles or not can be checked using [the helper script](developer.md#incomplete-candles) from the Contributor documentation.
+您可以通过[贡献者文档中的辅助脚本](developer.md#incomplete-candles)来验证交易所是否返回不完整的 K 线。
 
-Due to the danger of repainting, Freqtrade does not allow you to use this incomplete candle.
+由于存在重新绘图的风险，Freqtrade 不允许使用这类未完成的 K 线。
 
-However, if it is based on the need for the latest price for your strategy - then this requirement can be acquired using the [data provider](strategy-customization.md#possible-options-for-dataprovider) from within the strategy.
+然而，如果这是基于策略对最新价格的需求——那么这一要求可以通过策略内部的[数据提供器](strategy-customization.md#possible-options-for-dataprovider)来获取。
 
-### Advanced Freqtrade Exchange configuration
+### 高级 Freqtrade 交易所配置
 
-Advanced options can be configured using the `_ft_has_params` setting, which will override Defaults and exchange-specific behavior.
+高级选项可通过 `_ft_has_params` 设置进行配置，该设置将覆盖默认值和特定交易所的行为。
 
-Available options are listed in the exchange-class as `_ft_has_default`.
+可用选项在交易所类中列为 `_ft_has_default`。
 
-For example, to test the order type `FOK` with Kraken, and modify candle limit to 200 (so you only get 200 candles per API call):
+例如，要使用 Kraken 测试 `FOK` 订单类型，并将蜡烛图限制修改为 200（这样每次 API 调用仅获取 200 根蜡烛）：
 
 ```json
 "exchange": {
@@ -473,4 +467,4 @@ For example, to test the order type `FOK` with Kraken, and modify candle limit t
 ```
 
 !!! Warning
-    Please make sure to fully understand the impacts of these settings before modifying them.
+    请务必在修改这些设置前充分理解其影响。

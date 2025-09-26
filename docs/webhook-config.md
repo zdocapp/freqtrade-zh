@@ -1,10 +1,10 @@
-# Webhook usage
+# Webhook 使用指南
 
-## Configuration
+## 配置
 
-Enable webhooks by adding a webhook-section to your configuration file, and setting `webhook.enabled` to `true`.
+通过向配置文件中添加 webhook 配置段，并将 `webhook.enabled` 设置为 `true` 来启用 webhook 功能。
 
-Sample configuration (tested using IFTTT).
+示例配置（使用 IFTTT 测试）。
 
 ```json
   "webhook": {
@@ -48,9 +48,9 @@ Sample configuration (tested using IFTTT).
     },
 ```
 
-The url in `webhook.url` should point to the correct url for your webhook. If you're using [IFTTT](https://ifttt.com) (as shown in the sample above) please insert your event and key to the url.
+`webhook.url` 中的 URL 应指向您的 webhook 正确地址。如果您使用 [IFTTT](https://ifttt.com)（如上例所示），请将您的事件和密钥插入到 URL 中。
 
-You can set the POST body format to Form-Encoded (default), JSON-Encoded, or raw data. Use `"format": "form"`, `"format": "json"`, or `"format": "raw"` respectively. Example configuration for Mattermost Cloud integration:
+您可以将 POST 请求体格式设置为表单编码（默认）、JSON 编码或原始数据。分别使用 `"format": "form"`、`"format": "json"` 或 `"format": "raw"`。Mattermost Cloud 集成的示例配置：
 
 ```json
   "webhook": {
@@ -63,9 +63,9 @@ You can set the POST body format to Form-Encoded (default), JSON-Encoded, or raw
     },
 ```
 
-The result would be a POST request with e.g. `{"text":"Status: running"}` body and `Content-Type: application/json` header which results `Status: running` message in the Mattermost channel.
+这将生成一个 POST 请求，例如包含 `{"text":"Status: running"}` 请求体和 `Content-Type: application/json` 头部，最终在 Mattermost 频道中显示 `Status: running` 消息。
 
-When using the Form-Encoded or JSON-Encoded configuration you can configure any number of payload values, and both the key and value will be output in the POST request. However, when using the raw data format you can only configure one value and it **must** be named `"data"`. In this instance the data key will not be output in the POST request, only the value. For example:
+使用表单编码或 JSON 编码配置时，您可以配置任意数量的载荷值，键和值都会输出到 POST 请求中。但使用原始数据格式时，只能配置一个值，且**必须**命名为 `"data"`。这种情况下，POST 请求中只会输出值而不包含数据键。例如：
 
 ```json
   "webhook": {
@@ -78,14 +78,14 @@ When using the Form-Encoded or JSON-Encoded configuration you can configure any 
     },
 ```
 
-The result would be a POST request with e.g. `Status: running` body and `Content-Type: text/plain` header.
+这将生成一个 POST 请求，例如包含 `Status: running` 请求体和 `Content-Type: text/plain` 头部。
 
-### Nested Webhook Configuration
+### 嵌套 Webhook 配置
 
-Some webhook targets require a nested structure.
-This can be accomplished by setting the content as dictionary or list instead of as text directly.  
+某些 webhook 目标需要嵌套结构。
+这可以通过将内容设置为字典或列表而非直接文本实现。
 
-This is only supported for the JSON format.
+此功能仅支持 JSON 格式。
 
 ```json
 "webhook": {
@@ -101,14 +101,14 @@ This is only supported for the JSON format.
 }
 ```
 
-The result would be a POST request with e.g. `{"msgtype":"text","text":{"content":"Status update: running"}}` body and `Content-Type: application/json` header.
+执行结果将生成一个 POST 请求，其请求体示例为 `{"msgtype":"text","text":{"content":"状态更新：运行中"}}`，并附带 `Content-Type: application/json` 头部。
 
-## Additional configurations
+## 附加配置
 
-The `webhook.retries` parameter can be set for the maximum number of retries the webhook request should attempt if it is unsuccessful (i.e. HTTP response status is not 200). By default this is set to `0` which is disabled. An additional `webhook.retry_delay` parameter can be set to specify the time in seconds between retry attempts. By default this is set to `0.1` (i.e. 100ms). Note that increasing the number of retries or retry delay may slow down the trader if there are connectivity issues with the webhook.
-You can also specify `webhook.timeout` - which defines how long the bot will wait until it assumes the other host as unresponsive (defaults to 10s).
+可通过 `webhook.retries` 参数设置 webhook 请求失败时（即 HTTP 响应状态码非 200）的最大重试次数。默认值为 `0` 表示禁用重试。还可通过 `webhook.retry_delay` 参数设置重试间隔时间（单位：秒），默认值为 `0.1`（即 100 毫秒）。请注意，若 webhook 存在连接问题，增加重试次数或延迟时间可能会降低交易运行速度。
+您还可指定 `webhook.timeout` 参数——用于定义机器人判定目标主机无响应前的等待时长（默认为 10 秒）。
 
-Example configuration for retries:
+重试配置示例：
 
 ```json
   "webhook": {
@@ -123,7 +123,7 @@ Example configuration for retries:
     },
 ```
 
-Custom messages can be sent to Webhook endpoints via the `self.dp.send_msg()` function from within the strategy. To enable this, set the `allow_custom_messages` option to `true`:
+可通过策略中的 `self.dp.send_msg()` 函数向 Webhook 端点发送自定义消息。需将 `allow_custom_messages` 选项设置为 `true` 启用此功能：
 
 ```json
   "webhook": {
@@ -136,21 +136,21 @@ Custom messages can be sent to Webhook endpoints via the `self.dp.send_msg()` fu
     },
 ```
 
-Different payloads can be configured for different events. Not all fields are necessary, but you should configure at least one of the dicts, otherwise the webhook will never be called.
+可以为不同事件配置不同的载荷。并非所有字段都是必需的，但您应至少配置其中一个字典，否则 Webhook 将永远不会被调用。
 
-## Webhook Message types
+## Webhook 消息类型
 
-### Entry / Entry fill
+### 入场 / 入场成交
 
-The fields in `webhook.entry` and `webhook.entry_fill` are filled when the bot places a long/short Order to increase a position, or when that order fills respectively. Parameters are filled using string.format.
-Possible parameters are:
+当机器人下多/空单以增加仓位时，或在该订单成交时，将填充 `webhook.entry` 和 `webhook.entry_fill` 中的字段。参数使用 string.format 进行填充。
+可能的参数包括：
 
 * `trade_id`
 * `exchange`
 * `pair`
 * `direction`
 * `leverage`
-* ~~`limit` # Deprecated - should no longer be used.~~
+* ~~`limit` # 已弃用 - 不应再使用。~~
 * `open_rate`
 * `amount`
 * `open_date`
@@ -163,10 +163,10 @@ Possible parameters are:
 * `current_rate`
 * `enter_tag`
 
-### Entry cancel
+### 入场取消
 
-The fields in `webhook.entry_cancel` are filled when the bot cancels a long/short order. Parameters are filled using string.format.
-Possible parameters are:
+当机器人取消多/空订单时，将填充 `webhook.entry_cancel` 中的字段。参数使用 string.format 进行填充。
+可能的参数包括：
 
 * `trade_id`
 * `exchange`
@@ -185,10 +185,10 @@ Possible parameters are:
 * `current_rate`
 * `enter_tag`
 
-### Exit / Exit fill
+### 离场 / 离场成交
 
-The fields in `webhook.exit` and `webhook.exit_fill` are filled when the bot places an exit order, or when that exit order fills respectively. Parameters are filled using string.format.
-Possible parameters are:
+当机器人下离场订单时，或在该离场订单成交时，将填充 `webhook.exit` 和 `webhook.exit_fill` 中的字段。参数使用 string.format 进行填充。
+可能的参数包括：
 
 * `trade_id`
 * `exchange`
@@ -214,11 +214,10 @@ Possible parameters are:
 * `sub_trade`
 * `is_final_exit`
 
+### 退出取消
 
-### Exit cancel
-
-The fields in `webhook.exit_cancel` are filled when the bot cancels a exit order. Parameters are filled using string.format.
-Possible parameters are:
+当机器人取消退出订单时，`webhook.exit_cancel` 中的字段会被填充。参数使用 string.format 进行填充。
+可能的参数包括：
 
 * `trade_id`
 * `exchange`
@@ -241,16 +240,16 @@ Possible parameters are:
 * `open_date`
 * `close_date`
 
-### Status
+### 状态
 
-The fields in `webhook.status` are used for regular status messages (Started / Stopped / ...). Parameters are filled using string.format.
+`webhook.status` 中的字段用于常规状态消息（已启动 / 已停止 / ...）。参数使用 string.format 进行填充。
 
-The only possible value here is `{status}`.
+此处唯一可能的值是 `{status}`。
 
 ## Discord
 
-A special form of webhooks is available for discord.
-You can configure this as follows:
+Discord 可使用特殊形式的 webhook。
+可按如下方式配置：
 
 ```json
 "discord": {
@@ -287,16 +286,16 @@ You can configure this as follows:
 }
 ```
 
-The above represents the default (`exit_fill` and `entry_fill` are optional and will default to the above configuration) - modifications are obviously possible.
-To disable either of the two default values (`entry_fill` / `exit_fill`), you can assign them an empty array (`exit_fill: []`).
+以上表示默认配置（`exit_fill` 和 `entry_fill` 为可选，将默认使用上述配置）——显然可以进行修改。
+若要禁用两个默认值中的任意一个（`entry_fill` / `exit_fill`），可为其分配空数组（`exit_fill: []`）。
 
-Available fields correspond to the fields for webhooks and are documented in the corresponding webhook sections.
+可用字段对应于 webhook 的字段，并在相应的 webhook 章节中有详细说明。
 
-The notifications will look as follows by default.
+默认情况下，通知将如下所示。
 
 ![discord-notification](assets/discord_notification.png)
 
-Custom messages can be sent from a strategy to Discord endpoints via the dataprovider.send_msg() function. To enable this, set the `allow_custom_messages` option to `true`:
+可以通过 dataprovider.send_msg() 函数从策略向 Discord 端点发送自定义消息。要启用此功能，请将 `allow_custom_messages` 选项设置为 `true`：
 
 ```json
   "discord": {

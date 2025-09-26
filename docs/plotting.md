@@ -1,122 +1,122 @@
-# Plotting
+# 图表绘制
 
-This page explains how to plot prices, indicators and profits.
+本页说明如何绘制价格、指标和利润图表。
 
-!!! Warning "Deprecated"
-    The commands described in this page (`plot-dataframe`, `plot-profit`) should be considered deprecated and are in maintenance mode.
-    This is mostly for the performance problems even medium sized plots can cause, but also because "store a file and open it in a browser" isn't very intuitive from a UI perspective.
+!!! Warning "已弃用"
+    本页描述的指令（`plot-dataframe`、`plot-profit`）应视为已弃用并处于维护模式。
+    这主要是由于中等规模图表可能导致的性能问题，同时也因为"存储文件并在浏览器中打开"从用户界面角度来看不够直观。
 
     While there are no immediate plans to remove them, they are not actively maintained - and may be removed short-term should major changes be required to keep them working.
     
     Please use [FreqUI](freq-ui.md) for plotting needs, which doesn't struggle with the same performance problems.
 
-## Installation / Setup
+## 安装/设置
 
-Plotting modules use the Plotly library. You can install / upgrade this by running the following command:
+图表绘制模块使用 Plotly 库。您可以通过运行以下命令进行安装/升级：
 
 ``` bash
 pip install -U -r requirements-plot.txt
 ```
 
-## Plot price and indicators
+## 绘制价格和指标
 
-The `freqtrade plot-dataframe` subcommand shows an interactive graph with three subplots:
+`freqtrade plot-dataframe` 子命令显示包含三个子图的交互式图表：
 
-* Main plot with candlesticks and indicators following price (sma/ema)
-* Volume bars
-* Additional indicators as specified by `--indicators2`
+* 主图：包含K线图及跟随价格的指标（sma/ema）
+* 成交量柱状图
+* 由 `--indicators2` 指定的附加指标
 
 ![plot-dataframe](assets/plot-dataframe.png)
 
-Possible arguments:
+可用参数：
 
 --8<-- "commands/plot-dataframe.md"
 
-Example:
+示例：
 
 ``` bash
 freqtrade plot-dataframe -p BTC/ETH --strategy AwesomeStrategy
 ```
 
-The `-p/--pairs` argument can be used to specify pairs you would like to plot.
+`-p/--pairs` 参数可用于指定要绘制的交易对。
 
 !!! Note
-    The `freqtrade plot-dataframe` subcommand generates one plot-file per pair.
+    `freqtrade plot-dataframe` 子命令会为每个交易对生成一个图表文件。
 
-Specify custom indicators.
-Use `--indicators1` for the main plot and `--indicators2` for the subplot below (if values are in a different range than prices).
+指定自定义指标。
+使用 `--indicators1` 用于主图，`--indicators2` 用于下方的子图（如果数值范围与价格不同）。
 
 ``` bash
 freqtrade plot-dataframe --strategy AwesomeStrategy -p BTC/ETH --indicators1 sma ema --indicators2 macd
 ```
 
-### Further usage examples
+### 更多使用示例
 
-To plot multiple pairs, separate them with a space:
+要绘制多个交易对，请用空格分隔：
 
 ``` bash
 freqtrade plot-dataframe --strategy AwesomeStrategy -p BTC/ETH XRP/ETH
 ```
 
-To plot a timerange (to zoom in)
+要绘制特定时间范围（用于放大查看）
 
 ``` bash
 freqtrade plot-dataframe --strategy AwesomeStrategy -p BTC/ETH --timerange=20180801-20180805
 ```
 
-To plot trades stored in a database use `--db-url` in combination with `--trade-source DB`:
+要绘制存储在数据库中的交易记录，请结合使用 `--db-url` 和 `--trade-source DB`：
 
 ``` bash
 freqtrade plot-dataframe --strategy AwesomeStrategy --db-url sqlite:///tradesv3.dry_run.sqlite -p BTC/ETH --trade-source DB
 ```
 
-To plot trades from a backtesting result, use `--export-filename <filename>`
+要绘制回测结果的交易记录，请使用 `--export-filename <文件名>`
 
 ``` bash
 freqtrade plot-dataframe --strategy AwesomeStrategy --export-filename user_data/backtest_results/backtest-result.json -p BTC/ETH
 ```
 
-### Plot dataframe basics
+### 绘制数据帧基础
 
 ![plot-dataframe2](assets/plot-dataframe2.png)
 
-The `plot-dataframe` subcommand requires backtesting data, a strategy and either a backtesting-results file or a database, containing trades corresponding to the strategy.
+`plot-dataframe` 子命令需要回测数据、一个策略以及一个回测结果文件或数据库，其中包含与该策略对应的交易记录。
 
-The resulting plot will have the following elements:
+生成的图表将包含以下元素：
 
-* Green triangles: Buy signals from the strategy. (Note: not every buy signal generates a trade, compare to cyan circles.)
-* Red triangles: Sell signals from the strategy. (Also, not every sell signal terminates a trade, compare to red and green squares.)
-* Cyan circles: Trade entry points.
-* Red squares: Trade exit points for trades with loss or 0% profit.
-* Green squares: Trade exit points for profitable trades.
-* Indicators with values corresponding to the candle scale (e.g. SMA/EMA), as specified with `--indicators1`.
-* Volume (bar chart at the bottom of the main chart).
-* Indicators with values in different scales (e.g. MACD, RSI) below the volume bars, as specified with `--indicators2`.
+* 绿色三角形：策略的买入信号。（注意：并非每个买入信号都会生成交易，请与青色圆圈对比。）
+* 红色三角形：策略的卖出信号。（同样，并非每个卖出信号都会终止交易，请与红色和绿色方块对比。）
+* 青色圆圈：交易入场点。
+* 红色方块：亏损或零利润交易的离场点。
+* 绿色方块：盈利交易的离场点。
+* 与蜡烛图比例对应的指标（例如 SMA/EMA），通过 `--indicators1` 指定。
+* 成交量（主图底部的柱状图）。
+* 位于成交量柱下方、具有不同比例值的指标（例如 MACD、RSI），通过 `--indicators2` 指定。
 
-!!! Note "Bollinger Bands"
-    Bollinger bands are automatically added to the plot if the columns `bb_lowerband` and `bb_upperband` exist, and are painted as a light blue area spanning from the lower band to the upper band.
+!!! Note "布林带"
+    如果存在 `bb_lowerband` 和 `bb_upperband` 列，布林带将自动添加到图表中，并绘制为从下轨到上轨的浅蓝色区域。
 
-#### Advanced plot configuration
+#### 高级图表配置
 
-An advanced plot configuration can be specified in the strategy in the `plot_config` parameter.
+可以在策略的 `plot_config` 参数中指定高级绘图配置。
 
-Additional features when using `plot_config` include:
+使用 `plot_config` 时的附加功能包括：
 
-* Specify colors per indicator
-* Specify additional subplots
-* Specify indicator pairs to fill area in between
+* 为每个指标指定颜色
+* 指定额外的子图
+* 指定要填充区域的指标对
 
-The sample plot configuration below specifies fixed colors for the indicators. Otherwise, consecutive plots may produce different color schemes each time, making comparisons difficult.
-It also allows multiple subplots to display both MACD and RSI at the same time.
+下面的示例绘图配置为指标指定了固定颜色。否则，连续绘图每次可能产生不同的配色方案，使得比较变得困难。
+它还允许多个子图同时显示 MACD 和 RSI。
 
-Plot type can be configured using `type` key. Possible types are:
+绘图类型可以使用 `type` 键进行配置。可能的类型有：
 
-* `scatter` corresponding to `plotly.graph_objects.Scatter` class (default).
-* `bar` corresponding to `plotly.graph_objects.Bar` class.
+* `scatter` 对应 `plotly.graph_objects.Scatter` 类（默认）。
+* `bar` 对应 `plotly.graph_objects.Bar` 类。
 
-Extra parameters to `plotly.graph_objects.*` constructor can be specified in `plotly` dict.
+可以在 `plotly` 字典中指定传递给 `plotly.graph_objects.*` 构造函数的额外参数。
 
-Sample configuration with inline comments explaining the process:
+带有内联注释解释过程的示例配置：
 
 ``` python
 @property
@@ -162,9 +162,9 @@ def plot_config(self):
     return plot_config
 ```
 
-??? Note "As attribute (former method)"
-    Assigning plot_config is also possible as Attribute (this used to be the default way).
-    This has the disadvantage that strategy parameters are not available, preventing certain configurations from working.
+??? Note "作为属性（旧方法）"
+    将 plot_config 作为属性赋值也是可行的（这曾是默认方式）。
+    这种方式的缺点是无法使用策略参数，导致某些配置无法工作。
 
     ``` python
         plot_config = {
@@ -201,55 +201,53 @@ def plot_config(self):
 
     ```
 
-
 !!! Note
-    The above configuration assumes that `ema10`, `ema50`, `senkou_a`, `senkou_b`,
-    `macd`, `macdsignal`, `macdhist` and `rsi` are columns in the DataFrame created by the strategy.
+    上述配置假设 `ema10`、`ema50`、`senkou_a`、`senkou_b`、`macd`、`macdsignal`、`macdhist` 和 `rsi` 是策略创建的 DataFrame 中的列。
 
 !!! Warning
-    `plotly` arguments are only supported with plotly library and will not work with freq-ui.
+    `plotly` 参数仅在使用 plotly 库时受支持，在 freq-ui 中无效。
 
-!!! Note "Trade position adjustments"
-    If `position_adjustment_enable` / `adjust_trade_position()` is used, the trade initial buy price is averaged over multiple orders and the trade start price will most likely appear outside the candle range.
+!!! Note "交易仓位调整"
+    如果使用了 `position_adjustment_enable` / `adjust_trade_position()`，交易的初始买入价格将在多个订单中取平均值，且交易起始价格很可能会出现在 K 线范围之外。
 
-## Plot profit
+## 绘制收益图
 
 ![plot-profit](assets/plot-profit.png)
 
-The `plot-profit` subcommand shows an interactive graph with three plots:
+`plot-profit` 子命令显示一个包含三个图表的交互式图表：
 
-* Average closing price for all pairs.
-* The summarized profit made by backtesting.
-Note that this is not the real-world profit, but more of an estimate.
-* Profit for each individual pair.
-* Parallelism of trades.
-* Underwater (Periods of drawdown).
+* 所有交易对的平均收盘价。
+* 回测产生的汇总收益。
+请注意，这不是实际收益，更多是一种估算。
+* 每个单独交易对的收益。
+* 交易的并行性。
+* 水下图（回撤期间）。
 
-The first graph is good to get a grip of how the overall market progresses.
+第一个图表有助于了解整体市场的走势。
 
-The second graph will show if your algorithm works or doesn't.
-Perhaps you want an algorithm that steadily makes small profits, or one that acts less often, but makes big swings.
-This graph will also highlight the start (and end) of the Max drawdown period.
+第二个图表将显示您的算法是否有效。
+您可能想要一个稳定产生小额收益的算法，或者一个交易频率较低但波动较大的算法。
+此图表还会突出显示最大回撤期的开始（和结束）。
 
-The third graph can be useful to spot outliers, events in pairs that cause profit spikes.
+第三个图表可用于发现异常值，即导致收益飙升的交易对事件。
 
-The forth graph can help you analyze trade parallelism, showing how often max_open_trades have been maxed out.
+第四个图表可帮助您分析交易并行性，显示 `max_open_trades` 达到上限的频率。
 
-Possible options for the `freqtrade plot-profit` subcommand:
+`freqtrade plot-profit` 子命令的可能选项：
 
 --8<-- "commands/plot-profit.md"
 
-The `-p/--pairs`  argument, can be used to limit the pairs that are considered for this calculation.
+`-p/--pairs` 参数可用于限制参与此计算考虑的货币对。
 
-Examples:
+示例：
 
-Use custom backtest-export file
+使用自定义回测导出文件
 
 ``` bash
 freqtrade plot-profit  -p LTC/BTC --export-filename user_data/backtest_results/backtest-result.json
 ```
 
-Use custom database
+使用自定义数据库
 
 ``` bash
 freqtrade plot-profit  -p LTC/BTC --db-url sqlite:///tradesv3.sqlite --trade-source DB

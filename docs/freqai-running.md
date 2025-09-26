@@ -1,22 +1,22 @@
-# Running FreqAI
+# 运行 FreqAI
 
-There are two ways to train and deploy an adaptive machine learning model - live deployment and historical backtesting. In both cases, FreqAI runs/simulates periodic retraining of models as shown in the following figure:
+有两种方式可以训练和部署自适应机器学习模型 - 实盘部署和历史回测。在这两种情况下，FreqAI 都会运行/模拟定期重新训练模型，如下图所示：
 
 ![freqai-window](assets/freqai_moving-window.jpg)
 
-## Live deployments
+## 实盘部署
 
-FreqAI can be run dry/live using the following command:
+可以使用以下命令以模拟/实盘模式运行 FreqAI：
 
 ```bash
 freqtrade trade --strategy FreqaiExampleStrategy --config config_freqai.example.json --freqaimodel LightGBMRegressor
 ```
 
-When launched, FreqAI will start training a new model, with a new `identifier`, based on the config settings. Following training, the model will be used to make predictions on incoming candles until a new model is available. New models are typically generated as often as possible, with FreqAI managing an internal queue of the coin pairs to try to keep all models equally up to date. FreqAI will always use the most recently trained model to make predictions on incoming live data. If you do not want FreqAI to retrain new models as often as possible, you can set `live_retrain_hours` to tell FreqAI to wait at least that number of hours before training a new model. Additionally, you can set `expired_hours` to tell FreqAI to avoid making predictions on models that are older than that number of hours.
+启动后，FreqAI 将根据配置设置开始训练一个具有新 `identifier` 的新模型。训练完成后，该模型将用于对后续的 K 线数据进行预测，直到有新模型可用。新模型通常会尽可能频繁地生成，FreqAI 会管理一个交易对内部队列，以尝试保持所有模型同步更新。FreqAI 将始终使用最近训练的模型对实时数据进行预测。如果您不希望 FreqAI 尽可能频繁地重新训练新模型，可以设置 `live_retrain_hours` 来告诉 FreqAI 在训练新模型前至少等待指定的小时数。此外，您可以设置 `expired_hours` 来告诉 FreqAI 避免使用超过指定小时数的旧模型进行预测。
 
-Trained models are by default saved to disk to allow for reuse during backtesting or after a crash. You can opt to [purge old models](#purging-old-model-data) to save disk space by setting `"purge_old_models": true` in the config.
+默认情况下，训练好的模型会保存到磁盘，以便在回测期间或系统崩溃后重复使用。您可以通过在配置中设置 `"purge_old_models": true` 来选择[清理旧模型数据](#purging-old-model-data)以节省磁盘空间。
 
-To start a dry/live run from a saved backtest model (or from a previously crashed dry/live session), you only need to specify the `identifier` of the specific model:
+要从已保存的回测模型（或之前崩溃的模拟/实盘会话）启动模拟/实盘运行，您只需指定特定模型的 `identifier`：
 
 ```json
     "freqai": {
@@ -25,19 +25,19 @@ To start a dry/live run from a saved backtest model (or from a previously crashe
     }
 ```
 
-In this case, although FreqAI will initiate with a pre-trained model, it will still check to see how much time has elapsed since the model was trained. If a full `live_retrain_hours` has elapsed since the end of the loaded model, FreqAI will start training a new model.
+在这种情况下，虽然 FreqAI 会使用预训练模型启动，但它仍会检查自模型训练以来经过的时间。如果自加载模型训练结束已过去完整的 `live_retrain_hours`，FreqAI 将开始训练新模型。
 
-### Automatic data download
+### 自动数据下载
 
-FreqAI automatically downloads the proper amount of data needed to ensure training of a model through the defined `train_period_days` and `startup_candle_count` (see the [parameter table](freqai-parameter-table.md) for detailed descriptions of these parameters). 
+FreqAI 会自动下载通过定义的 `train_period_days` 和 `startup_candle_count` 确保模型训练所需的适量数据（有关这些参数的详细说明，请参阅[参数表](freqai-parameter-table.md)）。
 
-### Saving prediction data
+### 保存预测数据
 
-All predictions made during the lifetime of a specific `identifier` model are stored in `historic_predictions.pkl` to allow for reloading after a crash or changes made to the config.
+在特定 `identifier` 模型生命周期内进行的所有预测都存储在 `historic_predictions.pkl` 中，以便在崩溃或配置更改后重新加载。
 
-### Purging old model data
+### 清理旧模型数据
 
-FreqAI stores new model files after each successful training. These files become obsolete as new models are generated to adapt to new market conditions. If you are planning to leave FreqAI running for extended periods of time with high frequency retraining, you should enable `purge_old_models` in the config:
+FreqAI 在每次成功训练后存储新的模型文件。随着新模型的生成以适应新的市场条件，这些文件会变得过时。如果您计划长时间运行 FreqAI 并进行高频重训练，应在配置中启用 `purge_old_models`：
 
 ```json
     "freqai": {
@@ -45,71 +45,69 @@ FreqAI stores new model files after each successful training. These files become
     }
 ```
 
-This will automatically purge all models older than the four most recently trained ones to save disk space. Inputing "0" will never purge any models.
+这将自动清理除最近训练的四个模型之外的所有旧模型以节省磁盘空间。输入 "0" 将永不清理任何模型。
 
-## Backtesting
+## 回测
 
-The FreqAI backtesting module can be executed with the following command:
+FreqAI 回测模块可以通过以下命令执行：
 
 ```bash
 freqtrade backtesting --strategy FreqaiExampleStrategy --strategy-path freqtrade/templates --config config_examples/config_freqai.example.json --freqaimodel LightGBMRegressor --timerange 20210501-20210701
 ```
 
-If this command has never been executed with the existing config file, FreqAI will train a new model
-for each pair, for each backtesting window within the expanded `--timerange`.
+如果从未使用现有配置文件执行过此命令，FreqAI 将在扩展的 `--timerange` 内的每个回测窗口中，为每个交易对训练一个新模型。
 
-Backtesting mode requires [downloading the necessary data](#downloading-data-to-cover-the-full-backtest-period) before deployment (unlike in dry/live mode where FreqAI handles the data downloading automatically). You should be careful to consider that the time range of the downloaded data is more than the backtesting time range. This is because FreqAI needs data prior to the desired backtesting time range in order to train a model to be ready to make predictions on the first candle of the set backtesting time range. More details on how to calculate the data to download can be found [here](#deciding-the-size-of-the-sliding-training-window-and-backtesting-duration).
+回测模式在部署前需要[下载必要的数据](#downloading-data-to-cover-the-full-backtest-period)（与干燥/实盘模式不同，在干燥/实盘模式下 FreqAI 会自动处理数据下载）。您应注意确保下载数据的时间范围大于回测时间范围。这是因为 FreqAI 需要所需回测时间范围之前的数据，以便训练模型，使其能够在设定的回测时间范围的第一根蜡烛图上进行预测。有关如何计算要下载数据大小的更多详细信息，请参见[此处](#deciding-the-size-of-the-sliding-training-window-and-backtesting-duration)。
 
-!!! Note "Model reuse"
-    Once the training is completed, you can execute the backtesting again with the same config file and
-    FreqAI will find the trained models and load them instead of spending time training. This is useful
-    if you want to tweak (or even hyperopt) buy and sell criteria inside the strategy. If you
-    *want* to retrain a new model with the same config file, you should simply change the `identifier`.
-    This way, you can return to using any model you wish by simply specifying the `identifier`.
+!!! Note "模型复用"
+    训练完成后，你可以使用相同的配置文件再次执行回测，
+    FreqAI 将找到已训练的模型并加载它们，而无需花费时间重新训练。这在
+    你希望调整（甚至进行超参数优化）策略内的买入和卖出条件时非常有用。如果
+    你*想要*使用相同配置文件重新训练新模型，只需更改 `identifier` 即可。
+    通过这种方式，你可以通过简单指定 `identifier` 来恢复使用任何模型。
 
 !!! Note
-    Backtesting calls `set_freqai_targets()` one time for each backtest window (where the number of windows is the full backtest timerange divided by the `backtest_period_days` parameter). Doing this means that the targets simulate dry/live behavior without look ahead bias. However, the definition of the features in `feature_engineering_*()` is performed once on the entire training timerange. This means that you should be sure that features do not look-ahead into the future.
-    More details about look-ahead bias can be found in [Common Mistakes](strategy-customization.md#common-mistakes-when-developing-strategies).
+    回测过程中，每个回测窗口会调用一次 `set_freqai_targets()`（窗口数量等于完整回测时间范围除以 `backtest_period_days` 参数）。这样做意味着目标函数模拟了实盘/干运行行为，避免了前视偏差。然而，`feature_engineering_*()` 中的特征定义是在整个训练时间范围内一次性完成的。这意味着你应确保特征不会窥视未来数据。
+    关于前视偏差的更多细节可在[常见错误](strategy-customization.md#common-mistakes-when-developing-strategies)中找到。
 
 ---
 
-### Saving backtesting prediction data
+### 保存回测预测数据
 
-To allow for tweaking your strategy (**not** the features!), FreqAI will automatically save the predictions during backtesting so that they can be reused for future backtests and live runs using the same `identifier` model. This provides a performance enhancement geared towards enabling **high-level hyperopting** of entry/exit criteria.
+为了允许调整您的策略（**而非**特征！），FreqAI 会在回测期间自动保存预测结果，以便在后续使用相同 `identifier` 模型的回测和实盘运行中重复使用。这一性能优化旨在支持入场/出场条件的**高级超参数优化**。
 
-An additional directory called `backtesting_predictions`, which contains all the predictions stored in `feather` format, will be created in the `unique-id` folder.
+在 `unique-id` 文件夹中将创建一个名为 `backtesting_predictions` 的附加目录，其中包含以 `feather` 格式存储的所有预测结果。
 
-To change your **features**, you **must** set a new `identifier` in the config to signal to FreqAI to train new models.
+若要更改您的**特征**，您**必须**在配置中设置新的 `identifier`，以通知 FreqAI 训练新模型。
 
-To save the models generated during a particular backtest so that you can start a live deployment from one of them instead of training a new model, you must set `save_backtest_models` to `True` in the config.
-
-!!! Note
-    To ensure that the model can be reused, freqAI will call your strategy with a dataframe of length 1. 
-    If your strategy requires more data than this to generate the same features, you can't reuse backtest predictions for live deployment and need to update your `identifier` for each new backtest.
-
-### Backtest live collected predictions
-
-FreqAI allow you to reuse live historic predictions through the backtest parameter `--freqai-backtest-live-models`. This can be useful when you want to reuse predictions generated in dry/run for comparison or other study.
-
-The `--timerange` parameter must not be informed, as it will be automatically calculated through the data in the historic predictions file.
-
-### Downloading data to cover the full backtest period
-
-For live/dry deployments, FreqAI will download the necessary data automatically. However, to use backtesting functionality, you need to download the necessary data using `download-data` (details [here](data-download.md#data-downloading)). You need to pay careful attention to understanding how much *additional* data needs to be downloaded to ensure that there is a sufficient amount of training data *before* the start of the backtesting time range. The amount of additional data can be roughly estimated by moving the start date of the time range backwards by `train_period_days` and the `startup_candle_count` (see the [parameter table](freqai-parameter-table.md) for detailed descriptions of these parameters) from the beginning of the desired backtesting time range. 
-
-As an example, to backtest the `--timerange 20210501-20210701` using the [example config](freqai-configuration.md#setting-up-the-configuration-file) which sets `train_period_days` to 30, together with `startup_candle_count: 40` on a maximum `include_timeframes` of 1h, the start date for the downloaded data needs to be `20210501` - 30 days - 40 * 1h / 24 hours = 20210330 (31.7 days earlier than the start of the desired training time range).
-
-### Deciding the size of the sliding training window and backtesting duration
-
-The backtesting time range is defined with the typical `--timerange` parameter in the configuration file. The duration of the sliding training window is set by `train_period_days`, whilst `backtest_period_days` is the sliding backtesting window, both in number of days (`backtest_period_days` can be
-a float to indicate sub-daily retraining in live/dry mode). In the presented [example config](freqai-configuration.md#setting-up-the-configuration-file) (found in `config_examples/config_freqai.example.json`), the user is asking FreqAI to use a training period of 30 days and backtest on the subsequent 7 days. After the training of the model, FreqAI will backtest the subsequent 7 days. The "sliding window" then moves one week forward (emulating FreqAI retraining once per week in live mode) and the new model uses the previous 30 days (including the 7 days used for backtesting by the previous model) to train. This is repeated until the end of `--timerange`.  This means that if you set `--timerange 20210501-20210701`, FreqAI will have trained 8 separate models at the end of `--timerange` (because the full range comprises 8 weeks).
+如需保存特定回测期间生成的模型，以便从其中一个模型启动实盘部署而非训练新模型，您必须在配置中将 `save_backtest_models` 设置为 `True`。
 
 !!! Note
-    Although fractional `backtest_period_days` is allowed, you should be aware that the `--timerange` is divided by this value to determine the number of models that FreqAI will need to train in order to backtest the full range. For example, by setting a `--timerange` of 10 days, and a `backtest_period_days` of 0.1, FreqAI will need to train 100 models per pair to complete the full backtest. Because of this, a true backtest of FreqAI adaptive training would take a *very* long time. The best way to fully test a model is to run it dry and let it train constantly. In this case, backtesting would take the exact same amount of time as a dry run.
+    为确保模型可重复使用，FreqAI 将使用长度为 1 的数据框调用您的策略。
+    若您的策略需要更多数据才能生成相同特征，则无法将回测预测结果用于实盘部署，需为每次新回测更新 `identifier`。
 
-## Defining model expirations
+### 回测实盘收集的预测结果
 
-During dry/live mode, FreqAI trains each coin pair sequentially (on separate threads/GPU from the main Freqtrade bot). This means that there is always an age discrepancy between models. If you are training on 50 pairs, and each pair requires 5 minutes to train, the oldest model will be over 4 hours old. This may be undesirable if the characteristic time scale (the trade duration target) for a strategy is less than 4 hours. You can decide to only make trade entries if the model is less than a certain number of hours old by setting the `expiration_hours` in the config file:
+FreqAI 允许您通过回测参数 `--freqai-backtest-live-models` 重复使用历史实盘预测结果。当您希望重复使用模拟运行中生成的预测结果进行比较或其他研究时，此功能非常有用。
+
+不得指定 `--timerange` 参数，因为它将通过历史预测文件中的数据自动计算。
+
+### 下载覆盖完整回测周期的数据
+
+对于实盘/模拟部署，FreqAI 会自动下载必要的数据。但若要使用回测功能，您需要使用 `download-data` 下载必要的数据（详情参见[此处](data-download.md#data-downloading)）。需要特别注意理解需要下载多少*额外*数据，以确保在回测时间范围*开始前*有足够的训练数据。额外数据量可大致通过将时间范围的开始日期向前推移 `train_period_days` 和 `startup_candle_count`（有关这些参数的详细说明请参阅[参数表](freqai-parameter-table.md)）来估算。
+
+例如，使用[示例配置](freqai-configuration.md#setting-up-the-configuration-file)（设置 `train_period_days` 为 30）回测 `--timerange 20210501-20210701`，同时 `startup_candle_count: 40` 且最大 `include_timeframes` 为 1h，则下载数据的开始日期需为 `20210501` - 30天 - 40 * 1小时 / 24小时 = 20210330（比期望训练时间范围起点早 31.7 天）。
+
+### 确定滑动训练窗口大小和回测时长
+
+回测时间范围通过配置文件中的典型 `--timerange` 参数定义。滑动训练窗口的时长由 `train_period_days` 设置，而 `backtest_period_days` 是滑动回测窗口，两者均以天数表示（`backtest_period_days` 可以是浮点数，用于实盘/模拟模式下的日内重训练）。在提供的[示例配置](freqai-configuration.md#setting-up-the-configuration-file)（位于 `config_examples/config_freqai.example.json` 中），用户要求 FreqAI 使用 30 天的训练周期，并在随后的 7 天进行回测。模型训练完成后，FreqAI 将对后续 7 天进行回测。随后"滑动窗口"向前移动一周（模拟实盘模式下每周重训练一次），新模型使用前 30 天（包括前一个模型用于回测的 7 天）进行训练。这一过程将重复直至 `--timerange` 结束。这意味着如果设置 `--timerange 20210501-20210701`，FreqAI 将在 `--timerange` 结束时训练出 8 个独立模型（因为整个时间范围包含 8 周）。
+
+!!! Note
+    尽管允许使用小数形式的 `backtest_period_days`，但您需要注意，`--timerange` 会除以该值以确定 FreqAI 需要训练的模型数量，从而完成整个时间范围的回测。例如，设置 `--timerange` 为 10 天，`backtest_period_days` 为 0.1，FreqAI 将需要为每个交易对训练 100 个模型才能完成完整回测。因此，对 FreqAI 自适应训练进行真正的回测将花费*非常*长的时间。全面测试模型的最佳方式是进行模拟运行并让其持续训练。在这种情况下，回测所需时间将与模拟运行完全相同。
+
+## 定义模型过期时间
+
+在模拟/实盘模式下，FreqAI 会按顺序训练每个交易对（在独立于主 Freqtrade 机器人的线程/GPU 上）。这意味着模型之间始终存在时间差异。如果您正在训练 50 个交易对，且每个交易对需要 5 分钟训练，那么最旧的模型将超过 4 小时。如果策略的特征时间尺度（交易持续时间目标）小于 4 小时，这可能是不理想的。您可以通过在配置文件中设置 `expiration_hours` 来决定仅在使用特定小时数内的模型进行交易入场：
 
 ```json
     "freqai": {
@@ -117,71 +115,69 @@ During dry/live mode, FreqAI trains each coin pair sequentially (on separate thr
     }
 ```
 
-In the presented example config, the user will only allow predictions on models that are less than 1/2 hours old.
+在示例配置中，用户将仅允许使用小于 0.5 小时龄的模型进行预测。
 
-## Controlling the model learning process
+## 控制模型学习过程
 
-Model training parameters are unique to the selected machine learning library. FreqAI allows you to set any parameter for any library using the `model_training_parameters` dictionary in the config. The example config (found in `config_examples/config_freqai.example.json`) shows some of the example parameters associated with `Catboost` and `LightGBM`, but you can add any parameters available in those libraries or any other machine learning library you choose to implement.
+模型训练参数取决于所选的机器学习库。FreqAI允许您通过配置文件中的`model_training_parameters`字典为任何库设置任意参数。示例配置文件（位于`config_examples/config_freqai.example.json`）展示了与`Catboost`和`LightGBM`相关的一些示例参数，但您可以添加这些库或您选择实现的任何其他机器学习库中可用的任何参数。
 
-Data split parameters are defined in `data_split_parameters` which can be any parameters associated with scikit-learn's `train_test_split()` function. `train_test_split()` has a parameters called `shuffle` which allows to shuffle the data or keep it unshuffled. This is particularly useful to avoid biasing training with temporally auto-correlated data. More details about these parameters can be found the [scikit-learn website](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) (external website).
+数据拆分参数在`data_split_parameters`中定义，这些参数可以是与scikit-learn的`train_test_split()`函数相关的任何参数。`train_test_split()`有一个名为`shuffle`的参数，允许对数据进行洗牌或保持不洗牌。这对于避免因时间自相关数据导致训练偏差特别有用。有关这些参数的更多详细信息可在[scikit-learn网站](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)（外部网站）找到。
 
-The FreqAI specific parameter `label_period_candles` defines the offset (number of candles into the future) used for the `labels`. In the presented [example config](freqai-configuration.md#setting-up-the-configuration-file), the user is asking for `labels` that are 24 candles in the future.
+FreqAI特有参数`label_period_candles`定义了用于`labels`的偏移量（未来蜡烛图的数量）。在提供的[示例配置](freqai-configuration.md#setting-up-the-configuration-file)中，用户要求获取未来24根蜡烛图的`labels`。
 
-## Continual learning
+## 持续学习
 
-You can choose to adopt a continual learning scheme by setting `"continual_learning": true` in the config. By enabling `continual_learning`, after training an initial model from scratch, subsequent trainings will start from the final model state of the preceding training. This gives the new model a "memory" of the previous state. By default, this is set to `False` which means that all new models are trained from scratch, without input from previous models.
+您可以通过在配置中设置 `"continual_learning": true` 来选择采用持续学习方案。启用 `continual_learning` 后，在从头开始训练初始模型之后，后续训练将从前一次训练的最终模型状态开始。这使新模型能够“记忆”之前的状态。默认情况下，该选项设置为 `False`，意味着所有新模型都从头开始训练，不继承先前模型的任何信息。
 
-???+ danger "Continual learning enforces a constant parameter space"
-    Since `continual_learning` means that the model parameter space *cannot* change between trainings, `principal_component_analysis` is automatically disabled when `continual_learning` is enabled. Hint: PCA changes the parameter space and the number of features, learn more about PCA [here](freqai-feature-engineering.md#data-dimensionality-reduction-with-principal-component-analysis).
+???+ danger "持续学习要求参数空间保持恒定"
+    由于 `continual_learning` 意味着模型参数空间在训练之间*不能*改变，因此当启用 `continual_learning` 时，`principal_component_analysis` 会自动禁用。提示：PCA 会改变参数空间和特征数量，了解更多关于 PCA 的信息请参阅[此处](freqai-feature-engineering.md#data-dimensionality-reduction-with-principal-component-analysis)。
 
-???+ danger "Experimental functionality"
-    Beware that this is currently a naive approach to incremental learning, and it has a high probability of overfitting/getting stuck in local minima while the market moves away from your model. We have the mechanics available in FreqAI primarily for experimental purposes and so that it is ready for more mature approaches to continual learning in chaotic systems like the crypto market.
+???+ danger "实验性功能"
+    请注意，当前这是一种朴素的增量学习方法，在市场偏离您的模型时，很可能出现过度拟合/陷入局部极小值的情况。我们在 FreqAI 中提供此机制主要是为了实验目的，并为在像加密货币市场这样的混沌系统中实现更成熟的持续学习方法做好准备。
 
-## Hyperopt
+## 超参数优化
 
-You can hyperopt using the same command as for [typical Freqtrade hyperopt](hyperopt.md):
+您可以使用与[常规 Freqtrade 超参数优化](hyperopt.md)相同的命令进行超参数优化：
 
 ```bash
 freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --strategy FreqaiExampleStrategy --freqaimodel LightGBMRegressor --strategy-path freqtrade/templates --config config_examples/config_freqai.example.json --timerange 20220428-20220507
 ```
 
-`hyperopt` requires you to have the data pre-downloaded in the same fashion as if you were doing [backtesting](#backtesting). In addition, you must consider some restrictions when trying to hyperopt FreqAI strategies:
+`hyperopt` 要求您以与[回测](#backtesting)相同的方式预先下载数据。此外，在尝试对 FreqAI 策略进行超参数优化时，您必须考虑以下限制：
 
-- The `--analyze-per-epoch` hyperopt parameter is not compatible with FreqAI.
-- It's not possible to hyperopt indicators in the `feature_engineering_*()` and `set_freqai_targets()` functions. This means that you cannot optimize model parameters using hyperopt. Apart from this exception, it is possible to optimize all other [spaces](hyperopt.md#running-hyperopt-with-smaller-search-space).
-- The backtesting instructions also apply to hyperopt.
+- `--analyze-per-epoch` 超参数优化参数与 FreqAI 不兼容。
+- 无法对 `feature_engineering_*()` 和 `set_freqai_targets()` 函数中的指标进行超参数优化。这意味着您不能使用 hyperopt 优化模型参数。除了此例外情况，可以优化所有其他[空间](hyperopt.md#running-hyperopt-with-smaller-search-space)。
+- 回测说明同样适用于超参数优化。
 
-The best method for combining hyperopt and FreqAI is to focus on hyperopting entry/exit thresholds/criteria. You need to focus on hyperopting parameters that are not used in your features. For example, you should not try to hyperopt rolling window lengths in the feature creation, or any part of the FreqAI config which changes predictions. In order to efficiently hyperopt the FreqAI strategy, FreqAI stores predictions as dataframes and reuses them. Hence the requirement to hyperopt entry/exit thresholds/criteria only.
+结合 hyperopt 和 FreqAI 的最佳方法是专注于超参数优化入场/出场阈值/条件。您需要专注于优化未在特征中使用的参数。例如，不应尝试优化特征创建中的滚动窗口长度，或 FreqAI 配置中任何会改变预测结果的部分。为了高效地对 FreqAI 策略进行超参数优化，FreqAI 将预测结果存储为数据框并重复使用。因此要求仅优化入场/出场阈值/条件。
 
-A good example of a hyperoptable parameter in FreqAI is a threshold for the [Dissimilarity Index (DI)](freqai-feature-engineering.md#identifying-outliers-with-the-dissimilarity-index-di) `DI_values` beyond which we consider data points as outliers:
+FreqAI 中一个可超参数优化的良好示例是[差异性指数（DI）](freqai-feature-engineering.md#identifying-outliers-with-the-dissimilarity-index-di) `DI_values` 的阈值，超过该阈值我们将数据点视为异常值：
 
 ```python
 di_max = IntParameter(low=1, high=20, default=10, space='buy', optimize=True, load=True)
 dataframe['outlier'] = np.where(dataframe['DI_values'] > self.di_max.value/10, 1, 0)
 ```
 
-This specific hyperopt would help you understand the appropriate `DI_values` for your particular parameter space.
+这个特定的超参数优化将帮助您理解适用于您特定参数空间的 `DI_values`。
 
-## Using Tensorboard
+## 使用 Tensorboard
 
-!!! note "Availability"
-    FreqAI includes tensorboard for a variety of models, including XGBoost, all PyTorch models, Reinforcement Learning, and Catboost. If you would like to see Tensorboard integrated into another model type, please open an issue on the [Freqtrade GitHub](https://github.com/freqtrade/freqtrade/issues)
+!!! note "可用性"
+    FreqAI 为多种模型集成了 tensorboard，包括 XGBoost、所有 PyTorch 模型、强化学习和 Catboost。如果您希望在其他模型类型中看到 Tensorboard 集成，请在 [Freqtrade GitHub](https://github.com/freqtrade/freqtrade/issues) 上提交问题。
 
-!!! danger "Requirements"
-    Tensorboard logging requires the FreqAI torch installation/docker image.
+!!! danger "要求"
+    Tensorboard 日志记录需要 FreqAI torch 安装/ Docker 镜像。
 
-
-The easiest way to use tensorboard is to ensure `freqai.activate_tensorboard` is set to `True` (default setting) in your configuration file, run FreqAI, then open a separate shell and run:
+使用 tensorboard 最简单的方法是确保您的配置文件中 `freqai.activate_tensorboard` 设置为 `True`（默认设置），运行 FreqAI，然后打开一个单独的终端并运行：
 
 ```bash
 cd freqtrade
 tensorboard --logdir user_data/models/unique-id
 ```
 
-where `unique-id` is the `identifier` set in the `freqai` configuration file. This command must be run in a separate shell if you wish to view the output in your browser at 127.0.0.1:6060 (6060 is the default port used by Tensorboard).
+其中 `unique-id` 是 `freqai` 配置文件中设置的 `identifier`。如果您希望在浏览器中通过 127.0.0.1:6060（6060 是 Tensorboard 使用的默认端口）查看输出，则必须在单独的终端中运行此命令。
 
 ![tensorboard](assets/tensorboard.jpg)
 
-
-!!! note "Deactivate for improved performance"
-    Tensorboard logging can slow down training and should be deactivated for production use.
+!!! note "停用以提升性能"
+    Tensorboard 日志记录会减慢训练速度，在生产使用时应停用。

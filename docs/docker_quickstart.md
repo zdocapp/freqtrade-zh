@@ -1,33 +1,33 @@
-# Using Freqtrade with Docker
+# 使用 Docker 运行 Freqtrade
 
-This page explains how to run the bot with Docker. It is not meant to work out of the box. You'll still need to read through the documentation and understand how to properly configure it.
+本页介绍了如何使用 Docker 运行交易机器人。这并非开箱即用的解决方案，您仍需要阅读文档并理解如何正确配置。
 
-## Install Docker
+## 安装 Docker
 
-Start by downloading and installing Docker / Docker Desktop for your platform:
+首先为您的平台下载并安装 Docker / Docker Desktop：
 
 * [Mac](https://docs.docker.com/docker-for-mac/install/)
 * [Windows](https://docs.docker.com/docker-for-windows/install/)
 * [Linux](https://docs.docker.com/install/)
 
-!!! Info "Docker compose install"
-    Freqtrade documentation assumes the use of Docker desktop (or the docker compose plugin).  
-    While the docker-compose standalone installation still works, it will require changing all `docker compose` commands from `docker compose` to `docker-compose` to work (e.g. `docker compose up -d` will become `docker-compose up -d`).
+!!! Info "Docker compose 安装"
+    Freqtrade 文档假定使用 Docker desktop（或 docker compose 插件）。  
+    虽然独立的 docker-compose 安装仍然可用，但需要将所有 `docker compose` 命令从 `docker compose` 改为 `docker-compose` 才能工作（例如 `docker compose up -d` 将变为 `docker-compose up -d`）。
 
-??? Warning "Docker on windows"
-    If you just installed docker on a windows system, make sure to reboot your system, otherwise you might encounter unexplainable Problems related to network connectivity to docker containers.
+??? Warning "Windows 上的 Docker"
+    如果您刚在 Windows 系统上安装了 Docker，请确保重启系统，否则可能会遇到与 Docker 容器网络连接相关的无法解释的问题。
 
-## Freqtrade with docker
+## 使用 Docker 运行 Freqtrade
 
-Freqtrade provides an official Docker image on [Dockerhub](https://hub.docker.com/r/freqtradeorg/freqtrade/), as well as a [docker compose file](https://github.com/freqtrade/freqtrade/blob/stable/docker-compose.yml) ready for usage.
+Freqtrade 在 [Dockerhub](https://hub.docker.com/r/freqtradeorg/freqtrade/) 上提供了官方 Docker 镜像，以及一个可直接使用的 [docker compose 文件](https://github.com/freqtrade/freqtrade/blob/stable/docker-compose.yml)。
 
 !!! Note
-    - The following section assumes that `docker` is installed and available to the logged in user.
-    - All below commands use relative directories and will have to be executed from the directory containing the `docker-compose.yml` file.
+    - 以下章节假设已安装 `docker` 且当前登录用户具有使用权限。
+    - 所有下方命令均使用相对目录，必须在包含 `docker-compose.yml` 文件的目录中执行。
 
-### Docker quick start
+### Docker 快速入门
 
-Create a new directory and place the [docker-compose file](https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml) in this directory.
+创建新目录并将 [docker-compose 文件](https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml) 放置于此目录中。
 
 ``` bash
 mkdir ft_userdata
@@ -45,65 +45,65 @@ docker compose run --rm freqtrade create-userdir --userdir user_data
 docker compose run --rm freqtrade new-config --config user_data/config.json
 ```
 
-The above snippet creates a new directory called `ft_userdata`, downloads the latest compose file and pulls the freqtrade image.
-The last 2 steps in the snippet create the directory with `user_data`, as well as (interactively) the default configuration based on your selections.
+以上代码片段将创建名为 `ft_userdata` 的新目录，下载最新的 compose 文件并拉取 freqtrade 镜像。
+片段中的最后两个步骤将创建包含 `user_data` 的目录，并根据您的选择（交互式）生成默认配置。
 
-!!! Question "How to edit the bot configuration?"
-    You can edit the configuration at any time, which is available as `user_data/config.json` (within the directory `ft_userdata`) when using the above configuration.
+!!! Question "如何编辑机器人配置？"
+    您可以随时编辑配置，使用上述配置时，该配置位于 `ft_userdata` 目录内的 `user_data/config.json` 文件中。
 
     You can also change the both Strategy and commands by editing the command section of your `docker-compose.yml` file.
 
-#### Adding a custom strategy
+#### 添加自定义策略
 
-1. The configuration is now available as `user_data/config.json`
-2. Copy a custom strategy to the directory `user_data/strategies/`
-3. Add the Strategy' class name to the `docker-compose.yml` file
+1. 配置现已保存为 `user_data/config.json`
+2. 将自定义策略文件复制到 `user_data/strategies/` 目录
+3. 将策略的类名添加到 `docker-compose.yml` 文件
 
-The `SampleStrategy` is run by default.
+默认运行的是 `SampleStrategy` 策略。
 
-!!! Danger "`SampleStrategy` is just a demo!"
-    The `SampleStrategy` is there for your reference and give you ideas for your own strategy.
-    Please always backtest your strategy and use dry-run for some time before risking real money!
-    You will find more information about Strategy development in the [Strategy documentation](strategy-customization.md).
+!!! Danger "`SampleStrategy` 仅作为示例！"
+    `SampleStrategy` 仅供您参考并为您自己的策略提供思路。
+    请务必在投入真实资金前对策略进行回测，并先使用模拟交易运行一段时间！
+    您可以在[策略文档](strategy-customization.md)中找到更多关于策略开发的信息。
 
-Once this is done, you're ready to launch the bot in trading mode (Dry-run or Live-trading, depending on your answer to the corresponding question you made above).
+完成此步骤后，您就可以启动机器人的交易模式（模拟交易或实盘交易，具体取决于您对上述相应问题的回答）。
 
 ``` bash
 docker compose up -d
 ```
 
-!!! Warning "Default configuration"
-    While the configuration generated will be mostly functional, you will still need to verify that all options correspond to what you want (like Pricing, pairlist, ...) before starting the bot.
+!!! Warning "默认配置"
+    虽然生成的配置基本可用，但在启动机器人前，您仍需确认所有选项（如定价、交易对列表等）是否符合您的需求。
 
-#### Accessing the UI
+#### 访问用户界面
 
-If you've selected to enable FreqUI in the `new-config` step, you will have freqUI available at port `localhost:8080`.
+如果您在 `new-config` 步骤中选择了启用 FreqUI，则可以在端口 `localhost:8080` 访问 freqUI。
 
-You can now access the UI by typing localhost:8080 in your browser.
+现在您可以在浏览器中输入 localhost:8080 来访问用户界面。
 
-??? Note "UI Access on a remote server"
-    If you're running on a VPS, you should consider using either a ssh tunnel, or setup a VPN (openVPN, wireguard) to connect to your bot.
-    This will ensure that freqUI is not directly exposed to the internet, which is not recommended for security reasons (freqUI does not support https out of the box).
-    Setup of these tools is not part of this tutorial, however many good tutorials can be found on the internet.
-    Please also read the [API configuration with docker](rest-api.md#configuration-with-docker) section to learn more about this configuration.
+!!! Note "在远程服务器上访问 UI"
+    如果您在 VPS 上运行，应考虑使用 SSH 隧道或设置 VPN（如 OpenVPN、WireGuard）来连接您的交易机器人。
+    这将确保 FreqUI 不会直接暴露在互联网上，出于安全考虑不建议这样做（FreqUI 默认不支持 HTTPS）。
+    这些工具的设置不在本教程范围内，但网上可以找到许多优质教程。
+    请同时阅读 [Docker 下的 API 配置](rest-api.md#configuration-with-docker) 部分以了解更多关于此配置的信息。
 
-#### Monitoring the bot
+#### 监控交易机器人
 
-You can check for running instances with `docker compose ps`.
-This should list the service `freqtrade` as `running`. If that's not the case, best check the logs (see next point).
+您可以使用 `docker compose ps` 检查运行中的实例。
+这应该会显示 `freqtrade` 服务状态为 `running`。如果不是这种情况，最好检查日志（参见下一点）。
 
-#### Docker compose logs
+#### Docker compose 日志
 
-Logs will be written to: `user_data/logs/freqtrade.log`.  
-You can also check the latest log with the command `docker compose logs -f`.
+日志将写入：`user_data/logs/freqtrade.log`。  
+您还可以使用命令 `docker compose logs -f` 查看最新日志。
 
-#### Database
+#### 数据库
 
-The database will be located at: `user_data/tradesv3.sqlite`
+数据库将位于：`user_data/tradesv3.sqlite`
 
-#### Updating freqtrade with docker
+#### 使用 Docker 更新 Freqtrade
 
-Updating freqtrade when using `docker` is as simple as running the following 2 commands:
+使用 `docker` 更新 Freqtrade 只需运行以下两个命令：
 
 ``` bash
 # Download the latest image
@@ -112,57 +112,57 @@ docker compose pull
 docker compose up -d
 ```
 
-This will first pull the latest image, and will then restart the container with the just pulled version.
+这将首先拉取最新镜像，然后使用刚拉取的版本重启容器。
 
-!!! Warning "Check the Changelog"
-    You should always check the changelog for breaking changes / manual interventions required and make sure the bot starts correctly after the update.
+!!! Warning "检查更新日志"
+    您应始终检查更新日志以了解重大变更/需要手动干预的内容，并确保更新后机器人能正确启动。
 
-### Editing the docker-compose file
+### 编辑 docker-compose 文件
 
-Advanced users may edit the docker-compose file further to include all possible options or arguments.
+高级用户可以进一步编辑 docker-compose 文件以包含所有可能的选项或参数。
 
-All freqtrade arguments will be available by running `docker compose run --rm freqtrade <command> <optional arguments>`.
+所有 freqtrade 参数都可通过运行 `docker compose run --rm freqtrade <command> <optional arguments>` 来使用。
 
-!!! Warning "`docker compose` for trade commands"
-    Trade commands (`freqtrade trade <...>`) should not be ran via `docker compose run` - but should use `docker compose up -d` instead.
-    This makes sure that the container is properly started (including port forwardings) and will make sure that the container will restart after a system reboot.
-    If you intend to use freqUI, please also ensure to adjust the [configuration accordingly](rest-api.md#configuration-with-docker), otherwise the UI will not be available.
+!!! Warning "交易命令使用 `docker compose`"
+    交易命令（`freqtrade trade <...>`）不应通过 `docker compose run` 运行，而应使用 `docker compose up -d`。
+    这能确保容器正确启动（包括端口转发），并保证系统重启后容器会自动重启。
+    如果您打算使用 freqUI，请确保相应调整[配置](rest-api.md#configuration-with-docker)，否则 UI 将不可用。
 
 !!! Note "`docker compose run --rm`"
-    Including `--rm` will remove the container after completion, and is highly recommended for all modes except trading mode (running with `freqtrade trade` command).
+    包含 `--rm` 参数将在命令执行完成后删除容器，强烈推荐在除交易模式（使用 `freqtrade trade` 命令运行）外的所有模式下使用。
 
-??? Note "Using docker without docker compose"
-    "`docker compose run --rm`" will require a compose file to be provided.
-    Some freqtrade commands that don't require authentication such as `list-pairs` can be run with "`docker run --rm`" instead.  
-    For example `docker run --rm freqtradeorg/freqtrade:stable list-pairs --exchange binance --quote BTC --print-json`.  
-    This can be useful for fetching exchange information to add to your `config.json` without affecting your running containers.
+!!! Note "Using docker without docker compose"
+    "`docker compose run --rm`" 命令需要提供 compose 文件。
+    某些不需要身份验证的 freqtrade 命令（例如 `list-pairs`）可以使用 "`docker run --rm`" 来运行。  
+    例如 `docker run --rm freqtradeorg/freqtrade:stable list-pairs --exchange binance --quote BTC --print-json`。  
+    这对于获取交易所信息以添加到 `config.json` 中非常有用，且不会影响正在运行的容器。
 
-#### Example: Download data with docker
+#### 示例：使用 docker 下载数据
 
-Download backtesting data for 5 days for the pair ETH/BTC and 1h timeframe from Binance. The data will be stored in the directory `user_data/data/` on the host.
+从 Binance 交易所下载 ETH/BTC 交易对、1 小时时间框架的 5 天回测数据。数据将存储在宿主机上的 `user_data/data/` 目录中。
 
 ``` bash
 docker compose run --rm freqtrade download-data --pairs ETH/BTC --exchange binance --days 5 -t 1h
 ```
 
-Head over to the [Data Downloading Documentation](data-download.md) for more details on downloading data.
+前往 [数据下载文档](data-download.md) 获取更多关于数据下载的详细信息。
 
-#### Example: Backtest with docker
+#### 示例：使用 docker 进行回测
 
-Run backtesting in docker-containers for SampleStrategy and specified timerange of historical data, on 5m timeframe:
+在 docker 容器中运行 SampleStrategy 的回测，使用指定的历史数据时间范围，时间框架为 5 分钟：
 
 ``` bash
 docker compose run --rm freqtrade backtesting --config user_data/config.json --strategy SampleStrategy --timerange 20190801-20191001 -i 5m
 ```
 
-Head over to the [Backtesting Documentation](backtesting.md) to learn more.
+前往 [回测文档](backtesting.md) 了解更多信息。
 
-### Additional dependencies with docker
+### Docker 的额外依赖项
 
-If your strategy requires dependencies not included in the default image - it will be necessary to build the image on your host.
-For this, please create a Dockerfile containing installation steps for the additional dependencies (have a look at [docker/Dockerfile.custom](https://github.com/freqtrade/freqtrade/blob/develop/docker/Dockerfile.custom) for an example).
+如果您的策略需要默认镜像中未包含的依赖项，则需要在主机上构建镜像。
+为此，请创建一个包含额外依赖项安装步骤的 Dockerfile（可参考 [docker/Dockerfile.custom](https://github.com/freqtrade/freqtrade/blob/develop/docker/Dockerfile.custom) 示例）。
 
-You'll then also need to modify the `docker-compose.yml` file and uncomment the build step, as well as rename the image to avoid naming collisions.
+随后您还需要修改 `docker-compose.yml` 文件，取消构建步骤的注释，并重命名镜像以避免命名冲突。
 
 ``` yaml
     image: freqtrade_custom
@@ -171,45 +171,45 @@ You'll then also need to modify the `docker-compose.yml` file and uncomment the 
       dockerfile: "./Dockerfile.<yourextension>"
 ```
 
-You can then run `docker compose build --pull` to build the docker image, and run it using the commands described above.
+接着可以运行 `docker compose build --pull` 构建 Docker 镜像，并使用上述命令运行。
 
-### Plotting with docker
+### Docker 环境下的绘图功能
 
-Commands `freqtrade plot-profit` and `freqtrade plot-dataframe` ([Documentation](plotting.md)) are available by changing the image to `*_plot` in your `docker-compose.yml` file.
-You can then use these commands as follows:
+通过将 `docker-compose.yml` 文件中的镜像改为 `*_plot`，即可使用 `freqtrade plot-profit` 和 `freqtrade plot-dataframe` 命令（[文档](plotting.md)）。
+具体使用方式如下：
 
 ``` bash
 docker compose run --rm freqtrade plot-dataframe --strategy AwesomeStrategy -p BTC/ETH --timerange=20180801-20180805
 ```
 
-The output will be stored in the `user_data/plot` directory, and can be opened with any modern browser.
+输出结果将保存在 `user_data/plot` 目录中，可通过任何现代浏览器打开查看。
 
-### Data analysis using docker compose
+### 使用 Docker Compose 进行数据分析
 
-Freqtrade provides a docker-compose file which starts up a jupyter lab server.
-You can run this server using the following command:
+Freqtrade 提供了可启动 jupyter lab 服务器的 docker-compose 文件。
+通过以下命令即可运行该服务器：
 
 ``` bash
 docker compose -f docker/docker-compose-jupyter.yml up
 ```
 
-This will create a docker-container running jupyter lab, which will be accessible using `https://127.0.0.1:8888/lab`.
-Please use the link that's printed in the console after startup for simplified login.
+这将创建一个运行 jupyter lab 的 docker 容器，可通过 `https://127.0.0.1:8888/lab` 访问。
+请使用启动后控制台打印的链接进行简化登录。
 
-Since part of this image is built on your machine, it is recommended to rebuild the image from time to time to keep freqtrade (and dependencies) up-to-date.
+由于此镜像部分是在您的机器上构建的，建议定期重新构建镜像以保持 freqtrade（及其依赖项）处于最新状态。
 
 ``` bash
 docker compose -f docker/docker-compose-jupyter.yml build --no-cache
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Docker on Windows
+### Windows 上的 Docker
 
-* Error: `"Timestamp for this request is outside of the recvWindow."`  
-  The market api requests require a synchronized clock but the time in the docker container shifts a bit over time into the past.
-  To fix this issue temporarily you need to run `wsl --shutdown` and restart docker again (a popup on windows 10 will ask you to do so).
-  A permanent solution is either to host the docker container on a linux host or restart the wsl from time to time with the scheduler.
+* 错误：`"Timestamp for this request is outside of the recvWindow."`  
+  市场 API 请求需要时钟同步，但 Docker 容器中的时间会随时间推移略有偏差。
+  要临时解决此问题，需要运行 `wsl --shutdown` 并重新启动 Docker（Windows 10 会弹出提示要求您执行此操作）。
+  永久解决方案是在 Linux 主机上托管 Docker 容器，或通过计划任务定期重启 wsl。
 
   ``` bash
   taskkill /IM "Docker Desktop.exe" /F
@@ -217,10 +217,10 @@ docker compose -f docker/docker-compose-jupyter.yml build --no-cache
   start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
   ```
 
-* Cannot connect to the API (Windows)  
-  If you're on windows and just installed Docker (desktop), make sure to reboot your System. Docker can have problems with network connectivity without a restart.
-  You should obviously also make sure to have your [settings](#accessing-the-ui) accordingly.
+* 无法连接到 API（Windows）  
+  如果您在 Windows 上且刚安装 Docker Desktop，请确保重启系统。Docker 在未重启的情况下可能出现网络连接问题。
+  当然，您还应确保已相应配置[设置](#accessing-the-ui)。
 
 !!! Warning
-    Due to the above, we do not recommend the usage of docker on windows for production setups, but only for experimentation, datadownload and backtesting.
-    Best use a linux-VPS for running freqtrade reliably.
+    鉴于上述原因，我们不建议在 Windows 上使用 Docker 进行生产环境部署，仅适用于实验、数据下载和回测。
+    最佳实践是使用 Linux VPS 来可靠地运行 freqtrade。

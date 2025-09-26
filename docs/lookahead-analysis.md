@@ -1,108 +1,107 @@
-# Lookahead analysis
+# 前瞻性分析
 
-This page explains how to validate your strategy in terms of lookahead bias.
+本页说明如何在前瞻性偏差方面验证您的策略。
 
-Lookahead bias is the bane of any strategy since it is sometimes very easy to introduce this bias, but can be very hard to detect.
+前瞻性偏差是任何策略的祸根，因为有时很容易引入这种偏差，但可能很难检测到。
 
-Backtesting initializes all timestamps (loads the whole dataframe into memory) and calculates all indicators at once.
-This means that if your indicators or entry/exit signals look into future candles, this will falsify your backtest.
+回测会初始化所有时间戳（将整个数据帧加载到内存中）并一次性计算所有指标。
+这意味着如果您的指标或入场/出场信号查看未来的K线，这将使您的回测结果失真。
 
-The `lookahead-analysis` command requires historic data to be available.
-To learn how to get data for the pairs and exchange you're interested in,
-head over to the [Data Downloading](data-download.md) section of the documentation.
-`lookahead-analysis` also supports freqai strategies.
+`lookahead-analysis` 命令要求历史数据可用。
+要了解如何获取您感兴趣的货币对和交易所的数据，
+请转到文档的[数据下载](data-download.md)部分。
+`lookahead-analysis` 也支持 freqai 策略。
 
-This command internally chains backtests and pokes at the strategy to provoke it to show lookahead bias.
-This is done by not looking at the strategy code itself, but at changed indicator values and moved entries/exits compared to the full backtest.
+该命令内部链接回测并探测策略，以促使其显示前瞻性偏差。
+这是通过不查看策略代码本身，而是查看与完整回测相比变化的指标值和移动的入场/出场点来实现的。
 
-`lookahead-analysis` can use the typical options of [Backtesting](backtesting.md), but forces the following options:
+`lookahead-analysis` 可以使用[回测](backtesting.md)的典型选项，但强制使用以下选项：
 
-- `--cache` is forced to "none".
-- `--max-open-trades` is forced to be at least equal to the number of pairs.
-- `--dry-run-wallet` is forced to be basically infinite (1 billion).
-- `--stake-amount` is forced to be a static 10000 (10k).
-- `--enable-protections` is forced to be off.
-- `order_types` are forced to be "market" (late entries) unless `--lookahead-allow-limit-orders` is set.
+- `--cache` 被强制设置为 "none"。
+- `--max-open-trades` 被强制要求至少等于交易对的数量。
+- `--dry-run-wallet` 被强制设置为接近无限大（10亿）。
+- `--stake-amount` 被强制设置为静态的 10000（1万）。
+- `--enable-protections` 被强制关闭。
+- `order_types` 被强制设置为 "market"（延迟入场），除非设置了 `--lookahead-allow-limit-orders`。
 
-These are set to avoid users accidentally generating false positives.
+这些设置旨在避免用户意外生成误报。
 
-## Lookahead-analysis command reference
+## 前瞻分析命令参考
 
 --8<-- "commands/lookahead-analysis.md"
 
 !!! Note
-    The above output was reduced to options that `lookahead-analysis` adds on top of regular backtesting commands.
+    以上输出已简化为 `lookahead-analysis` 在常规回测命令基础上增加的选项。
 
-### Introduction
+### 简介
 
-Many strategies, without the programmer knowing, have fallen prey to lookahead bias.
-This typically makes the strategy backtest look profitable, sometimes to extremes,  but this is not realistic as the strategy is "cheating" by looking at data it would not have in dry or live modes.
+许多策略在程序员不知情的情况下，都受到了前瞻性偏差的影响。
+这通常会使策略回测看起来盈利，有时甚至达到极端水平，但这并不现实，因为策略通过查看在模拟或实盘模式下本不应拥有的数据而"作弊"。
 
-The reason why strategies can "cheat" is because the freqtrade backtesting process populates the full dataframe including all candle timestamps at the outset.
-If the programmer is not careful or oblivious how things work internally
-(which sometimes can be really hard to find out) then the strategy will look into the future.
+策略能够"作弊"的原因在于，freqtrade 的回测过程在开始时就会填充完整的数据框，包括所有蜡烛图时间戳。
+如果程序员不够谨慎或不了解内部工作原理（有时确实很难发现），那么策略就会窥视未来数据。
 
-This command is made to try to verify the validity in the form of the aforementioned lookahead bias.
+此命令旨在尝试验证前述前瞻性偏差的有效性。
 
-### How does the command work?
+### 该命令如何工作？
 
-It will start with a backtest of all pairs to generate a baseline for indicators and entries/exits.
-After this initial backtest runs, it will look if the `minimum-trade-amount` is met and if not cancel the lookahead-analysis for this strategy.  
-If this happens, use a wider timerange to get more trades for the analysis, or use a timerange where more trades occur.
+它将首先对所有交易对进行回测，为指标和入场/出场生成基准线。
+在初始回测运行后，系统将检查是否满足 `minimum-trade-amount`，如果不满足，则取消该策略的前瞻分析。  
+如果发生这种情况，请使用更宽的时间范围来获取更多交易进行分析，或使用交易发生更频繁的时间段。
 
-After setting the baseline it will then do additional backtest runs for every entry and exit separately.  
-When these verification backtests complete, it will compare both dataframes (baseline and sliced) for any difference in columns' value and report the bias.
-After all signals have been verified or falsified a result table will be generated for the user to see.
+设定基准线后，系统将分别对每个入场和出场信号进行额外的回测运行。  
+当这些验证回测完成后，系统会比较两个数据框（基准线和切片数据）中各列值的差异，并报告偏差。
+在所有信号被验证或证伪后，将生成结果表格供用户查看。
 
-### How to find and remove bias? How can I salvage a biased strategy?
+### 如何发现并消除偏差？如何挽救有偏差的策略？
 
-If you found a biased strategy online and want to have the same results, just without bias,
-then you will be out of luck most of the time.
-Usually the bias in the strategy is THE driving factor for "too good to be true" profits.
-Removing conditions or indicators that push the profits up from bias will usually make the strategy significantly worse.
-You might be able to salvage it partially if the biased indicators or conditions are not the core of the strategy, or there
-are other entry and exit signals that are not biased.
+如果你在网上发现了一个有偏差的策略，并希望获得相同的结果但消除偏差，
+那么大多数情况下你会失望。
+通常，策略中的偏差是导致"好得不真实"利润的主要驱动因素。
+移除因偏差而推高利润的条件或指标，通常会使策略表现显著变差。
+如果存在偏差的指标或条件并非策略核心，或者存在其他无偏差的入场和出场信号，
+或许可以部分挽救该策略。
 
-### Examples of lookahead-bias
+### 前瞻偏差示例
 
-- `shift(-10)` looks 10 candles into the future.
-- Using `iloc[]` in populate_* functions to access a specific row in the dataframe.
-- For-loops are prone to introduce lookahead bias if you don't tightly control which numbers are looped through.
-- Aggregation functions like `.mean()`, `.min()` and `.max()`, without a rolling window,
-  will calculate the value over the **whole** dataframe, so the signal candle will "see" a value including future candles.
-  A non-biased example would be to look back candles using `rolling()` instead:
-  e.g. `dataframe['volume_mean_12'] = dataframe['volume'].rolling(12).mean()`
-- `ta.MACD(dataframe, 12, 26, 1)` will introduce bias with a signalperiod of 1.
+- `shift(-10)` 会查看未来10根K线的数据。
+- 在 populate_* 函数中使用 `iloc[]` 访问数据框中的特定行。
+- 如果未能严格控制循环遍历的数值范围，for循环容易引入未来偏差。
+- 诸如 `.mean()`、`.min()` 和 `.max()` 等聚合函数，若未配合滚动窗口使用，
+  将基于**整个**数据框计算数值，导致信号K线会"看到"包含未来K线的数值。
+  避免偏差的正确做法是使用 `rolling()` 回溯历史K线数据：
+  例如 `dataframe['volume_mean_12'] = dataframe['volume'].rolling(12).mean()`
+- `ta.MACD(dataframe, 12, 26, 1)` 在信号周期设为1时将引入偏差。
 
-### What do the columns in the results table mean?
+### 结果表中的列代表什么含义？
 
-- `filename`: name of the checked strategy file
-- `strategy`: checked strategy class name
-- `has_bias`: result of the lookahead-analysis. `No` would be good, `Yes` would be bad.
-- `total_signals`: number of checked signals (default is 20)
-- `biased_entry_signals`: found bias in that many entries
-- `biased_exit_signals`: found bias in that many exits
-- `biased_indicators`: shows you the indicators themselves that are defined in populate_indicators
+- `filename`: 被检查的策略文件名
+- `strategy`: 被检查的策略类名称
+- `has_bias`: 未来偏差分析结果。`No` 表示良好，`Yes` 表示存在问题
+- `total_signals`: 已检查的信号数量（默认为20个）
+- `biased_entry_signals`: 存在偏差的入场信号数量
+- `biased_exit_signals`: 存在偏差的离场信号数量
+- `biased_indicators`: 显示在 populate_indicators 中定义的指标本身
 
-You might get false positives in the `biased_exit_signals` if you have biased entry signals paired with those exits.
-However, a biased entry will usually result in a biased exit too,
-even if the exit itself does not produce the bias -
-especially if your entry and exit conditions use the same biased indicator.
+如果您的偏倚入场信号与这些离场信号配对，您可能会在 `biased_exit_signals` 中得到误报。
+然而，一个偏倚的入场通常也会导致偏倚的离场，
+即使离场本身并未产生偏倚——
+特别是当您的入场和离场条件使用了相同的偏倚指标时。
 
-**Address the bias in the entries first, then address the exits.**
+**首先解决入场信号的偏倚问题，然后再处理离场信号。**
 
-### Caveats
+### 注意事项
 
-- `lookahead-analysis` can only verify / falsify the trades it calculated and verified.
-If the strategy has many different signals / signal types, it's up to you to select appropriate parameters to ensure that all signals have triggered at least once. Signals that are not triggered will not have been verified.  
-This would lead to a false-negative, i.e. the strategy will be reported as non-biased.
-- `lookahead-analysis` has access to the same backtesting options and this can introduce problems.
-Please don't use any options like enabling position stacking as this will distort the number of checked signals.
-If you decide to do so, then make doubly sure that you won't ever run out of `max_open_trades` slots,
-and that you have enough capital in the backtest wallet configuration.
-- limit orders in combination with `custom_entry_price()` and `custom_exit_price()` callbacks can cause late / delayed entries and exists, causing false positives.
-To avoid this - market orders are forced for this command. This implicitly means that `custom_entry_price()` and `custom_exit_price()` callbacks are not called.
-Using `--lookahead-allow-limit-orders` will skip the override and use your configured order types - however has shown to eventually produce false positives.
-- In the results table, the `biased_indicators` column
-will falsely flag FreqAI target indicators defined in `set_freqai_targets()` as biased.  
-**These are not biased and can safely be ignored.**
+- `lookahead-analysis` 只能验证/证伪其计算并验证过的交易。
+如果策略包含多种不同的信号/信号类型，需要您选择合适的参数以确保所有信号至少触发过一次。未触发的信号将不会被验证。  
+这将导致假阴性，即策略会被报告为无前瞻性偏差。
+- `lookahead-analysis` 使用相同的回测选项，这可能引发问题。
+请勿启用任何类似仓位叠加的选项，这会扭曲已检查信号的数量。
+若执意使用，请务必确保不会耗尽 `max_open_trades` 限额，
+且回测钱包配置中有充足资金。
+- 限价单与 `custom_entry_price()` 和 `custom_exit_price()` 回调结合使用时，可能导致延迟入场/出场，造成假阳性。
+为避免此问题，该命令强制使用市价单。这意味着 `custom_entry_price()` 和 `custom_exit_price()` 回调不会被调用。
+使用 `--lookahead-allow-limit-orders` 将跳过此强制设置而使用您配置的订单类型——但已证实最终会产生假阳性。
+- 结果表中的 `biased_indicators` 列
+会错误地将 `set_freqai_targets()` 中定义的 FreqAI 目标指标标记为有偏差。  
+**这些指标实际无偏差，可安全忽略。**

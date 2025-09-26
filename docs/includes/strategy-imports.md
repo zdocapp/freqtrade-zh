@@ -1,10 +1,10 @@
-## Imports necessary for a strategy
+## 策略所需的导入
 
-When creating a strategy, you will need to import the necessary modules and classes. The following imports are required for a strategy:
+创建策略时，您需要导入必要的模块和类。以下是策略所需的导入：
 
-By default, we recommend the following imports as a base line for your strategy:
-This will cover all imports necessary for freqtrade functions to work.
-Obviously you can add more imports as needed for your strategy.
+默认情况下，我们建议将以下导入作为策略的基础导入：
+这将涵盖 freqtrade 功能正常运行所需的所有导入。
+当然，您可以根据策略需要添加更多导入。
 
 ``` python
 # flake8: noqa: F401

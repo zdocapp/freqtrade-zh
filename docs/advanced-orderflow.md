@@ -1,19 +1,19 @@
-# Orderflow data
+# 订单流数据
 
-This guide walks you through utilizing public trade data for advanced orderflow analysis in Freqtrade.
+本指南将引导您如何利用公共交易数据在 Freqtrade 中进行高级订单流分析。
 
-!!! Warning "Experimental Feature"
-    The orderflow feature is currently in beta and may be subject to changes in future releases. Please report any issues or feedback on the [Freqtrade GitHub repository](https://github.com/freqtrade/freqtrade/issues).
-    It's also currently not been tested with freqAI - and combining these two features is considered out of scope at this point.
+!!! Warning "实验性功能"
+    订单流功能目前处于测试阶段，未来版本中可能会有变更。请在 [Freqtrade GitHub 仓库](https://github.com/freqtrade/freqtrade/issues) 报告任何问题或反馈。
+    该功能目前尚未与 freqAI 进行过测试，将这两个功能结合使用目前不在考虑范围内。
 
-!!! Warning "Performance"
-    Orderflow requires raw trades data. This data is rather large, and can cause a slow initial startup, when freqtrade needs to download the trades data for the last X candles. Additionally, enabling this feature will cause increased memory usage. Please ensure to have sufficient resources available.
+!!! Warning "性能提示"
+    订单流需要原始交易数据。这些数据量相当大，可能导致初始启动缓慢，因为 freqtrade 需要下载最近 X 根 K 线的交易数据。此外，启用此功能会增加内存使用量。请确保拥有足够的可用资源。
 
-## Getting Started
+## 快速开始
 
-### Enable Public Trades
+### 启用公共交易数据
 
-In your `config.json` file, set the `use_public_trades` option to true under the `exchange` section.
+在您的 `config.json` 文件中，将 `exchange` 部分下的 `use_public_trades` 选项设置为 true。
 
 ```json
 "exchange": {
@@ -22,16 +22,16 @@ In your `config.json` file, set the `use_public_trades` option to true under the
 }
 ```
 
-### Configure Orderflow Processing
+### 配置订单流处理
 
-Define your desired settings for orderflow processing within the orderflow section of config.json. Here, you can adjust factors like:
+在 config.json 的 orderflow 部分定义您所需的订单流处理设置。在此处，您可以调整以下因素：
 
-- `cache_size`: How many previous orderflow candles are saved into cache instead of calculated every new candle
-- `max_candles`: Filter how many candles would you like to get trades data for.
-- `scale`: This controls the price bin size for the footprint chart.
-- `stacked_imbalance_range`: Defines the minimum consecutive imbalanced price levels required for consideration.
-- `imbalance_volume`: Filters out imbalances with volume below this threshold.
-- `imbalance_ratio`: Filters out imbalances with a ratio (difference between ask and bid volume) lower than this value.
+- `cache_size`: 缓存中保存多少个历史订单流蜡烛图数据，避免每次新蜡烛图时重新计算
+- `max_candles`: 筛选获取交易数据的蜡烛图数量
+- `scale`: 控制足迹图的价格分档大小
+- `stacked_imbalance_range`: 定义需要考虑的最小连续失衡价格级别数量
+- `imbalance_volume`: 过滤掉成交量低于此阈值的失衡情况
+- `imbalance_ratio`: 过滤掉比率（卖盘与买盘成交量之差）低于此值的失衡情况
 
 ```json
 "orderflow": {
@@ -44,20 +44,20 @@ Define your desired settings for orderflow processing within the orderflow secti
   },
 ```
 
-## Downloading Trade Data for Backtesting
+## 下载回测用交易数据
 
-To download historical trade data for backtesting, use the --dl-trades flag with the freqtrade download-data command.
+要下载历史交易数据进行回测，请在 freqtrade download-data 命令中使用 --dl-trades 标志。
 
 ```bash
 freqtrade download-data -p BTC/USDT:USDT --timerange 20230101- --trading-mode futures --timeframes 5m --dl-trades
 ```
 
-!!! Warning "Data availability"
-    Not all exchanges provide public trade data. For supported exchanges, freqtrade will warn you if public trade data is not available if you start downloading data with the `--dl-trades` flag.
+!!! Warning "数据可用性"
+    并非所有交易所都提供公开交易数据。对于受支持的交易所，如果您使用 `--dl-trades` 标志开始下载数据，但公开交易数据不可用，freqtrade 会发出警告。
 
-## Accessing Orderflow Data
+## 访问订单流数据
 
-Once activated, several new columns become available in your dataframe:
+激活后，您的数据框中将新增多个列：
 
 ``` python
 
@@ -74,7 +74,7 @@ dataframe["stacked_imbalances_bid"] # List of price levels of stacked bid imbala
 dataframe["stacked_imbalances_ask"] # List of price levels of stacked ask imbalance range beginnings
 ```
 
-You can access these columns in your strategy code for further analysis. Here's an example:
+您可以在策略代码中访问这些列进行进一步分析。以下是一个示例：
 
 ``` python
 def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -90,11 +90,11 @@ def cumulative_delta(delta: Series):
 
 ```
 
-### Footprint chart (`dataframe["orderflow"]`)
+### 足迹图 (`dataframe["orderflow"]`)
 
-This column provides a detailed breakdown of buy and sell orders at different price levels, offering valuable insights into order flow dynamics. The `scale` parameter in your configuration determines the price bin size for this representation
+该列提供了不同价格水平上买卖订单的详细分解，为订单流动态提供了宝贵的洞察。配置中的 `scale` 参数决定了此表示的价格区间大小
 
-The `orderflow` column contains a dict with the following structure:
+`orderflow` 列包含一个具有以下结构的字典：
 
 ``` output
 {
@@ -110,38 +110,38 @@ The `orderflow` column contains a dict with the following structure:
 }
 ```
 
-#### Orderflow column explanation
+#### 订单流列说明
 
-- key: Price bin - binned at `scale` intervals
-- `bid_amount`: Total volume bought at each price level.
-- `ask_amount`: Total volume sold at each price level.
-- `bid`: Number of buy orders at each price level.
-- `ask`: Number of sell orders at each price level.
-- `delta`: Difference between ask and bid volume at each price level.
-- `total_volume`: Total volume (ask amount + bid amount) at each price level.
-- `total_trades`: Total number of trades (ask + bid) at each price level.
+- key: 价格区间 - 按 `scale` 间隔进行分箱
+- `bid_amount`: 每个价格水平的总买入量
+- `ask_amount`: 每个价格水平的总卖出量
+- `bid`: 每个价格水平的买单数量
+- `ask`: 每个价格水平的卖单数量
+- `delta`: 每个价格水平上卖出量与买入量的差值
+- `total_volume`: 每个价格水平的总成交量（卖出量 + 买入量）
+- `total_trades`: 每个价格水平的总交易次数（卖单数 + 买单数）
 
-By leveraging these features, you can gain valuable insights into market sentiment and potential trading opportunities based on order flow analysis.
+通过利用这些特性，您可以基于订单流分析获得对市场情绪和潜在交易机会的宝贵洞察
 
-### Raw trades data (`dataframe["trades"]`)
+### 原始交易数据 (`dataframe["trades"]`)
 
-List with the individual trades that occurred during the candle. This data can be used for more granular analysis of order flow dynamics.
+包含蜡烛图期间发生的单笔交易的列表。此数据可用于更精细地分析订单流动态
 
-Each individual entry contains a dict with the following keys:
+每个单独条目包含一个具有以下键的字典：
 
-- `timestamp`: Timestamp of the trade.
-- `date`: Date of the trade.
-- `price`: Price of the trade.
-- `amount`: Volume of the trade.
-- `side`: Buy or sell.
-- `id`: Unique identifier for the trade.
-- `cost`: Total cost of the trade (price * amount).
+- `timestamp`: 交易时间戳。
+- `date`: 交易日期。
+- `price`: 交易价格。
+- `amount`: 交易量。
+- `side`: 买入或卖出。
+- `id`: 交易唯一标识符。
+- `cost`: 交易总成本（价格 * 数量）。
 
-### Imbalances (`dataframe["imbalances"]`)
+### 订单失衡 (`dataframe["imbalances"]`)
 
-This column provides a dict with information about imbalances in the order flow. An imbalance occurs when there is a significant difference between the ask and bid volume at a given price level.
+该列提供一个字典，包含订单流失衡信息。当特定价格水平的卖单量和买单量出现显著差异时，就会发生失衡现象。
 
-Each row looks as follows - with price as index, and the corresponding bid and ask imbalance values as columns
+每行数据格式如下——以价格为索引，对应的买卖失衡值作为列
 
 ``` output
 {
